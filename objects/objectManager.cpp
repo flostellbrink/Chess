@@ -314,6 +314,7 @@ vec3 ObjectManager::checkDepth(vec2 mousePos, mat4 viewProjection){
                       pixel * 2.f - 1.f,
                       1);
     vec4 result = glm::inverse(viewProjection) * windowCoords;
+
     if(result.w == 0)
         return vec3();
     result /= result.w;
