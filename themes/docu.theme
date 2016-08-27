@@ -1,0 +1,24 @@
+[images]
+<count>
+repeat for <count>:
+  <imageId> <imagePath>
+[textures]
+<count>
+repeat for <count>:
+  <objectId>|<objectIdRange> <countForId>
+  repeat for <countForId>
+    <imageId> <x> <y> <width> <height>
+[controlPoints]
+<count>
+repeat for <count>
+  <ControlPointsId> <pointCount>
+  repeat for <pointCount>
+    <x> <y> <z> <tangentX> <tangentY> <tangentZ>
+[curves]
+<count>
+repeat for <count>
+  <objectId>|<objectIdRange> <ControlPointsId>
+
+// Somit können alle Texturen und Kurven Kontrollpunkte von mehreren Objekten verwendet werden
+// und gleichzeitig recht effizient gespeichert und geladen werden
+// Die gesamte Datei ist dann das Theme

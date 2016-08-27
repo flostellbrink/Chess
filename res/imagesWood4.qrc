@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/res">
+        <file>images/Melamine-wood-005.png</file>
+    </qresource>
+</RCC>

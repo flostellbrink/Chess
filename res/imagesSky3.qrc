@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/res">
+        <file>images/LancellottiChapel/cube3.jpg</file>
+    </qresource>
+</RCC>
