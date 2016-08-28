@@ -30,49 +30,49 @@ vector<MoveBase*> Queen::GetMoves(){
     Field *currentField = _field;
     while(currentField = currentField->Up){
         AddHitOrMove(currentField, result);
-        if(currentField->Piece)
+        if(currentField->CurrentPiece)
             break;
     }
     currentField = _field;
     while(currentField = currentField->Down){
         AddHitOrMove(currentField, result);
-        if(currentField->Piece)
+        if(currentField->CurrentPiece)
             break;
     }
     currentField = _field;
     while(currentField = currentField->Left){
         AddHitOrMove(currentField, result);
-        if(currentField->Piece)
+        if(currentField->CurrentPiece)
             break;
     }
     currentField = _field;
     while(currentField = currentField->Right){
         AddHitOrMove(currentField, result);
-        if(currentField->Piece)
+        if(currentField->CurrentPiece)
             break;
     }
     currentField = _field;
     while(currentField->Up && (currentField = currentField->Up->Right)){
         AddHitOrMove(currentField, result);
-        if(currentField->Piece)
+        if(currentField->CurrentPiece)
             break;
     }
     currentField = _field;
     while(currentField->Down && (currentField = currentField->Down->Right)){
         AddHitOrMove(currentField, result);
-        if(currentField->Piece)
+        if(currentField->CurrentPiece)
             break;
     }
     currentField = _field;
     while(currentField->Up && (currentField = currentField->Up->Left)){
         AddHitOrMove(currentField, result);
-        if(currentField->Piece)
+        if(currentField->CurrentPiece)
             break;
     }
     currentField = _field;
     while(currentField->Down && (currentField = currentField->Down->Left)){
         AddHitOrMove(currentField, result);
-        if(currentField->Piece)
+        if(currentField->CurrentPiece)
             break;
     }
     return result;

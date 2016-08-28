@@ -130,8 +130,8 @@ void Field::update(float elapsedTimeMs){
 
 void Field::MouseClick(glm::vec3 position){
     if(!_boundingBox->Contains(position)) return;
-    if(Piece)
-        _board->PieceClick(Piece);
+    if(CurrentPiece)
+        _board->PieceClick(CurrentPiece);
     else
         _board->FieldClick(this);
 }

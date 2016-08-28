@@ -30,25 +30,25 @@ vector<MoveBase*> Bishop::GetMoves(){
     Field *currentField = _field;
     while(currentField->Up && (currentField = currentField->Up->Right)){
         AddHitOrMove(currentField, result);
-        if(currentField->Piece)
+        if(currentField->CurrentPiece)
             break;
     }
     currentField = _field;
     while(currentField->Down && (currentField = currentField->Down->Right)){
         AddHitOrMove(currentField, result);
-        if(currentField->Piece)
+        if(currentField->CurrentPiece)
             break;
     }
     currentField = _field;
     while(currentField->Up && (currentField = currentField->Up->Left)){
         AddHitOrMove(currentField, result);
-        if(currentField->Piece)
+        if(currentField->CurrentPiece)
             break;
     }
     currentField = _field;
     while(currentField->Down && (currentField = currentField->Down->Left)){
         AddHitOrMove(currentField, result);
-        if(currentField->Piece)
+        if(currentField->CurrentPiece)
             break;
     }
     return result;

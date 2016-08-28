@@ -30,25 +30,25 @@ vector<MoveBase*> Rook::GetMoves(){
     Field *currentField = _field;
     while(currentField = currentField->Up){
         AddHitOrMove(currentField, result);
-        if(currentField->Piece)
+        if(currentField->CurrentPiece)
             break;
     }
     currentField = _field;
     while(currentField = currentField->Down){
         AddHitOrMove(currentField, result);
-        if(currentField->Piece)
+        if(currentField->CurrentPiece)
             break;
     }
     currentField = _field;
     while(currentField = currentField->Left){
         AddHitOrMove(currentField, result);
-        if(currentField->Piece)
+        if(currentField->CurrentPiece)
             break;
     }
     currentField = _field;
     while(currentField = currentField->Right){
         AddHitOrMove(currentField, result);
-        if(currentField->Piece)
+        if(currentField->CurrentPiece)
             break;
     }
     return result;

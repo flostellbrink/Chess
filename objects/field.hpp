@@ -40,7 +40,7 @@ class Field : public Drawable {
     int Row();
     int Column();
     Field *Up = 0, *Down = 0, *Left = 0, *Right = 0;
-    Piece* Piece = 0;
+    Piece* CurrentPiece = 0;
 
     protected:
     virtual std::string getVertexShader() override;

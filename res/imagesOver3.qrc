@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/res">
-        <file>images/overlayMate2.png</file>
+        <file>images/OverlayMate2.png</file>
     </qresource>
 </RCC>

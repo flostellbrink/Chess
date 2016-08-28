@@ -27,7 +27,7 @@ using glm::mat4;
 
 Piece::Piece(Board* board, int objectID, Field* field)
     :Drawable(objectID), _yRotation(0), _field(field), _position(field->TopPosition()) {
-    _field->Piece = this;
+    _field->CurrentPiece = this;
     _board = board;
     BoundingBox = ObjectManager::Instance.Collisions.GetAABB(vec3(), vec3());
     UpdateBB(Position());
@@ -60,11 +60,11 @@ Field* Piece::GetField(){
 
 void Piece::SetField(Field* field, bool sim){
     if(field == _field) {
-        _field->Piece = this;
+        _field->CurrentPiece = this;
         return;
     }
-    if(_field->Piece == this)
-        _field->Piece = 0;
+    if(_field->CurrentPiece == this)
+        _field->CurrentPiece = 0;
     if(!sim){
         //TODO check a few collision cases
         // _______
@@ -102,7 +102,7 @@ void Piece::SetField(Field* field, bool sim){
         }
     }
     _field = field;
-    _field->Piece = this;
+    _field->CurrentPiece = this;
 }
 
 bool Piece::isWhite(){
@@ -185,10 +185,10 @@ void Piece::MouseClick(glm::vec3 position){
 
 void Piece::AddHitOrMove(Field *field, vector<MoveBase *> &moves){
     if(!field) return;
-    if(!field->Piece)
+    if(!field->CurrentPiece)
         moves.push_back(new Move(this, field));
-    else if(field->Piece->isWhite() != isWhite())
-        moves.push_back(new Hit(this, field->Piece));
+    else if(field->CurrentPiece->isWhite() != isWhite())
+        moves.push_back(new Hit(this, field->CurrentPiece));
 }
 
 std::string Piece::getVertexShader()

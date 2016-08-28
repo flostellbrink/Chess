@@ -220,7 +220,7 @@ void Board::doAI(){
 Field* Board::GetSideField(bool whiteSide){
     vector<Field*> row = _sideFields[whiteSide];
     for(Field* field : row)
-        if(!field->Piece)
+        if(!field->CurrentPiece)
             return field;
 }
 
@@ -283,12 +283,12 @@ void Board::FieldClick(Field *field){
             move->Apply(this);
             clearOverlays();
             _currentMoves.clear();
-            if(field->Piece && field->Piece->isTransformable() && field->Row() == (field->Piece->isWhite() ? 7 : 0)){
+            if(field->CurrentPiece && field->CurrentPiece->isTransformable() && field->Row() == (field->CurrentPiece->isWhite() ? 7 : 0)){
                 std::cout << "ChessInfo: Pawn is being promoted" << std::endl;
                 locked = true;
                 for(Piece* piece : _pieces)
                     if(piece->isCopyable())
-                        _currentMoves.push_back(new Transform(field->Piece, piece));
+                        _currentMoves.push_back(new Transform(field->CurrentPiece, piece));
                 setOverlays();
                 return;
             }
@@ -403,14 +403,14 @@ bool Board::isRochadePossible(bool isWhite, bool isLeft){
     bool success = true;
     // Field next to king
     Field* stepOverField = isLeft ? king->_field->Left : king->_field->Right;
-    if(!stepOverField || stepOverField->Piece) return false;
+    if(!stepOverField || stepOverField->CurrentPiece) return false;
     Move stepOver(king, stepOverField);
     stepOver.Apply(this, true);
         if(isKingInMate()) success = false;
     stepOver.Undo(this, true);
     // King destination field
     Field* stepField = isLeft ? stepOverField->Left : stepOverField->Right;
-    if(!stepField || stepField->Piece || !success) return false;
+    if(!stepField || stepField->CurrentPiece || !success) return false;
     Move step(king, stepField);
     step.Apply(this, true);
         if(isKingInMate())  success = false;
@@ -421,7 +421,7 @@ bool Board::isRochadePossible(bool isWhite, bool isLeft){
     step.Undo(this, true);
     // Field next to rook
     Field* rookStepField = isLeft ? rook->_field->Right : rook->_field->Left;
-    if(!rookStepField || rookStepField->Piece) return false;
+    if(!rookStepField || rookStepField->CurrentPiece) return false;
     return success;
 }
 
@@ -445,134 +445,134 @@ void Board::RunDemo(){
     // http://www.chessgames.com/perl/chessgame?gid=1011478
 
     // 1. e4 d6
-    applyAndPushMove(new Move(GetField(e,2)->Piece, GetField(e,4)));
-    applyAndPushMove(new Move(GetField(d,7)->Piece, GetField(d,6)));
+    applyAndPushMove(new Move(GetField(e,2)->CurrentPiece, GetField(e,4)));
+    applyAndPushMove(new Move(GetField(d,7)->CurrentPiece, GetField(d,6)));
     // 2. d4 Nf6
-    applyAndPushMove(new Move(GetField(d,2)->Piece, GetField(d,4)));
-    applyAndPushMove(new Move(GetField(g,8)->Piece, GetField(f,6)));
+    applyAndPushMove(new Move(GetField(d,2)->CurrentPiece, GetField(d,4)));
+    applyAndPushMove(new Move(GetField(g,8)->CurrentPiece, GetField(f,6)));
     // 3. Nc3 g6
-    applyAndPushMove(new Move(GetField(b,1)->Piece, GetField(c,3)));
-    applyAndPushMove(new Move(GetField(g,7)->Piece, GetField(g,6)));
+    applyAndPushMove(new Move(GetField(b,1)->CurrentPiece, GetField(c,3)));
+    applyAndPushMove(new Move(GetField(g,7)->CurrentPiece, GetField(g,6)));
     // 4. Be3 Bg7
-    applyAndPushMove(new Move(GetField(c,1)->Piece, GetField(e,3)));
-    applyAndPushMove(new Move(GetField(f,8)->Piece, GetField(g,7)));
+    applyAndPushMove(new Move(GetField(c,1)->CurrentPiece, GetField(e,3)));
+    applyAndPushMove(new Move(GetField(f,8)->CurrentPiece, GetField(g,7)));
     // 5. Qd2 c6
-    applyAndPushMove(new Move(GetField(d,1)->Piece, GetField(d,2)));
-    applyAndPushMove(new Move(GetField(c,7)->Piece, GetField(c,6)));
+    applyAndPushMove(new Move(GetField(d,1)->CurrentPiece, GetField(d,2)));
+    applyAndPushMove(new Move(GetField(c,7)->CurrentPiece, GetField(c,6)));
     // 6. f3 b5
-    applyAndPushMove(new Move(GetField(f,2)->Piece, GetField(f,3)));
-    applyAndPushMove(new Move(GetField(b,7)->Piece, GetField(b,5)));
+    applyAndPushMove(new Move(GetField(f,2)->CurrentPiece, GetField(f,3)));
+    applyAndPushMove(new Move(GetField(b,7)->CurrentPiece, GetField(b,5)));
     // 7. Nge2 Nbd7
-    applyAndPushMove(new Move(GetField(g,1)->Piece, GetField(e,2)));
-    applyAndPushMove(new Move(GetField(b,8)->Piece, GetField(d,7)));
+    applyAndPushMove(new Move(GetField(g,1)->CurrentPiece, GetField(e,2)));
+    applyAndPushMove(new Move(GetField(b,8)->CurrentPiece, GetField(d,7)));
     // 8. Bh6 Bxh6
-    applyAndPushMove(new Move(GetField(e,3)->Piece, GetField(h,6)));
-    applyAndPushMove(new Hit(GetField(g,7)->Piece, GetField(h,6)->Piece));
+    applyAndPushMove(new Move(GetField(e,3)->CurrentPiece, GetField(h,6)));
+    applyAndPushMove(new Hit(GetField(g,7)->CurrentPiece, GetField(h,6)->CurrentPiece));
     // 9. Qxh6 Bb7
-    applyAndPushMove(new Hit(GetField(d,2)->Piece, GetField(h,6)->Piece));
-    applyAndPushMove(new Move(GetField(c,8)->Piece, GetField(b,7)));
+    applyAndPushMove(new Hit(GetField(d,2)->CurrentPiece, GetField(h,6)->CurrentPiece));
+    applyAndPushMove(new Move(GetField(c,8)->CurrentPiece, GetField(b,7)));
     // 10. a3 e5
-    applyAndPushMove(new Move(GetField(a,2)->Piece, GetField(a,3)));
-    applyAndPushMove(new Move(GetField(e,7)->Piece, GetField(e,5)));
+    applyAndPushMove(new Move(GetField(a,2)->CurrentPiece, GetField(a,3)));
+    applyAndPushMove(new Move(GetField(e,7)->CurrentPiece, GetField(e,5)));
     // 11. O-O-O Qe7
     applyAndPushMove(new Rochade(GetKing(true), GetRook(true, true), GetField(c,1), GetField(d,1)));
-    applyAndPushMove(new Move(GetField(d,8)->Piece, GetField(e,7)));
+    applyAndPushMove(new Move(GetField(d,8)->CurrentPiece, GetField(e,7)));
     // 12. Kb1 a6
-    applyAndPushMove(new Move(GetField(c,1)->Piece, GetField(b,1)));
-    applyAndPushMove(new Move(GetField(a,7)->Piece, GetField(a,6)));
+    applyAndPushMove(new Move(GetField(c,1)->CurrentPiece, GetField(b,1)));
+    applyAndPushMove(new Move(GetField(a,7)->CurrentPiece, GetField(a,6)));
     // 13. Nc1 O-O-O
-    applyAndPushMove(new Move(GetField(e,2)->Piece, GetField(c,1)));
+    applyAndPushMove(new Move(GetField(e,2)->CurrentPiece, GetField(c,1)));
     applyAndPushMove(new Rochade(GetKing(false), GetRook(false, true), GetField(c,8), GetField(d,8)));
     // 14. Nb3 exd4
-    applyAndPushMove(new Move(GetField(c,1)->Piece, GetField(b,3)));
-    applyAndPushMove(new Hit(GetField(e,5)->Piece, GetField(d,4)->Piece));
+    applyAndPushMove(new Move(GetField(c,1)->CurrentPiece, GetField(b,3)));
+    applyAndPushMove(new Hit(GetField(e,5)->CurrentPiece, GetField(d,4)->CurrentPiece));
     // 15. Rxd4 c5
-    applyAndPushMove(new Hit(GetField(d,1)->Piece, GetField(d,4)->Piece));
-    applyAndPushMove(new Move(GetField(c,6)->Piece, GetField(c,5)));
+    applyAndPushMove(new Hit(GetField(d,1)->CurrentPiece, GetField(d,4)->CurrentPiece));
+    applyAndPushMove(new Move(GetField(c,6)->CurrentPiece, GetField(c,5)));
     // 16. Rd1 Nb6
-    applyAndPushMove(new Move(GetField(d,4)->Piece, GetField(d,1)));
-    applyAndPushMove(new Move(GetField(d,7)->Piece, GetField(b,6)));
+    applyAndPushMove(new Move(GetField(d,4)->CurrentPiece, GetField(d,1)));
+    applyAndPushMove(new Move(GetField(d,7)->CurrentPiece, GetField(b,6)));
     // 17. g3 Kb8
-    applyAndPushMove(new Move(GetField(g,2)->Piece, GetField(g,3)));
-    applyAndPushMove(new Move(GetField(c,8)->Piece, GetField(b,8)));
+    applyAndPushMove(new Move(GetField(g,2)->CurrentPiece, GetField(g,3)));
+    applyAndPushMove(new Move(GetField(c,8)->CurrentPiece, GetField(b,8)));
     // 18. Na5 Ba8
-    applyAndPushMove(new Move(GetField(b,3)->Piece, GetField(a,5)));
-    applyAndPushMove(new Move(GetField(b,7)->Piece, GetField(a,8)));
+    applyAndPushMove(new Move(GetField(b,3)->CurrentPiece, GetField(a,5)));
+    applyAndPushMove(new Move(GetField(b,7)->CurrentPiece, GetField(a,8)));
     // 19. Bh3 d5
-    applyAndPushMove(new Move(GetField(f,1)->Piece, GetField(h,3)));
-    applyAndPushMove(new Move(GetField(d,6)->Piece, GetField(d,5)));
+    applyAndPushMove(new Move(GetField(f,1)->CurrentPiece, GetField(h,3)));
+    applyAndPushMove(new Move(GetField(d,6)->CurrentPiece, GetField(d,5)));
     // 20. Qf4+ Ka7
-    applyAndPushMove(new Move(GetField(h,6)->Piece, GetField(f,4)));
-    applyAndPushMove(new Move(GetField(b,8)->Piece, GetField(a,7)));
+    applyAndPushMove(new Move(GetField(h,6)->CurrentPiece, GetField(f,4)));
+    applyAndPushMove(new Move(GetField(b,8)->CurrentPiece, GetField(a,7)));
     // 21. Rhe1 d4
-    applyAndPushMove(new Move(GetField(h,1)->Piece, GetField(e,1)));
-    applyAndPushMove(new Move(GetField(d,5)->Piece, GetField(d,4)));
+    applyAndPushMove(new Move(GetField(h,1)->CurrentPiece, GetField(e,1)));
+    applyAndPushMove(new Move(GetField(d,5)->CurrentPiece, GetField(d,4)));
     // 22. Nd5 Nbxd5
-    applyAndPushMove(new Move(GetField(c,3)->Piece, GetField(d,5)));
-    applyAndPushMove(new Hit(GetField(b,6)->Piece, GetField(d,5)->Piece));
+    applyAndPushMove(new Move(GetField(c,3)->CurrentPiece, GetField(d,5)));
+    applyAndPushMove(new Hit(GetField(b,6)->CurrentPiece, GetField(d,5)->CurrentPiece));
     // 23. exd5 Qd6
-    applyAndPushMove(new Hit(GetField(e,4)->Piece, GetField(d,5)->Piece));
-    applyAndPushMove(new Move(GetField(e,7)->Piece, GetField(d,6)));
+    applyAndPushMove(new Hit(GetField(e,4)->CurrentPiece, GetField(d,5)->CurrentPiece));
+    applyAndPushMove(new Move(GetField(e,7)->CurrentPiece, GetField(d,6)));
     // 24. Rxd4 cxd4
-    applyAndPushMove(new Hit(GetField(d,1)->Piece, GetField(d,4)->Piece));
-    applyAndPushMove(new Hit(GetField(c,5)->Piece, GetField(d,4)->Piece));
+    applyAndPushMove(new Hit(GetField(d,1)->CurrentPiece, GetField(d,4)->CurrentPiece));
+    applyAndPushMove(new Hit(GetField(c,5)->CurrentPiece, GetField(d,4)->CurrentPiece));
     // 25. Re7+ Kb6
-    applyAndPushMove(new Move(GetField(e,1)->Piece, GetField(e,7)));
-    applyAndPushMove(new Move(GetField(a,7)->Piece, GetField(b,6)));
+    applyAndPushMove(new Move(GetField(e,1)->CurrentPiece, GetField(e,7)));
+    applyAndPushMove(new Move(GetField(a,7)->CurrentPiece, GetField(b,6)));
     // 26. Qxd4+ Kxa5
-    applyAndPushMove(new Hit(GetField(f,4)->Piece, GetField(d,4)->Piece));
-    applyAndPushMove(new Hit(GetField(b,6)->Piece, GetField(a,5)->Piece));
+    applyAndPushMove(new Hit(GetField(f,4)->CurrentPiece, GetField(d,4)->CurrentPiece));
+    applyAndPushMove(new Hit(GetField(b,6)->CurrentPiece, GetField(a,5)->CurrentPiece));
     // 27. b4+ Ka4
-    applyAndPushMove(new Move(GetField(b,2)->Piece, GetField(b,4)));
-    applyAndPushMove(new Move(GetField(a,5)->Piece, GetField(a,4)));
+    applyAndPushMove(new Move(GetField(b,2)->CurrentPiece, GetField(b,4)));
+    applyAndPushMove(new Move(GetField(a,5)->CurrentPiece, GetField(a,4)));
     // 28. Qc3 Qxd5
-    applyAndPushMove(new Move(GetField(d,4)->Piece, GetField(c,3)));
-    applyAndPushMove(new Hit(GetField(d,6)->Piece, GetField(d,5)->Piece));
+    applyAndPushMove(new Move(GetField(d,4)->CurrentPiece, GetField(c,3)));
+    applyAndPushMove(new Hit(GetField(d,6)->CurrentPiece, GetField(d,5)->CurrentPiece));
     // 29. Ra7 Bb7
-    applyAndPushMove(new Move(GetField(e,7)->Piece, GetField(a,7)));
-    applyAndPushMove(new Move(GetField(a,8)->Piece, GetField(b,7)));
+    applyAndPushMove(new Move(GetField(e,7)->CurrentPiece, GetField(a,7)));
+    applyAndPushMove(new Move(GetField(a,8)->CurrentPiece, GetField(b,7)));
     // 30. Rxb7 Qc4
-    applyAndPushMove(new Hit(GetField(a,7)->Piece, GetField(b,7)->Piece));
-    applyAndPushMove(new Move(GetField(d,5)->Piece, GetField(c,4)));
+    applyAndPushMove(new Hit(GetField(a,7)->CurrentPiece, GetField(b,7)->CurrentPiece));
+    applyAndPushMove(new Move(GetField(d,5)->CurrentPiece, GetField(c,4)));
     // 31. Qxf6 Kxa3
-    applyAndPushMove(new Hit(GetField(c,3)->Piece, GetField(f,6)->Piece));
-    applyAndPushMove(new Hit(GetField(a,4)->Piece, GetField(a,3)->Piece));
+    applyAndPushMove(new Hit(GetField(c,3)->CurrentPiece, GetField(f,6)->CurrentPiece));
+    applyAndPushMove(new Hit(GetField(a,4)->CurrentPiece, GetField(a,3)->CurrentPiece));
     // 32. Qxa6+ Kxb4
-    applyAndPushMove(new Hit(GetField(f,6)->Piece, GetField(a,6)->Piece));
-    applyAndPushMove(new Hit(GetField(a,3)->Piece, GetField(b,4)->Piece));
+    applyAndPushMove(new Hit(GetField(f,6)->CurrentPiece, GetField(a,6)->CurrentPiece));
+    applyAndPushMove(new Hit(GetField(a,3)->CurrentPiece, GetField(b,4)->CurrentPiece));
     // 33. c3+ Kxc3
-    applyAndPushMove(new Move(GetField(c,2)->Piece, GetField(c,3)));
-    applyAndPushMove(new Hit(GetField(b,4)->Piece, GetField(c,3)->Piece));
+    applyAndPushMove(new Move(GetField(c,2)->CurrentPiece, GetField(c,3)));
+    applyAndPushMove(new Hit(GetField(b,4)->CurrentPiece, GetField(c,3)->CurrentPiece));
     // 34. Qa1+ Kd2
-    applyAndPushMove(new Move(GetField(a,6)->Piece, GetField(a,1)));
-    applyAndPushMove(new Move(GetField(c,3)->Piece, GetField(d,2)));
+    applyAndPushMove(new Move(GetField(a,6)->CurrentPiece, GetField(a,1)));
+    applyAndPushMove(new Move(GetField(c,3)->CurrentPiece, GetField(d,2)));
     // 35. Qb2+ Kd1
-    applyAndPushMove(new Move(GetField(a,1)->Piece, GetField(b,2)));
-    applyAndPushMove(new Move(GetField(d,2)->Piece, GetField(d,1)));
+    applyAndPushMove(new Move(GetField(a,1)->CurrentPiece, GetField(b,2)));
+    applyAndPushMove(new Move(GetField(d,2)->CurrentPiece, GetField(d,1)));
     // 36. Bf1 Rd2
-    applyAndPushMove(new Move(GetField(h,3)->Piece, GetField(f,1)));
-    applyAndPushMove(new Move(GetField(d,8)->Piece, GetField(d,2)));
+    applyAndPushMove(new Move(GetField(h,3)->CurrentPiece, GetField(f,1)));
+    applyAndPushMove(new Move(GetField(d,8)->CurrentPiece, GetField(d,2)));
     // 37. Rd7 Rxd7
-    applyAndPushMove(new Move(GetField(b,7)->Piece, GetField(d,7)));
-    applyAndPushMove(new Hit(GetField(d,2)->Piece, GetField(d,7)->Piece));
+    applyAndPushMove(new Move(GetField(b,7)->CurrentPiece, GetField(d,7)));
+    applyAndPushMove(new Hit(GetField(d,2)->CurrentPiece, GetField(d,7)->CurrentPiece));
     // 38. Bxc4 bxc4
-    applyAndPushMove(new Hit(GetField(f,1)->Piece, GetField(c,4)->Piece));
-    applyAndPushMove(new Hit(GetField(b,5)->Piece, GetField(c,4)->Piece));
+    applyAndPushMove(new Hit(GetField(f,1)->CurrentPiece, GetField(c,4)->CurrentPiece));
+    applyAndPushMove(new Hit(GetField(b,5)->CurrentPiece, GetField(c,4)->CurrentPiece));
     // 39. Qxh8 Rd3
-    applyAndPushMove(new Hit(GetField(b,2)->Piece, GetField(h,8)->Piece));
-    applyAndPushMove(new Move(GetField(d,7)->Piece, GetField(d,3)));
+    applyAndPushMove(new Hit(GetField(b,2)->CurrentPiece, GetField(h,8)->CurrentPiece));
+    applyAndPushMove(new Move(GetField(d,7)->CurrentPiece, GetField(d,3)));
     // 40. Qa8 c3
-    applyAndPushMove(new Move(GetField(h,8)->Piece, GetField(a,8)));
-    applyAndPushMove(new Move(GetField(c,4)->Piece, GetField(c,3)));
+    applyAndPushMove(new Move(GetField(h,8)->CurrentPiece, GetField(a,8)));
+    applyAndPushMove(new Move(GetField(c,4)->CurrentPiece, GetField(c,3)));
     // 41. Qa4+ Ke1
-    applyAndPushMove(new Move(GetField(a,8)->Piece, GetField(a,4)));
-    applyAndPushMove(new Move(GetField(d,1)->Piece, GetField(e,1)));
+    applyAndPushMove(new Move(GetField(a,8)->CurrentPiece, GetField(a,4)));
+    applyAndPushMove(new Move(GetField(d,1)->CurrentPiece, GetField(e,1)));
     // 42. f4 f5
-    applyAndPushMove(new Move(GetField(f,3)->Piece, GetField(f,4)));
-    applyAndPushMove(new Move(GetField(f,7)->Piece, GetField(f,5)));
+    applyAndPushMove(new Move(GetField(f,3)->CurrentPiece, GetField(f,4)));
+    applyAndPushMove(new Move(GetField(f,7)->CurrentPiece, GetField(f,5)));
     // 43. Kc1 Rd2
-    applyAndPushMove(new Move(GetField(b,1)->Piece, GetField(c,1)));
-    applyAndPushMove(new Move(GetField(d,3)->Piece, GetField(d,2)));
+    applyAndPushMove(new Move(GetField(b,1)->CurrentPiece, GetField(c,1)));
+    applyAndPushMove(new Move(GetField(d,3)->CurrentPiece, GetField(d,2)));
     // 44. Qa7 1-0
-    applyAndPushMove(new Move(GetField(a,4)->Piece, GetField(a,7)));
+    applyAndPushMove(new Move(GetField(a,4)->CurrentPiece, GetField(a,7)));
 }
