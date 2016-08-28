@@ -68,9 +68,6 @@ void FullscreenQuad::draw(glm::mat4 projection_matrix){
     }
 
     _geo->Draw();
-
-    // check for errors
-    VERIFY(CG::checkError());
 }
 
 void FullscreenQuad::drawShadow(glm::mat4 projection_matrix){

@@ -75,6 +75,4 @@ void Geometry::FinishCreate(){
     glDeleteBuffers(1, &index_buffer);
     glDeleteBuffers(1, &normal_buffer);
     glDeleteBuffers(1, &texture_buffer);
-
-    VERIFY(CG::checkError());
 }

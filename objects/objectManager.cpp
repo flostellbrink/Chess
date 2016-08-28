@@ -82,7 +82,6 @@ void ObjectManager::UpdateFramebuffer(GLuint& framebuffer, GLuint& texture, GLui
     glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texture, 0);
     glDrawBuffer(GL_COLOR_ATTACHMENT0);
 
-    VERIFY(CG::checkError());
     assert(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);
 }
 
@@ -220,7 +219,6 @@ void ObjectManager::Draw(mat4 projection){
         glDisable (GL_BLEND);
         glDepthFunc(GL_LESS);
     }
-    VERIFY(CG::checkError());
 
     if(_clickHappened){
         _clickHappened = false;
@@ -307,7 +305,6 @@ vec3 ObjectManager::checkDepth(vec2 mousePos, mat4 viewProjection){
     mousePos.y = height - mousePos.y;
     float pixel;
     glReadPixels(mousePos.x, mousePos.y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &pixel);
-    VERIFY(CG::checkError());
 
     vec4 windowCoords((float)mousePos.x / (float)width * 2.f - 1.f,
                       (float)mousePos.y /(float)height * 2.f - 1.f,

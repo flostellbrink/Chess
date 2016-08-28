@@ -15,6 +15,7 @@
 #include <QMessageBox>
 #include <QOpenGLWidget>
 #include <QOpenGLContext>
+#include <QOpenGLDebugMessage>
 #include <QTimer>
 #include "objects/objectManager.hpp"
 
@@ -61,6 +62,8 @@ private slots:
      * This is not used for drawing.
      */
     void animateGL();
+
+    void onMessageLogged( QOpenGLDebugMessage message );
 
 public:
     /**

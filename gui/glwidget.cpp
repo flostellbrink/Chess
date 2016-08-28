@@ -11,6 +11,7 @@
 #include "glwidget.hpp"
 
 #include <QMouseEvent>
+#include <QOpenGLDebugLogger>
 
 #define GLM_FORCE_RADIANS
 #define GLM_SWIZZLE
@@ -67,7 +68,21 @@ void GLWidget::initializeGL()
     // make sure the context is current
     makeCurrent();
 
+    QOpenGLContext *ctx = QOpenGLContext::currentContext();
+    QOpenGLDebugLogger *logger = new QOpenGLDebugLogger(this);
+    logger->initialize(); // initializes in the current context, i.e. ctx
+    connect( logger, SIGNAL( messageLogged( QOpenGLDebugMessage ) ),
+                 this, SLOT( onMessageLogged( QOpenGLDebugMessage ) ),
+                 Qt::DirectConnection );
+
+    logger->startLogging();
+
     ObjectManager::Instance.NewGame();
+}
+
+void GLWidget::onMessageLogged( QOpenGLDebugMessage message )
+{
+    qDebug() << message;
 }
 
 void GLWidget::resizeGL(int width, int height)

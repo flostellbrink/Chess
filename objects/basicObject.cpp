@@ -85,16 +85,11 @@ void BasicObject::draw(glm::mat4 projection_matrix){
     glUniform1f(glGetUniformLocation(_program, "shininess"), ObjectManager::Textures.shininess(_objectId));
 
     _geo->Draw();
-
-    // check for errors
-    VERIFY(CG::checkError());
 }
 
 void BasicObject::drawShadow(glm::mat4 projection_matrix){
     glUseProgram(_programShadow);
     glUniformMatrix4fv(glGetUniformLocation(_programShadow, "view_projection_shadow"), 1, GL_FALSE, glm::value_ptr(projection_matrix * _modelViewMatrix));
-    _geo->Draw();
-    VERIFY(CG::checkError());
 }
 
 void BasicObject::drawSpecular(glm::mat4 projection_matrix){

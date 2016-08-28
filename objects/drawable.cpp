@@ -32,21 +32,19 @@ void Drawable::init()
 
 void Drawable::initShader()
 {
-    GLuint vs = CG::createCompileShader(GL_VERTEX_SHADER, getVertexShader()); VERIFY(vs);
-    GLuint fs = CG::createCompileShader(GL_FRAGMENT_SHADER, getFragmentShader()); VERIFY(fs);
+    GLuint vs = CG::createCompileShader(GL_VERTEX_SHADER, getVertexShader());
+    GLuint fs = CG::createCompileShader(GL_FRAGMENT_SHADER, getFragmentShader());
     _program = glCreateProgram();
     glAttachShader(_program, vs);
     glAttachShader(_program, fs);
     _program = CG::linkProgram(_program);
-    VERIFY(_program);
 
-    vs = CG::createCompileShader(GL_VERTEX_SHADER, loadShaderFile(":/shader/shadow.vs.glsl")); VERIFY(vs);
-    fs = CG::createCompileShader(GL_FRAGMENT_SHADER, loadShaderFile(":/shader/shadow.fs.glsl")); VERIFY(fs);
+    vs = CG::createCompileShader(GL_VERTEX_SHADER, loadShaderFile(":/shader/shadow.vs.glsl"));
+    fs = CG::createCompileShader(GL_FRAGMENT_SHADER, loadShaderFile(":/shader/shadow.fs.glsl"));
     _programShadow = glCreateProgram();
     glAttachShader(_programShadow, vs);
     glAttachShader(_programShadow, fs);
     _programShadow = CG::linkProgram(_programShadow);
-    VERIFY(_programShadow);
 }
 
 void Drawable::drawOpaque(glm::mat4 projection_matrix){

@@ -48,9 +48,6 @@ void Skybox::drawSkybox(glm::mat4 projection_matrix){
     _geo->Draw();
 
     glEnable(GL_DEPTH_TEST);
-
-    // check for errors
-    VERIFY(CG::checkError());
 }
 
 void Skybox::update(float elapsedTimeMs){
