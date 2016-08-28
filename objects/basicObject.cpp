@@ -90,6 +90,7 @@ void BasicObject::draw(glm::mat4 projection_matrix){
 void BasicObject::drawShadow(glm::mat4 projection_matrix){
     glUseProgram(_programShadow);
     glUniformMatrix4fv(glGetUniformLocation(_programShadow, "view_projection_shadow"), 1, GL_FALSE, glm::value_ptr(projection_matrix * _modelViewMatrix));
+    _geo->Draw();
 }
 
 void BasicObject::drawSpecular(glm::mat4 projection_matrix){

@@ -19,7 +19,7 @@ const float camSpeed = .01, camZoom = 10, quarterRot = M_PI / 2.;
 
 Camera::Camera() : _zoomFactor(1.7), _cameraRotation(0, -.75), _autoRotation(), _whiteSide(true)
 {
-    ObjectManager::Animations.PlayNow(new FadeAnimation<float>(20000, _cameraRotation.x, -2 * M_PI, 0.f));
+
 }
 
 vec3 Camera::Position(){

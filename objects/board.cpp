@@ -97,8 +97,7 @@ Board::Board(Camera* camera) {
     }
 
     Drawable::OverlayState = -1;
-    ObjectManager::Animations.PlayNow(new LinearAnimation<float>(15000, Drawable::OverlayOpacity, 1.f, 1.f));
-    ObjectManager::Animations.PlayLast(new FadeAnimation<float>(5000, Drawable::OverlayOpacity ,Drawable::OverlayOpacity , 0.f));
+    ObjectManager::Animations.PlayIndependent(new FadeAnimation<float>(5000, Drawable::OverlayOpacity ,Drawable::OverlayOpacity , 0.f));
 
     NewTurn();
 }

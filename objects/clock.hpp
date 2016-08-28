@@ -44,7 +44,7 @@ protected:
     float getHandRotation(float time, int secondsPerRotation);
 
 private:
-    float timeCounter = -10000.f, delay = 7000.f; // after DELAY ms, reduce time from the clock
+    float timeCounter = 0.f, delay = 7000.f; // after DELAY ms, reduce time from the clock
     float whiteTime, blackTime, startTime = 300000.f; // time for the players
     bool _whiteOnClock = true;
     int _timeoutStatus = 0; // No player is timed out
