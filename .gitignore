@@ -1,0 +1,10 @@
+# QT Creator
+
+CMakeLists.txt.user
+
+# CLion
+
+.Idea/Chess.iml
+.Idea/misc.xml
+.Idea/modules.xml
+.Idea/workspace.xml
