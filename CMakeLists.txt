@@ -13,30 +13,47 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 cmake_policy(SET CMP0017 NEW)
 cmake_policy(SET CMP0020 NEW)
 
-project("GraPra 2015 - Tycho Brahe" C CXX)
+project("Chess" C CXX)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 
-#if(CMAKE_COMPILER_IS_GNUCXX)
-#	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -Wall -Wextra")
-#endif()
+if(CMAKE_COMPILER_IS_GNUCXX)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -Wall -Wextra")
+endif()
 
 # Required libraries
 find_package(Qt5OpenGL 5.4.0 REQUIRED)
 
 # process .ui files
-############################
-# List your ui files here  #
-# (if you need any)        #
-############################
 qt5_wrap_ui(ui_mainwindow.h gui/mainwindow.ui)
 
 #process resource files
-############################
-# List your qrc files here #
-# (if you need any)        #
-############################
-file(GLOB_RECURSE allRessources "*.qrc" )
+set(allRessources
+        res/imagesClockface.qrc
+        res/imagesGlass0.qrc
+        res/imagesGlass1.qrc
+        res/imagesMetal.qrc
+        res/imagesOver0.qrc
+        res/imagesOver1.qrc
+        res/imagesOver2.qrc
+        res/imagesOver3.qrc
+        res/imagesOver4.qrc
+        res/imagesOver5.qrc
+        res/imagesOver6.qrc
+        res/imagesRedMark.qrc
+        res/imagesSky0.qrc
+        res/imagesSky1.qrc
+        res/imagesSky2.qrc
+        res/imagesSky3.qrc
+        res/imagesSky4.qrc
+        res/imagesSky5.qrc
+        res/imagesWood0.qrc
+        res/imagesWood1.qrc
+        res/imagesWood2.qrc
+        res/imagesWood3.qrc
+        res/imagesWood4.qrc
+        res/imagesWood5.qrc
+        res/shader.qrc)
 qt5_add_resources (ResourceSources ${allRessources})
 
 # Optional libraries
@@ -46,16 +63,149 @@ find_package(GTA QUIET)
 add_subdirectory(glbase)
 
 # The program
-################################
-# List your project files here #
-################################
-file(GLOB_RECURSE sourceFiles
-    "*.h"
-    "*.hpp"
-    "*.cpp"
-    "*.glsl"
-    "*.ui"
+set(sourceFiles
+        # Special
+        main.cpp
+        objects.hpp
+        gui/mainwindow.ui
+
+        # Graphical user interface
+        gui/mainwindow.hpp
+        gui/mainwindow.cpp
+        gui/glwidget.hpp
+        gui/glwidget.cpp
+        gui/config.h
+        gui/config.cpp
+
+        # Camera
+        camera.hpp
+        camera.cpp
+
+        # Objects
+        objects/objectManager.hpp
+        objects/objectManager.cpp
+        objects/drawable.hpp
+        objects/drawable.cpp
+        objects/basicObject.hpp
+        objects/basicObject.cpp
+        objects/fullscreenQuad.hpp
+        objects/fullscreenQuad.cpp
+        objects/board.hpp
+        objects/board.cpp
+        objects/field.hpp
+        objects/field.cpp
+        objects/piece.hpp
+        objects/piece.cpp
+        objects/pieces/bishop.hpp
+        objects/pieces/bishop.cpp
+        objects/pieces/king.hpp
+        objects/pieces/king.cpp
+        objects/pieces/knight.hpp
+        objects/pieces/knight.cpp
+        objects/pieces/pawn.hpp
+        objects/pieces/pawn.cpp
+        objects/pieces/queen.hpp
+        objects/pieces/queen.cpp
+        objects/pieces/rook.hpp
+        objects/pieces/rook.cpp
+        objects/clock.hpp
+        objects/clock.cpp
+        objects/skybox.hpp
+        objects/skybox.cpp
+
+        # Chess Moves
+        objects/moves/moveBase.hpp
+        objects/moves/moveBase.cpp
+        objects/moves/move.hpp
+        objects/moves/move.cpp
+        objects/moves/hit.hpp
+        objects/moves/hit.cpp
+        objects/moves/rochade.hpp
+        objects/moves/rochade.cpp
+        objects/moves/transform.hpp
+        objects/moves/transform.cpp
+
+        # Collision detection
+        collision/collManager.hpp
+        collision/collManager.cpp
+        collision/collision.hpp
+        collision/collision.cpp
+
+        # Geometry
+        geometry/geoManager.hpp
+        geometry/geoManager.cpp
+        geometry/controlPoints.hpp
+        geometry/controlPoints.cpp
+        geometry/geometry.hpp
+        geometry/geometry.cpp
+        geometry/compositeGeometry.hpp
+        geometry/compositeGeometry.cpp
+        geometry/implementation/boardBorderBottom.hpp
+        geometry/implementation/boardBorderBottom.cpp
+        geometry/implementation/boardBorderTop.hpp
+        geometry/implementation/boardBorderTop.cpp
+        geometry/implementation/cube.hpp
+        geometry/implementation/cube.cpp
+        geometry/implementation/extruder.hpp
+        geometry/implementation/extruder.cpp
+        geometry/implementation/extruderFace.hpp
+        geometry/implementation/extruderFace.cpp
+        geometry/implementation/interlacedRevolver.hpp
+        geometry/implementation/interlacedRevolver.cpp
+        geometry/implementation/quad.hpp
+        geometry/implementation/quad.cpp
+        geometry/implementation/revolver.hpp
+        geometry/implementation/revolver.cpp
+        geometry/implementation/square.hpp
+        geometry/implementation/square.cpp
+
+        # Curves
+        curve/curve.hpp
+        curve/curve.cpp
+        curve/catmullRomCurve.hpp
+        curve/catmullRomCurve.cpp
+        curve/circleCurve.hpp
+        curve/circleCurve.cpp
+        curve/fixedPointsCurve.hpp
+        curve/fixedPointsCurve.cpp
+        curve/lineCurve.hpp
+        curve/lineCurve.cpp
+
+        # Animation
+        animation/aniManager.hpp
+        animation/aniManager.cpp
+        animation/animationBase.hpp
+        animation/animation.hpp
+        animation/animation.cpp
+        animation/loopingAnimation.hpp
+        animation/loopingAnimation.cpp
+        animation/parallelAnimation.hpp
+        animation/parallelAnimation.cpp
+        animation/serialAnimation.hpp
+        animation/serialAnimation.cpp
+        animation/backLoopingAnimation.hpp
+        animation/backLoopingAnimation.cpp
+        animation/catmullRomAnimation.hpp
+        animation/fadeAnimation.hpp
+        animation/fadeAnimation.cpp
+        animation/linearAnimation.hpp
+        animation/linearAnimation.cpp
+
+        # Textures
+        texture/texManager.hpp
+        texture/texManager.cpp
+        texture/image.hpp
+        texture/image.cpp
+        texture/texturewrapper.hpp
+        texture/texturewrapper.cpp
 )
+#file(GLOB_RECURSE sourceFiles
+#   # "*.glsl"
+#    "*.h"
+#    "*.hpp"
+#    "*.cpp"
+#    "*.ui"
+#)
 add_executable(chess
     ${sourceFiles}
     ${ResourceSources}
@@ -63,25 +213,21 @@ add_executable(chess
 
 include_directories(${CMAKE_SOURCE_DIR}/glbase ${OPENGL_INCLUDE_DIR})
 
-####################################
-# Build with correct opengl lib    #
-# (this could fail on your system) #
-####################################
 if(WIN32 OR CYGWIN)
-        target_link_libraries(chess opengl32 libglbase Qt5::OpenGL ${OPENGL_gl_LIBRARY})
+    target_link_libraries(chess opengl32 libglbase Qt5::OpenGL ${OPENGL_gl_LIBRARY})
 else()
-        target_link_libraries(chess GL libglbase Qt5::OpenGL ${OPENGL_gl_LIBRARY})
+    target_link_libraries(chess GL libglbase Qt5::OpenGL ${OPENGL_gl_LIBRARY})
 endif()
 
 if(GTA_FOUND)
-        add_definitions(-DHAVE_GTA)
-        include_directories(${GTA_INCLUDE_DIR})
-        target_link_libraries(chess ${GTA_LIBRARIES})
+    add_definitions(-DHAVE_GTA)
+    include_directories(${GTA_INCLUDE_DIR})
+    target_link_libraries(chess ${GTA_LIBRARIES})
 endif()
 
 # copy images
 add_custom_command(TARGET chess POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy_directory
-                       ${CMAKE_SOURCE_DIR}/images $<TARGET_FILE_DIR:chess>/images)
+   COMMAND ${CMAKE_COMMAND} -E copy_directory
+       ${CMAKE_SOURCE_DIR}/images $<TARGET_FILE_DIR:chess>/images)
 
 install(TARGETS chess RUNTIME DESTINATION bin)
