@@ -7,11 +7,12 @@
 
 namespace objects
 {
-    const unsigned int
+    const int
     Board = 0,
     Skybox = 1,
     Field00 = 2,
     Field10 = 3,
+    // Field 11 to Field 67 implicit
     Field77 = 65,
     whiteKing = 66,
     blackKing = 67,

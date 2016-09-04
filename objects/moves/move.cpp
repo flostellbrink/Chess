@@ -13,6 +13,9 @@ Move::Move(Piece *piece, Field *toField){
 }
 
 void Move::Apply(Board* board, bool sim){
+    // Ignore parameter unused
+    (void)board;
+
     _fromField = _piece->GetField();
     _isMoved = _piece->IsMoved;
     _piece->SetField(_toField, sim);
@@ -20,6 +23,9 @@ void Move::Apply(Board* board, bool sim){
 }
 
 void Move::Undo(Board* board, bool sim){
+    // Ignore parameter unused
+    (void)board;
+
     _piece->SetField(_fromField, sim);
     _piece->IsMoved = _isMoved;
 }

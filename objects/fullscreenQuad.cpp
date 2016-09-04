@@ -40,6 +40,9 @@ void FullscreenQuad::recreateGeoemtry(){
 }
 
 void FullscreenQuad::draw(glm::mat4 projection_matrix){
+    // Ignore parameter unused
+    (void)projection_matrix;
+
     if(_program == 0){
         std::cerr << "program not loaded" << std::endl;
     }
@@ -71,17 +74,18 @@ void FullscreenQuad::draw(glm::mat4 projection_matrix){
 }
 
 void FullscreenQuad::drawShadow(glm::mat4 projection_matrix){
-
-}
-
-void FullscreenQuad::drawSpecular(glm::mat4 projection_matrix){
-
+    // Ignore parameter unused
+    (void)projection_matrix;
 }
 
 void FullscreenQuad::update(float elapsedTimeMs){
+    // Ignore parameter unused
+    (void)elapsedTimeMs;
 }
 
 void FullscreenQuad::MouseClick(glm::vec3 position){
+    // Ignore parameter unused
+    (void)position;
 }
 
 std::string FullscreenQuad::getVertexShader()

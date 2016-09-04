@@ -23,7 +23,7 @@ Collision::Collision(int type, glm::vec3 vecA, glm::vec3 vecB){
         maxLength = glm::length(vecB - vecA);
         break;
     default:
-        std::cerr << "ChessWarn: Unknown collsion type: " << type << std::endl;
+        std::cerr << "ChessWarn: Unknown collision type: " << type << std::endl;
         break;
     }
 }
@@ -35,7 +35,10 @@ bool AabbCollAabb(Collision* a, Collision *b){
 }
 
 bool RayCollRay(Collision* a, Collision* b){
+    (void)a;
+    (void)b;
     // TODO implement if needed
+    std::cerr << "ChessWarn: Ray Ray collision not handled" << std::endl;
     return false;
 }
 
@@ -70,16 +73,16 @@ bool Collision::Intersects(Collision* other){
 
 bool Collision::Contains(glm::vec3 point){
     switch (Type) {
-    case Types::AABB:
-        return point.x <= max.x && point.x >= min.x
-            && point.y <= max.y && point.y >= min.y
-            && point.z <= max.z && point.z >= min.z;
-    case Types::Ray:
-        // TODO don't really know how to do this
-        // Precision will be a problem
-        return false;
-    default:
-        std::cerr << "ChessWarn: Unknown collsion type: " << Type << std::endl;
-        break;
+        case Types::AABB:
+            return point.x <= max.x && point.x >= min.x
+                && point.y <= max.y && point.y >= min.y
+                && point.z <= max.z && point.z >= min.z;
+        case Types::Ray:
+            // Should not be used, won't work. Not practical due to precision
+            std::cerr << "ChessWarn: Point Ray collision not handled" << std::endl;
+            return false;
+        default:break;
     }
+    std::cerr << "ChessWarn: Unknown collision type: " << Type << std::endl;
+    return false;
 }

@@ -221,6 +221,8 @@ Field* Board::GetSideField(bool whiteSide){
     for(Field* field : row)
         if(!field->CurrentPiece)
             return field;
+    std::cerr << "ChessErr: No empty side field found" << std::endl;
+    return NULL;
 }
 
 MoveBase* Board::GetLastMove(){

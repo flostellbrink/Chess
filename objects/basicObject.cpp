@@ -2,11 +2,6 @@
 
 #include "basicObject.hpp"
 #include <iostream>
-#include "gltool.hpp"
-#include <glm/common.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtx/transform.hpp>
-#include "objectManager.hpp"
 #include "gui/config.h"
 
 #define GLM_FORCE_RADIANS
@@ -93,11 +88,10 @@ void BasicObject::drawShadow(glm::mat4 projection_matrix){
     _geo->Draw();
 }
 
-void BasicObject::drawSpecular(glm::mat4 projection_matrix){
-
-}
-
 void BasicObject::update(float elapsedTimeMs){
+    // Ignore parameter unused
+    (void)elapsedTimeMs;
+
     _modelViewMatrix = glm::translate(mat4(), Position());
     _modelViewMatrix = glm::rotate(_modelViewMatrix, _yRotation, vec3(0,1,0));
     _modelViewMatrix = glm::rotate(_modelViewMatrix, _xRotation, vec3(1,0,0));
@@ -105,7 +99,8 @@ void BasicObject::update(float elapsedTimeMs){
 }
 
 void BasicObject::MouseClick(glm::vec3 position){
-    // ignore
+    // Ignore parameter unused
+    (void)position;
 }
 
 std::string BasicObject::getVertexShader()

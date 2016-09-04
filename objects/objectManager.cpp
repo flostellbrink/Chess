@@ -86,6 +86,9 @@ void ObjectManager::UpdateFramebuffer(GLuint& framebuffer, GLuint& texture, GLui
 }
 
 void ObjectManager::Update(float elapsedTime, mat4 projection, vec2 mouse){
+    // Ignore parameter unused
+    (void)projection;
+
     _lastMouse = mouse;
     if(Config::changed){
         Config::changed = false;
@@ -227,7 +230,7 @@ void ObjectManager::Draw(mat4 projection){
     glBindFramebuffer(GL_FRAMEBUFFER, _mirrorFrameBuffer);
     Drawable::PostTexture = _postTexture;
 
-    for (int i = 0; i < _postProcessors.size() - 1; ++i) {
+    for (uint i = 0; i < _postProcessors.size() - 1; ++i) {
         _postProcessors[i]->draw(mat4());
         // Switch Framebuffer
         renderToPost = !renderToPost;

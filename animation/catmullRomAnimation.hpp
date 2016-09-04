@@ -46,7 +46,7 @@ CatmullRomAnimation<T>::CatmullRomAnimation(int duration, T& property, vector<T>
         _values.push_back(values[0]);
         _values.push_back(values[0] + tangent);
     }
-    for(int i = 1; i < values.size() - 1; ++i){
+    for(uint i = 1; i < values.size() - 1; ++i){
         T tangent = (values[i+1] - values[i-1]) * tanFac;
         _values.push_back(values[i] - tangent);
         _values.push_back(values[i]);
@@ -63,14 +63,14 @@ CatmullRomAnimation<T>::CatmullRomAnimation(int duration, T& property, vector<T>
 template<class T>
 T CatmullRomAnimation<T>::ValueAt(float value){
     // Figure out what segment we are in
-    int segments = _values.size() / 3 - 1;
+    auto segments = (uint) (_values.size() / 3 - 1);
     value *= segments;
-    int segment = value;
+    auto segment = (uint) value;
     if (segment == segments)
         segment--;
     value -= segment;
 
-    int startIndex = segment * 3 + 1;
+    auto startIndex = segment * 3 + 1;
 
     T point1 = _values.at(startIndex), point2 = _values.at(startIndex + 1),
          point3 = _values.at(startIndex + 2), point4 = _values.at(startIndex + 3);

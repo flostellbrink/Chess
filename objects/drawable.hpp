@@ -5,7 +5,6 @@
 #ifndef DRAWABLE_H
 #define DRAWABLE_H
 
-#include <GL/glew.h>
 #include <string>
 
 #define GLM_FORCE_RADIANS
@@ -16,6 +15,7 @@
 #endif
 
 #include <GL/gl.h>
+#include <GL/glew.h>
 
 #include "texture/texManager.hpp"
 #include "geometry/geoManager.hpp"
@@ -55,7 +55,6 @@ public:
     virtual void drawShadow(mat4 projection_matrix) = 0;
     virtual void drawReflection(mat4 projection_matrix);
     virtual void drawTranslucent(mat4 projection_matrix);
-    virtual void drawSpecular(mat4 projection_matrix) = 0;
 
     virtual void recreateGeoemtry() = 0;
 

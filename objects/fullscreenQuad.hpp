@@ -16,7 +16,7 @@ class FullscreenQuad: public Drawable{
     virtual void init() override;
     virtual void draw(glm::mat4 projection_matrix) override;
     virtual void drawShadow(mat4 projection_matrix) override;
-    virtual void drawSpecular(mat4 projection_matrix) override;
+
     virtual void update(float elapsedTimeMs) override;
     virtual void MouseClick(vec3 position) override;
     virtual vec3 Position3D() override;

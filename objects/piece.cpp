@@ -26,7 +26,7 @@ using glm::vec3;
 using glm::mat4;
 
 Piece::Piece(Board* board, int objectID, Field* field)
-    :Drawable(objectID), _yRotation(0), _field(field), _position(field->TopPosition()) {
+    : Drawable(objectID), _field(field), _position(field->TopPosition()), _yRotation(0) {
     _field->CurrentPiece = this;
     _board = board;
     BoundingBox = ObjectManager::Instance.Collisions.GetAABB(vec3(), vec3());
@@ -39,8 +39,9 @@ void Piece::init(){
 }
 
 void Piece::recreateGeoemtry(){
-    if(_geo)
+    if(_geo) {
         delete _geo;
+    }
     _geo = ObjectManager::Geos.GetGeometry(_objectId);
 }
 
@@ -166,17 +167,18 @@ void Piece::drawShadow(glm::mat4 projection_matrix){
     _geo->Draw();
 }
 
-void Piece::drawSpecular(glm::mat4 projection_matrix){
-
-}
-
 void Piece::update(float elapsedTimeMs){
+    // Ignore parameter unused
+    (void)elapsedTimeMs;
+
     _modelViewMatrix = glm::translate(mat4(), Position());
     _modelViewMatrix = glm::rotate(_modelViewMatrix, _yRotation, vec3(0,1,0));
 }
 
 void Piece::MouseClick(glm::vec3 position){
     // handled by field
+    // Ignore parameter unused
+    (void)position;
 }
 
 void Piece::AddHitOrMove(Field *field, vector<MoveBase *> &moves){

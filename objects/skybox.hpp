@@ -19,7 +19,6 @@ public:
      */
     virtual void draw(glm::mat4 projection_matrix) override;
     virtual void drawShadow(mat4 projection_matrix) override;
-    virtual void drawSpecular(mat4 projection_matrix) override;
 
     void recreateGeoemtry() override;
 

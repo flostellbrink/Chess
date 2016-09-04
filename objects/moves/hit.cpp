@@ -36,6 +36,9 @@ void Hit::Apply(Board* board, bool sim){
 }
 
 void Hit::Undo(Board* board, bool sim){
+    // Ignore parameter unused
+    (void)board;
+
     _agressor->SetField(_fromField, sim);
     _agressor->IsMoved = _isMoved;
     _victim->SetField(_victimFrom, sim);

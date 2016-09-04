@@ -28,25 +28,25 @@ Rook::Rook(Board* board, int objectID, Field *field) : Piece(board, objectID, fi
 vector<MoveBase*> Rook::GetMoves(){
     vector<MoveBase*> result;
     Field *currentField = _field;
-    while(currentField = currentField->Up){
+    while((currentField = currentField->Up)){
         AddHitOrMove(currentField, result);
         if(currentField->CurrentPiece)
             break;
     }
     currentField = _field;
-    while(currentField = currentField->Down){
+    while((currentField = currentField->Down)){
         AddHitOrMove(currentField, result);
         if(currentField->CurrentPiece)
             break;
     }
     currentField = _field;
-    while(currentField = currentField->Left){
+    while((currentField = currentField->Left)){
         AddHitOrMove(currentField, result);
         if(currentField->CurrentPiece)
             break;
     }
     currentField = _field;
-    while(currentField = currentField->Right){
+    while((currentField = currentField->Right)){
         AddHitOrMove(currentField, result);
         if(currentField->CurrentPiece)
             break;

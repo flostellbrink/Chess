@@ -55,7 +55,8 @@ mat4 Camera::ViewProjectionShadow(){
 }
 
 void Camera::Update(float elapsedTimeMs){
-    //TODO use for camera animation
+    // Ignore parameter unused
+    (void)elapsedTimeMs;
 }
 
 void Camera::SetBoardSide(bool whiteSide){
@@ -85,6 +86,9 @@ void Camera::MouseDown(vec2 mousePos){
 }
 
 void Camera::MouseUp(vec2 mousePos){
+    // Ignore parameter unused
+    (void)mousePos;
+
     _mouseMoving = false;
 }
 

@@ -54,6 +54,7 @@ set(allRessources
         res/imagesWood4.qrc
         res/imagesWood5.qrc
         res/shader.qrc)
+
 qt5_add_resources (ResourceSources ${allRessources})
 
 # Optional libraries
@@ -199,13 +200,7 @@ set(sourceFiles
         texture/texturewrapper.hpp
         texture/texturewrapper.cpp
 )
-#file(GLOB_RECURSE sourceFiles
-#   # "*.glsl"
-#    "*.h"
-#    "*.hpp"
-#    "*.cpp"
-#    "*.ui"
-#)
+
 add_executable(chess
     ${sourceFiles}
     ${ResourceSources}

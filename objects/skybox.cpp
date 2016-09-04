@@ -21,16 +21,14 @@ void Skybox::init(){
 	_geo = ObjectManager::Geos.GetCube();
 }
 
-void Skybox::draw(glm::mat4 projection_matrix){   
-
+void Skybox::draw(glm::mat4 projection_matrix){
+    // Ignore parameter unused
+    (void)projection_matrix;
 }
 
 void Skybox::drawShadow(glm::mat4 projection_matrix){
-
-}
-
-void Skybox::drawSpecular(glm::mat4 projection_matrix){
-
+    // Ignore parameter unused
+    (void)projection_matrix;
 }
 
 void Skybox::drawSkybox(glm::mat4 projection_matrix){
@@ -51,11 +49,13 @@ void Skybox::drawSkybox(glm::mat4 projection_matrix){
 }
 
 void Skybox::update(float elapsedTimeMs){
-    // Static
+    // Ignore parameter unused
+    (void)elapsedTimeMs;
 }
 
 void Skybox::MouseClick(glm::vec3 position){
-    // Ignore
+    // Ignore parameter unused
+    (void)position;
 }
 
 std::string Skybox::getVertexShader(){

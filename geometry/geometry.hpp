@@ -21,7 +21,7 @@ using glm::vec3;
 class Geometry{
     public:
     Geometry();
-    ~Geometry();
+    virtual ~Geometry();
     virtual void Recreate();
     virtual void Draw();
 

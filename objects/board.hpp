@@ -59,7 +59,7 @@ public:
     void setState(int state);
 
 protected:
-    const unsigned int
+    const int
     Fresh = 0,
     Running = 1,
     WhiteWon = 2,

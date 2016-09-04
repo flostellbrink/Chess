@@ -68,7 +68,6 @@ void GLWidget::initializeGL()
     // make sure the context is current
     makeCurrent();
 
-    QOpenGLContext *ctx = QOpenGLContext::currentContext();
     QOpenGLDebugLogger *logger = new QOpenGLDebugLogger(this);
     logger->initialize(); // initializes in the current context, i.e. ctx
     connect( logger, SIGNAL( messageLogged( QOpenGLDebugMessage ) ),

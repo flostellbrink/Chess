@@ -117,11 +117,9 @@ void Field::drawShadow(glm::mat4 projection_matrix){
     _geo->Draw();
 }
 
-void Field::drawSpecular(glm::mat4 projection_matrix){
-
-}
-
 void Field::update(float elapsedTimeMs){
+    // Ignore parameter unused
+    (void)elapsedTimeMs;
 }
 
 void Field::MouseClick(glm::vec3 position){

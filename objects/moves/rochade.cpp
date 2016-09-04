@@ -15,6 +15,9 @@ Rochade::Rochade(Piece* king, Piece* rook, Field* toKing, Field* toRook){
 }
 
 void Rochade::Apply(Board* board, bool sim){
+    // Ignore parameter unused
+    (void)board;
+
     _fromKing = _king->GetField();
     _fromRook = _rook->GetField();
     _king->SetField(_toKing, sim);
@@ -24,6 +27,9 @@ void Rochade::Apply(Board* board, bool sim){
 }
 
 void Rochade::Undo(Board* board, bool sim){
+    // Ignore parameter unused
+    (void)board;
+
     _king->SetField(_fromKing, sim);
     _rook->SetField(_fromRook, sim);
     _king->IsMoved = false;
