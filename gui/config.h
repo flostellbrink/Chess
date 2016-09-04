@@ -7,13 +7,11 @@
  *
  * This class contains global configuration parameters
  * that are used all over the program.
- *
- * Hint: Add as many parameters as you need.
  */
 class Config{
 public:
 
-    static int localResolution, localResolution2;		/**< set the resolution */
+    static int geoResolution1, geoResolution2, shadowResolution;
 
     static bool ai;
 

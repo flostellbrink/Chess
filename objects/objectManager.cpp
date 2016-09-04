@@ -149,20 +149,16 @@ void ObjectManager::Draw(mat4 projection){
     if(!_mirrorFrameBuffer || !_postFrameBuffer || !_shadowFrameBuffer ||
         Config::viewportWidth != _resWidth || Config::viewportHeight != _resHeight)
     {
-        int newShadowRes = std::pow(2,std::ceil(std::log2((double)std::max(Config::viewportWidth, Config::viewportHeight)))+2);
-        int maxShadowRes = 8192;
-        if(newShadowRes > maxShadowRes) newShadowRes = maxShadowRes;
         _resWidth = Config::viewportWidth;
         _resHeight = Config::viewportHeight;
         UpdateFramebuffer(_postFrameBuffer, _postTexture, _postDepth, _resWidth, _resHeight);
         UpdateFramebuffer(_mirrorFrameBuffer, _mirrorTexture, _mirrorDepth, _resWidth, _resHeight);
         Drawable::ReflectionTexture = _mirrorTexture;
-        if(!_shadowFrameBuffer || newShadowRes != _shadowRes){
-            _shadowRes = newShadowRes;
-            std::cout << "ChessDebug: New shadow map resolution: " << _shadowRes << std::endl;
-            UpdateFramebuffer(_shadowFrameBuffer, _shadowTexture, _shadowDepth, _shadowRes, _shadowRes);
-            Drawable::ShadowTexture = _shadowTexture;
-        }
+    }
+    if(!_shadowFrameBuffer || _shadowRes != Config::shadowResolution){
+        _shadowRes = Config::shadowResolution;
+        UpdateFramebuffer(_shadowFrameBuffer, _shadowTexture, _shadowDepth, _shadowRes, _shadowRes);
+        Drawable::ShadowTexture = _shadowTexture;
     }
     // Get Projection Matrices
     Drawable::_camPos = _camera.Position();
@@ -172,24 +168,21 @@ void ObjectManager::Draw(mat4 projection){
         viewProjectionMirrored = viewProjection * mirror,
         viewProjectionSkyboxMirrored = viewProjectionSkybox * mirror,
         viewProjectionShadow = _camera.ViewProjectionShadow();
-
-    vec2 shadScale((float)_resWidth/(float)_shadowRes, (float)_resHeight/(float)_shadowRes);
-
-    Drawable::ShadowViewProjection = mat4(
-                shadScale.x,    0,              0, 0,
-                0,              shadScale.y,    0, 0,
-                0,              0,              1, 0,
-                shadScale.x-1,  shadScale.y-1,  0, 1) * viewProjectionShadow;
+    Drawable::ShadowViewProjection = viewProjectionShadow;
 
     // Sort objects by depth
     std::sort(_objects.begin(), _objects.end(), DepthSort(viewProjection));
 
     // Render Shadow depth map
     glBindFramebuffer(GL_FRAMEBUFFER, _shadowFrameBuffer);
+    glViewport(0, 0, _shadowRes, _shadowRes);
     glEnable(GL_DEPTH_TEST);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     for (Drawable* obj: _objects)
         obj->drawShadow(viewProjectionShadow);
+
+    // Reset Viewport, assuming all other steps use default resolution
+    glViewport(0, 0, _resWidth, _resHeight);
 
     // Render Mirrored
     glBindFramebuffer(GL_FRAMEBUFFER, _mirrorFrameBuffer);
@@ -247,10 +240,10 @@ void ObjectManager::Draw(mat4 projection){
     _postProcessors[_postProcessors.size()-1]->draw(mat4());
     glEnable(GL_DEPTH_TEST);
 
-/*
+    /*
     glBindFramebuffer(GL_READ_FRAMEBUFFER, _shadowFrameBuffer);
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, defaultFrambuffer);
-    glBlitFramebuffer(0, 0, Config::viewportWidth, Config::viewportHeight, 0, 0, Config::viewportWidth, Config::viewportHeight, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+    glBlitFramebuffer(0, 0, _shadowRes, _shadowRes, 0, 0, Config::viewportWidth, Config::viewportHeight, GL_COLOR_BUFFER_BIT, GL_NEAREST);
     /**/
 }
 

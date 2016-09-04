@@ -51,7 +51,6 @@ mat4 Camera::ViewProjectionShadow(){
          shadowProjection = glm::ortho<float>(-30,30,-30,30,10,25),
          shadowView = glm::lookAt(lightPos, lightPos + lightDir, vec3(1,0,0));
 
-
     return shadowProjection * shadowView;
 }
 

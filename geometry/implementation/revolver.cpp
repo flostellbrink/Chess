@@ -16,8 +16,8 @@ void Revolver::Create() {
     // TODO respect heights max x and bases max size
     int texWidth = _scale * 4 + 1; // Texture needs to seemlesly wrap around
 
-    vector<vec2> basePoints = _baseCurve->InterpolatedPoints(Config::localResolution),
-        heightPoints = _heightCurve->InterpolatedPoints(Config::localResolution2),
+    vector<vec2> basePoints = _baseCurve->InterpolatedPoints(Config::geoResolution1),
+        heightPoints = _heightCurve->InterpolatedPoints(Config::geoResolution2),
         baseTangent = _baseCurve->InterpolatedTangents(),
         heightTangent = _heightCurve->InterpolatedTangents();
 

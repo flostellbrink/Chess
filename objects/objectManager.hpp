@@ -71,7 +71,7 @@ class ObjectManager{
     GLuint _mirrorFrameBuffer = 0, _mirrorTexture = 0, _mirrorDepth = 0,
         _postFrameBuffer = 0, _postTexture = 0, _postDepth = 0,
         _shadowFrameBuffer = 0, _shadowTexture = 0, _shadowDepth = 0;
-    int _resWidth = 0, _resHeight = 0, _shadowRes = 1024;
+    int _resWidth = 0, _resHeight = 0, _shadowRes = 0;
 };
 
 

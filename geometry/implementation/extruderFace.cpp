@@ -25,8 +25,8 @@ ExtruderFace::ExtruderFace(Curve* profileCurve, Curve* compressedProfile, Curve*
 
 void ExtruderFace::Create() {
     float texScale = .1;
-    vector<vec2> profilePoints = _profileCurve->InterpolatedPoints(Config::localResolution2),
-        compressedPoints = _compressedProfile->InterpolatedPoints(Config::localResolution2);
+    vector<vec2> profilePoints = _profileCurve->InterpolatedPoints(Config::geoResolution2),
+        compressedPoints = _compressedProfile->InterpolatedPoints(Config::geoResolution2);
 
     vec2 width = _widthCurve->InterpolatedPoint(_widthPos);
     vec3 widthTangent = glm::normalize(vec3(0, 0, _widthPos - .5));

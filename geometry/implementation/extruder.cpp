@@ -22,7 +22,7 @@ Extruder::Extruder(Curve* profileCurve, Curve* widthCurve, float scale) : _scale
 }
 
 void Extruder::Create() {
-    vector<vec2> profilePoints = _profileCurve->InterpolatedPoints(Config::localResolution2),
+    vector<vec2> profilePoints = _profileCurve->InterpolatedPoints(Config::geoResolution2),
             profileTangents = _profileCurve->InterpolatedTangents(),
             widthPoints = _widthCurve->InterpolatedPoints(_resolution),
             widthTangents = _widthCurve->InterpolatedTangents();

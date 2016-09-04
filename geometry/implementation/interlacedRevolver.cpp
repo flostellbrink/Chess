@@ -16,7 +16,7 @@ void InterlacedRevolver::Create() {
     // TODO respect curves max values. see revolver
     int texWidth = _scale * 4 + 1; // Texture needs to seemlesly wrap around
 
-    vector<vec2> basePoints = _baseCurve->InterpolatedPoints(Config::localResolution),
+    vector<vec2> basePoints = _baseCurve->InterpolatedPoints(Config::geoResolution1),
         baseTangent = _baseCurve->InterpolatedTangents();
     int baseRes = basePoints.size();
 
@@ -30,7 +30,7 @@ void InterlacedRevolver::Create() {
 
         Curve* heightCurve = value < _length1 ? _heightCurve1 : _heightCurve2;
 
-        vector<vec2> heightPoints = heightCurve->InterpolatedPoints(Config::localResolution2),
+        vector<vec2> heightPoints = heightCurve->InterpolatedPoints(Config::geoResolution2),
                 heightTangent = heightCurve->InterpolatedTangents();
         int heightRes = heightPoints.size();
 

@@ -171,6 +171,56 @@ background-color: rgb(0, 0, 0);</string>
         </widget>
        </item>
        <item>
+        <widget class="QLCDNumber" name="lcdGeoResolution">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>35</width>
+           <height>24</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSlider" name="sliderGeoResolution">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="toolTip">
+          <string>Verändert die lokale Auflösung</string>
+         </property>
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>10000</number>
+         </property>
+         <property name="singleStep">
+          <number>1</number>
+         </property>
+         <property name="value">
+          <number>8000</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="tickPosition">
+          <enum>QSlider::TicksAbove</enum>
+         </property>
+         <property name="tickInterval">
+          <number>10</number>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QPushButton" name="newGameButton">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -441,6 +491,8 @@ background-color: rgb(0, 0, 0);</string>
         </spacer>
        </item>
       </layout>
+      <zorder>lcdGeoResolution</zorder>
+      <zorder>sliderGeoResolution</zorder>
       <zorder>newGameButton</zorder>
       <zorder>undoTurnButton</zorder>
       <zorder>checkBoxAI</zorder>

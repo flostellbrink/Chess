@@ -16,9 +16,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
 	// init the value elements
-	this->ui->lcdResolution->display(Config::localResolution);
-	this->ui->lcdResolution2->display(Config::localResolution2);
-
+	this->ui->lcdResolution->display(Config::geoResolution1);
+	this->ui->lcdResolution2->display(Config::geoResolution2);
+    this->ui->lcdGeoResolution->display(Config::shadowResolution);
 
     // buttons
     connect(this->ui->newGameButton, SIGNAL(released()), this, SLOT(resetGame()));
@@ -28,8 +28,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this->ui->checkBoxAI, SIGNAL(clicked(bool)), this, SLOT(setAI(bool)));
 
 	//resolutions
-	connect(this->ui->sliderLocalResolution, SIGNAL(valueChanged(int)), this, SLOT(setLocalResolution(int)));
-	connect(this->ui->sliderLocalResolution2, SIGNAL(valueChanged(int)), this, SLOT(setLocalResolution2(int)));
+	connect(this->ui->sliderLocalResolution, SIGNAL(valueChanged(int)), this, SLOT(setGeoResolution(int)));
+	connect(this->ui->sliderLocalResolution2, SIGNAL(valueChanged(int)), this, SLOT(setGeoResolution2(int)));
+    connect(this->ui->sliderGeoResolution, SIGNAL(valueChanged(int)), this, SLOT(setShadowResolution(int)));
 }
 
 MainWindow::~MainWindow()
@@ -48,16 +49,22 @@ void MainWindow::startDemo() {
     Config::demo = true;
 }
 
-void MainWindow::setLocalResolution(int value){
+void MainWindow::setGeoResolution(int value){
     Config::changed = true;
-	Config::localResolution = value;
+	Config::geoResolution1 = value;
 	this->ui->lcdResolution->display(value);
 }
 
-void MainWindow::setLocalResolution2(int value){
+void MainWindow::setGeoResolution2(int value){
     Config::changed = true;
-	Config::localResolution2 = value;
+	Config::geoResolution2 = value;
 	this->ui->lcdResolution2->display(value);
+}
+
+void MainWindow::setShadowResolution(int value) {
+    Config::changed = true;
+    Config::shadowResolution = value;
+    this->ui->lcdGeoResolution->display(value);
 }
 
 void MainWindow::setAI(bool value){

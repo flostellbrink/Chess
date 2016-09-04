@@ -38,8 +38,9 @@ private slots:
      */
 
     void setAI(bool value);
-    void setLocalResolution(int value);
-    void setLocalResolution2(int value);
+    void setGeoResolution(int value);
+    void setGeoResolution2(int value);
+    void setShadowResolution(int value);
 
     void startDemo();
     void resetGame();

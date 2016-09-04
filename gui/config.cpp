@@ -4,11 +4,12 @@
  *  Default values. Change them as needed.
  */
 
+int Config::geoResolution1 = 50,
+    Config::geoResolution2 = 50,
+    Config::shadowResolution = 8000;
 
-
-int Config::localResolution = 50, Config::localResolution2 = 50;
-
-int Config::viewportWidth = 1, Config::viewportHeight = 1;
+int Config::viewportWidth = 1,
+    Config::viewportHeight = 1;
 
 bool Config::ai = false;
 

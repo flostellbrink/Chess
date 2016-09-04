@@ -103,8 +103,8 @@ vector<TextureWrapper*> TexManager::loadTexture(int object){
                     result.push_back( Texture(":/res/images/Melamine-wood-001.png") );
                 result.push_back( Texture(":/res/images/overlayMove.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) );
                 result.push_back( Texture(":/res/images/overlayHit.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) );
-                result.push_back( Texture(":/res/images/overlayMate1.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) );
-                result.push_back( Texture(":/res/images/overlayMate2.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) ); //broken
+                result.push_back( Texture(":/res/images/OverlayMate1.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) );
+                result.push_back( Texture(":/res/images/OverlayMate2.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) ); //broken
 
                 _textureCollections[_theme][object] = result;
                 return result;
@@ -132,8 +132,8 @@ vector<TextureWrapper*> TexManager::loadTexture(int object){
                     result.push_back( Texture(":/res/images/Melamine-wood-001.png") );
                 result.push_back( Texture(":/res/images/overlayMove.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) );
                 result.push_back( Texture(":/res/images/overlayHit.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) );
-                result.push_back( Texture(":/res/images/overlayMate1.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) );
-                result.push_back( Texture(":/res/images/overlayMate2.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) ); //broken
+                result.push_back( Texture(":/res/images/OverlayMate1.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) );
+                result.push_back( Texture(":/res/images/OverlayMate2.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) ); //broken
 
                 _textureCollections[_theme][object] = result;
                 return result;
