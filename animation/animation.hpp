@@ -13,16 +13,16 @@
 template<class T>
 class Animation : public AnimationBase{
     public:
-    Animation(int duration, T& property);
-    void Update(int elapsedTime) override;
+    Animation(float duration, T &property);
+    void Update(float elapsedTime) override;
     virtual bool Active() override;
     virtual T ValueAt(float value) = 0;
-    int GetDuration();
+    float GetDuration();
     void SetValue(T value);
 
     protected:
     virtual float Value();
-    int _duration, _elapsedTotal = 0;
+    float _duration, _elapsedTotal = 0;
     T& _property;
     bool _active = true;
 
@@ -31,12 +31,12 @@ class Animation : public AnimationBase{
 
 //Apparently template classes functions cannot be implemented in cpp files..
 template<class T>
-Animation<T>::Animation(int duration, T& property) : _duration(duration), _property(property) {
+Animation<T>::Animation(float duration, T &property) : _duration(duration), _property(property) {
 
 }
 
 template<class T>
-void Animation<T>::Update(int elapsedTime){
+void Animation<T>::Update(float elapsedTime){
     _elapsedTotal += elapsedTime;
     _property = ValueAt(Value());
 }
@@ -48,7 +48,7 @@ bool Animation<T>::Active(){
 
 template<class T>
 float Animation<T>::Value(){
-    float result = (float)_elapsedTotal / (float)_duration;
+    float result = _elapsedTotal / _duration;
     if(result > 1){
         _active = false;
         return 1;
@@ -57,7 +57,7 @@ float Animation<T>::Value(){
 }
 
 template<class T>
-int Animation<T>::GetDuration(){
+float Animation<T>::GetDuration(){
     return _duration;
 }
 

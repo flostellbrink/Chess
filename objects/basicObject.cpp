@@ -26,8 +26,9 @@ void BasicObject::init(){
 }
 
 void BasicObject::recreateGeoemtry(){
-    if(_geo)
+    if(_geo) {
         delete _geo;
+    }
     _geo = ObjectManager::Geos.GetGeometry(_objectId);
 }
 

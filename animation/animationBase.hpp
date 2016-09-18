@@ -12,7 +12,7 @@
 // Provides an interface for animations
 class AnimationBase{
     public:
-    virtual void Update(int elapsedTime) = 0;
+    virtual void Update(float elapsedTime) = 0;
     virtual bool Active() = 0;
 
     protected:

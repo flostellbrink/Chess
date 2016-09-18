@@ -19,7 +19,7 @@ using glm::mat4;
 class Camera{
     public:
     Camera();
-    void Update(float elapsedTimeMs);
+    void Update();
     void MouseDown(vec2 mousePos);
     void MouseUp(vec2 mousePos);
     void MouseMove(vec2 mousePos);
@@ -38,7 +38,7 @@ class Camera{
 
     private:
     float _zoomFactor;
-    vec2 _cameraRotation, _autoRotation;
+    vec2 _cameraRotation, _smoothCameraRotation, _autoRotation;
     bool _mouseMoving, _whiteSide;
 
 };

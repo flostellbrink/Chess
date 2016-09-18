@@ -129,7 +129,9 @@ void ObjectManager::Update(float elapsedTime, mat4 projection, vec2 mouse){
     for (Drawable* obj : _objects)
         obj->update(elapsedTime);
     GameBoard->Update();
+    _camera.Update();
     Animations.Update(elapsedTime);
+
     _clock->Update(elapsedTime, GameBoard->isWhitesTurn());
 }
 

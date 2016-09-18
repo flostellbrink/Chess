@@ -7,7 +7,6 @@
     #include <windows.h>
 #endif
 
-#define GLM_FORCE_RADIANS
 #define GLM_SWIZZLE
 #include <glm/gtx/transform.hpp>
 

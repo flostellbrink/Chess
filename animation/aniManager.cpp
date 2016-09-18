@@ -9,7 +9,7 @@ AniManager::AniManager()
 
 }
 
-void AniManager::Update(int elapsedTime){
+void AniManager::Update(float elapsedTime){
     for(auto anim : _activeAnimations){
         anim->Update(elapsedTime);
         if(!anim->Active())

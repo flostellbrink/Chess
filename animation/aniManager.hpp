@@ -17,7 +17,7 @@ using std::vector;
 class AniManager{
     public:
     AniManager();
-    void Update(int elapsedTime);
+    void Update(float elapsedTime);
     void PlayNow(AnimationBase* anim);
     void PlayNext(AnimationBase* anim);
     void PlayLast(AnimationBase* anim);

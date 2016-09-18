@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    this->setFixedSize(1600,900);
+    //this->setFixedSize(1600,900);
 
     // setup ui elements
     ui->setupUi(this);
@@ -31,6 +31,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(this->ui->sliderLocalResolution, SIGNAL(valueChanged(int)), this, SLOT(setGeoResolution(int)));
 	connect(this->ui->sliderLocalResolution2, SIGNAL(valueChanged(int)), this, SLOT(setGeoResolution2(int)));
     connect(this->ui->sliderGeoResolution, SIGNAL(valueChanged(int)), this, SLOT(setShadowResolution(int)));
+
+    // Default to fullscreen
+    showFullScreen();
 }
 
 MainWindow::~MainWindow()

@@ -81,7 +81,12 @@ void GLWidget::initializeGL()
 
 void GLWidget::onMessageLogged( QOpenGLDebugMessage message )
 {
-    qDebug() << message;
+    // Ignore QOpenGLDebugMessage::NotificationSeverity
+    if(message.NotificationSeverity & (QOpenGLDebugMessage::HighSeverity
+                                       | QOpenGLDebugMessage::MediumSeverity
+                                       | QOpenGLDebugMessage::LowSeverity)) {
+        qDebug() << message;
+    }
 }
 
 void GLWidget::resizeGL(int width, int height)
