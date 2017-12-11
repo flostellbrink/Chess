@@ -4,6 +4,8 @@ Focus of this project is on generation of geometry from curves. All pieces, the 
 Also notable are reflections of the environment on the chess board and the real time shadows cast by all objects.
 Lastly the text drawn over the game will scale according to the games resolution and aspect ratio.
 
+[![Demo on YouTube](https://img.youtube.com/vi/nMwJrqzJMXk/0.jpg)](https://www.youtube.com/watch?v=nMwJrqzJMXk)
+
 ## Build
 Use CMake and MinGW.
 Tested on Windows 10 with Qt Creator 3.5.1 and Qt 5.4/5.5.
