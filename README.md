@@ -4,6 +4,7 @@ Focus of this project is on generation of geometry from curves. All pieces, the 
 Also notable are reflections of the environment on the chess board and the real time shadows cast by all objects.
 Fast Gaussian blur removes details of scene when overlays are rendered.
 
+## Demo
 [![Demo on YouTube](https://img.youtube.com/vi/nMwJrqzJMXk/0.jpg)](https://www.youtube.com/watch?v=nMwJrqzJMXk)
 
 ## Build
