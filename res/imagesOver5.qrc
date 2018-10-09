@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/res">
-        <file>images/blackWins.png</file>
-    </qresource>
-</RCC>
