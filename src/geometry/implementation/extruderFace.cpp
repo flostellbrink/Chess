@@ -7,7 +7,7 @@
 #define GLM_FORCE_RADIANS
 #define GLM_SWIZZLE
 #include <glm/gtx/transform.hpp>
-#include "gui/config.h"
+#include "config.h"
 
 #include "math.h"
 #ifndef M_PI

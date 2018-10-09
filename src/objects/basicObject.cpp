@@ -2,7 +2,7 @@
 
 #include "basicObject.hpp"
 #include <iostream>
-#include "gui/config.h"
+#include "config.h"
 
 #define GLM_FORCE_RADIANS
 #define GLM_SWIZZLE

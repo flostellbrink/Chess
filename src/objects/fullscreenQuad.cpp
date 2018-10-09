@@ -7,7 +7,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/transform.hpp>
 #include "objectManager.hpp"
-#include "gui/config.h"
+#include "config.h"
 #include "objects.hpp"
 
 #define GLM_FORCE_RADIANS

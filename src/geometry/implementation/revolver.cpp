@@ -2,7 +2,7 @@
 
 #include "glm/glm.hpp"
 #include "revolver.hpp"
-#include "gui/config.h"
+#include "config.h"
 #include <iostream>
 
 using glm::cross;

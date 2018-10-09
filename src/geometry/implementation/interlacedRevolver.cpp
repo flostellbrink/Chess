@@ -3,7 +3,7 @@
 #include "glm/glm.hpp"
 #include "interlacedRevolver.hpp"
 #include <iostream>
-#include "gui/config.h"
+#include "config.h"
 
 using glm::cross;
 

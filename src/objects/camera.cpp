@@ -3,7 +3,7 @@
 #define GLM_SWIZZLE
 #include <glm/gtx/transform.hpp>
 #include "camera.hpp"
-#include "objects/objectManager.hpp"
+#include "objectManager.hpp"
 #include <iostream>
 
 #include "math.h"

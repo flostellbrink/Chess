@@ -11,7 +11,7 @@
 #include "skybox.hpp"
 #include "piece.hpp"
 #include "basicObject.hpp"
-#include "gui/config.h"
+#include "config.h"
 #include "fullscreenQuad.hpp"
 
 #include "glbase/gltool.hpp"

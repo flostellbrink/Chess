@@ -10,7 +10,7 @@
 #include "animation/loopingAnimation.hpp"
 #include "animation/backLoopingAnimation.hpp"
 #include "animation/fadeAnimation.hpp"
-#include "gui/config.h"
+#include "config.h"
 
 #include <iostream>
 
