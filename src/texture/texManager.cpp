@@ -60,7 +60,7 @@ vector<TextureWrapper*> TexManager::loadTexture(int object){
         case objects::Table:
             return storeTexture(object, "res/images/Melamine-wood-005.png");
         case objects::Skybox:
-            return storeTexture(object, "res/images/LancellottiChapel/cube", GL_TEXTURE_CUBE_MAP);
+            return storeTexture(object, "res/images/cubemap/cube", GL_TEXTURE_CUBE_MAP);
         case objects::ClockBase:
             return storeTexture(object, "res/images/Melamine-wood-004.png");
         case objects::ClockFace:
