@@ -1,15 +1,12 @@
-# QT Creator
-
-CMakeLists.txt.user
-
 # CLion
-
+cmake-build-debug/
 .idea/Chess.iml
 .idea/misc.xml
 .idea/modules.xml
 .idea/workspace.xml
 
 # CMake
+CMakeLists.txt.user
 **/CMakeFiles/
 **/cmake_install\.cmake
 **/CMakeCache\.txt
@@ -19,6 +16,6 @@ CMakeLists.txt.user
 .vs/
 
 # Conan
-Engine/conanbuildinfo\.cmake
-Engine/conanbuildinfo\.txt
-Engine/conaninfo\.txt
+conanbuildinfo\.cmake
+conanbuildinfo\.txt
+conaninfo\.txt
