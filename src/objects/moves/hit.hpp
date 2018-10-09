@@ -1,15 +1,9 @@
 #ifndef HIT_H
 #define HIT_H
 
-#define GLM_FORCE_RADIANS
-
-#ifdef _WIN32
-    #include <windows.h>
-#endif
-
 #include <GL/glew.h>
-#include <GL/gl.h>
-#include "objects/board.hpp"
+#include <GLFW/glfw3.h>
+#include "src/objects/board.hpp"
 #include "moveBase.hpp"
 
 class Hit : public MoveBase {

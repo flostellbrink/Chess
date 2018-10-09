@@ -1,21 +1,12 @@
 #ifndef CATMULLROMANIMATION_H
 #define CATMULLROMANIMATION_H
 
-#define GLM_FORCE_RADIANS
-
-#ifdef _WIN32
-    #include <windows.h>
-#endif
-
-#define GLM_SWIZZLE
 #include <glm/gtx/transform.hpp>
 
 #include "math.h"
-#ifndef M_PI
-#define M_PI glm::pi<float>()
-#endif
 
-#include <GL/gl.h>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include "animation.hpp"
 #include <vector>
 #include <iostream>
@@ -45,7 +36,7 @@ CatmullRomAnimation<T>::CatmullRomAnimation(int duration, T& property, vector<T>
         _values.push_back(values[0]);
         _values.push_back(values[0] + tangent);
     }
-    for(uint i = 1; i < values.size() - 1; ++i){
+    for(auto i = 1; i < values.size() - 1; ++i){
         T tangent = (values[i+1] - values[i-1]) * tanFac;
         _values.push_back(values[i] - tangent);
         _values.push_back(values[i]);
@@ -62,9 +53,9 @@ CatmullRomAnimation<T>::CatmullRomAnimation(int duration, T& property, vector<T>
 template<class T>
 T CatmullRomAnimation<T>::ValueAt(float value){
     // Figure out what segment we are in
-    auto segments = (uint) (_values.size() / 3 - 1);
+    auto segments = _values.size() / 3 - 1;
     value *= segments;
-    auto segment = (uint) value;
+    auto segment = value;
     if (segment == segments)
         segment--;
     value -= segment;

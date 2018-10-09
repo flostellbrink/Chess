@@ -1,14 +1,8 @@
 #ifndef BACKLOOPINGANIMATION_H
 #define BACKLOOPINGANIMATION_H
 
-#define GLM_FORCE_RADIANS
-
-#ifdef _WIN32
-    #include <windows.h>
-#endif
-
-#include <GL/gl.h>
-#include "animation.hpp"
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 // Like looping, but also runs animation in reverse
 

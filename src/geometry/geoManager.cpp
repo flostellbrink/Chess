@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "geoManager.hpp"
-#include "objects.hpp"
+#include "src/objects.hpp"
 
 #include "compositeGeometry.hpp"
 
@@ -17,17 +17,15 @@
 #include "implementation/boardBorderBottom.hpp"
 #include "implementation/quad.hpp"
 
-#include "curve/fixedPointsCurve.hpp"
-#include "curve/circleCurve.hpp"
-#include "curve/catmullRomCurve.hpp"
-#include "curve/lineCurve.hpp"
+#include "src/curve/fixedPointsCurve.hpp"
+#include "src/curve/circleCurve.hpp"
+#include "src/curve/catmullRomCurve.hpp"
+#include "src/curve/lineCurve.hpp"
 
 //TODO implement geometry recycling
 
 GeoManager::GeoManager()
-{
-
-}
+= default;
 
 void GeoManager::Remove(Geometry *geo){
     _geos.erase(std::remove(_geos.begin(), _geos.end(), geo), _geos.end());
@@ -135,6 +133,7 @@ Geometry* GeoManager::GetGeometry(int objectID){
         case objects::ClockTimeCap:
         case objects::ClockMarks:
             return GetRevolver(objectID, .15);
+        default:break;
     }
     switch( _themeID ) {
         case themes::Default:
@@ -143,6 +142,7 @@ Geometry* GeoManager::GetGeometry(int objectID){
                 case objects::blackKing:
                     return GetInterlacedRevolver(objectID, .075, .05);
 
+                default:break;
             }
         break;
         case themes::Glass:
@@ -150,7 +150,9 @@ Geometry* GeoManager::GetGeometry(int objectID){
                 case objects::whiteKing:
                 case objects::blackKing:
                     return GetRevolverAndExtruded(objectID);
+                default:break;
             }
+        default:break;
     }
     std::cerr << "ChessWarn: Using default geometry for objectID: " << objectID << std::endl;
     return GetCube();

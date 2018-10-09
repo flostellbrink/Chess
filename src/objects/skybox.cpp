@@ -1,15 +1,14 @@
 #include <GL/glew.h>
-#include <GL/gl.h>
+#include <GLFW/glfw3.h>
 
 #include "skybox.hpp"
+#include "objectManager.hpp"
 
 #include <glm/gtc/type_ptr.hpp>
-
-#include "glbase/gltool.hpp"
+#include <src/objects.hpp>
 
 #include "vector"
-#include "objects.hpp"
-#include "objectManager.hpp"
+
 
 
 Skybox::Skybox(): Drawable(objects::Skybox) {
@@ -33,13 +32,13 @@ void Skybox::drawShadow(glm::mat4 projection_matrix){
 
 void Skybox::drawSkybox(glm::mat4 projection_matrix){
     // Load program
-    glUseProgram(_program);
+    _program->use();
 
     ObjectManager::Textures.Texture(_objectId)[0]->Bind(GL_TEXTURE_CUBE_MAP);
 
     // set parameter
-    glUniformMatrix4fv(glGetUniformLocation(_program, "projection_matrix"), 1, GL_FALSE, glm::value_ptr(projection_matrix));
-    glUniformMatrix4fv(glGetUniformLocation(_program, "modelview_matrix"), 1, GL_FALSE, glm::value_ptr(_modelViewMatrix));
+    _program->bind(projection_matrix, "projection_matrix");
+    _program->bind(_modelViewMatrix, "modelview_matrix");
 
     glDisable(GL_DEPTH_TEST);
 
@@ -59,11 +58,11 @@ void Skybox::MouseClick(glm::vec3 position){
 }
 
 std::string Skybox::getVertexShader(){
-    return Drawable::loadShaderFile(":/shader/skybox.vs.glsl");
+    return "res/shader/skybox.vs.glsl";
 }
 
 std::string Skybox::getFragmentShader(){
-    return Drawable::loadShaderFile(":/shader/skybox.fs.glsl");
+    return "res/shader/skybox.fs.glsl";
 }
 
 vec3 Skybox::Position3D(){

@@ -1,14 +1,8 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#define GLM_FORCE_RADIANS
-
-#ifdef _WIN32
-    #include <windows.h>
-#endif
-
 #include <GL/glew.h>
-#include <GL/gl.h>
+#include <GLFW/glfw3.h>
 #include "glm/glm.hpp"
 
 using glm::vec2;
@@ -20,8 +14,8 @@ class Camera{
     public:
     Camera();
     void Update();
-    void MouseDown(vec2 mousePos);
-    void MouseUp(vec2 mousePos);
+    void MouseDown();
+    void MouseUp();
     void MouseMove(vec2 mousePos);
     // 1 corresponds to 1 revolution
     void MouseWheel(float wheelDelta);

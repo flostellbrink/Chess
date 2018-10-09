@@ -2,17 +2,11 @@
 #ifndef FIELD_H
 #define FIELD_H
 
-#define GLM_FORCE_RADIANS
-
-#ifdef _WIN32
-    #include <windows.h>
-#endif
-
 #include <GL/glew.h>
-#include <GL/gl.h>
+#include <GLFW/glfw3.h>
 #include "drawable.hpp"
 #include "piece.hpp"
-#include "collision/collision.hpp"
+#include "src/collision/collision.hpp"
 
 using glm::vec3;
 

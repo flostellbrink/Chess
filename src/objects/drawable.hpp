@@ -7,18 +7,13 @@
 
 #include <string>
 
-#define GLM_FORCE_RADIANS
-#include <glm/mat4x4.hpp>
-
-#ifdef _WIN32
-    #include <windows.h>
-#endif
-
-#include <GL/gl.h>
 #include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <src/texture/shader.h>
 
-#include "texture/texManager.hpp"
-#include "geometry/geoManager.hpp"
+#include "src/texture/texManager.hpp"
+#include "src/geometry/geoManager.hpp"
 
 using glm::mat4;
 
@@ -81,9 +76,18 @@ public:
 
 protected:
 
-    GLuint _program = 0, _programShadow = 0;            /**< The opengl program handling the shaders */
-    GLuint _vertexArrayObject = 0;  /**< The vertex array object containing the vertices */
-    glm::mat4 _modelViewMatrix; /**< The model view matrix to get the object into model view space */
+    /**
+     * The opengl program handling the shaders
+     */
+    Shader *_program, *_programShadow;
+    /*
+     * The vertex array object containing the vertices
+     */
+    GLuint _vertexArrayObject = 0;
+    /*
+     * The model view matrix to get the object into model view space
+     */
+    glm::mat4 _modelViewMatrix;
     int _objectId;
 
     /**
@@ -93,16 +97,6 @@ protected:
      * the _program.
      */
     virtual void initShader();
-
-    /**
-     * @brief loadShaderFile Loads a shader from a given path
-     * @param path The path to the shader
-     * @return The content of the shader file
-     *
-     * Hint: You can use the Qt Resource System for the path
-     * (e.g. ":/shader/shader.fs.glsl")
-     */
-    virtual std::string loadShaderFile(std::string path);
 
     /**
      * @brief getVertexShader Getter for the vertex shader

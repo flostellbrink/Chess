@@ -3,11 +3,11 @@
 #include <iostream>
 
 #include "collManager.hpp"
-#include "objects.hpp"
-#include "curve/fixedPointsCurve.hpp"
-#include "curve/circleCurve.hpp"
-#include "curve/catmullRomCurve.hpp"
-#include "curve/lineCurve.hpp"
+#include "src/objects.hpp"
+#include "src/curve/fixedPointsCurve.hpp"
+#include "src/curve/circleCurve.hpp"
+#include "src/curve/catmullRomCurve.hpp"
+#include "src/curve/lineCurve.hpp"
 
 CollManager::CollManager(){
 

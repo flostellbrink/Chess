@@ -3,8 +3,7 @@
 
 #include <GL/glew.h>
 #include <string>
-
-#include <QImage>
+#include <vector>
 
 /**
  * @brief The Image class is a wrapper to use images as textures
@@ -20,9 +19,6 @@ public:
     /**
      * @brief Image constructor
      * @param path The path of the image
-     *
-     * You can use the Qt Ressource system for the path,
-     * e.g. ":/res/images/earth.bmp"
      */
     Image(std::string path);
 
@@ -44,7 +40,7 @@ public:
      *
      * You can pass this data directly to the shader
      */
-    uchar *getData();
+    void *getData();
 
 private:
     /**
@@ -52,8 +48,8 @@ private:
      * @param path the path to the image
      */
     void load(std::string path);
-
-    QImage _image; /**< The image in the QImage format */
+    unsigned width_, height_;
+    std::vector<unsigned char> data_;
 };
 
 #endif // BITMAP_H

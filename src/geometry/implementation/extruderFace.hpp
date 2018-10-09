@@ -1,15 +1,10 @@
 #ifndef EXTRUDERFACE_H
 #define EXTRUDERFACE_H
 
-#define GLM_FORCE_RADIANS
-
-#ifdef _WIN32
-    #include <windows.h>
-#endif
-
-#include <GL/gl.h>
-#include "geometry/geometry.hpp"
-#include "curve/curve.hpp"
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include "src/geometry/geometry.hpp"
+#include "src/curve/curve.hpp"
 
 class ExtruderFace : public Geometry{
     public:

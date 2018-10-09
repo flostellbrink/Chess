@@ -1,19 +1,13 @@
 #include <GL/glew.h>
-
 #include "board.hpp"
 #include <string>
-
 #include "math.h"
-#ifndef M_PI
-#define M_PI glm::pi<float>()
-#endif
 
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <geometry/geoManager.hpp>
+#include <src/geometry/geoManager.hpp>
 #include <iostream>
-#include "glbase/gltool.hpp"
-#include "objects.hpp"
+#include "src/objects.hpp"
 #include "objectManager.hpp"
 #include "moves/moveBase.hpp"
 #include "moves/move.hpp"
@@ -43,7 +37,7 @@ Board::Board(Camera* camera) {
     for (int i = 0; i < boardSize; ++i) {
         vector<Field*> row;
         for (int j = 0; j < boardSize; ++j){
-            Field* field = new Field(this, i, j);
+            auto * field = new Field(this, i, j);
             row.push_back(field);
             mngr->AddObject(field);
         }
@@ -66,7 +60,7 @@ Board::Board(Camera* camera) {
     for (int i = 0; i < 2; ++i) {
         vector<Field*> row;
         for (int j = 0; j < boardSize * 3; ++j) {
-            Field* field = new Field(this, i ? (j % boardSize) : boardSize - 1 - (j % boardSize), i ? boardSize - 1 + 2 + (j / boardSize) : - 2 - (j / boardSize), true);
+            auto * field = new Field(this, i ? (j % boardSize) : boardSize - 1 - (j % boardSize), i ? boardSize - 1 + 2 + (j / boardSize) : - 2 - (j / boardSize), true);
             row.push_back(field);
             mngr->AddObject(field);
         }
@@ -92,8 +86,8 @@ Board::Board(Camera* camera) {
         mngr->AddObject(piece);
     // Create boards border
     for (int i = 0; i < 4; ++i) {
-        mngr->AddObject(new BasicObject(objects::BoardBorderTop, vec3(), M_PI / 2. * (float) i, "mirror"));
-        mngr->AddObject(new BasicObject(objects::BoardBorderBottom, vec3(), M_PI / 2. * (float) i, "texFromWorld"));
+        mngr->AddObject(new BasicObject(objects::BoardBorderTop, vec3(), glm::pi<float>() / 2.f * (float) i, "mirror"));
+        mngr->AddObject(new BasicObject(objects::BoardBorderBottom, vec3(), glm::pi<float>() / 2.f * (float) i, "texFromWorld"));
     }
 
     Drawable::OverlayState = -1;
@@ -106,12 +100,12 @@ void Board::ResetGame(){
     Drawable::OverlayState = -1;
     // On a proper reset this has to be animated
     //Drawable::OverlayOpacity = 0;
-    ObjectManager::Instance.Animations.Reset();
+    ObjectManager::Animations.Reset();
     ObjectManager::Instance.NewGame();
 }
 
-void Board::AddPiece(unsigned int objectId, Field *field){
-    Piece* piece = 0;
+void Board::AddPiece(int objectId, Field *field){
+    Piece* piece = nullptr;
     switch (objectId) {
         case objects::whiteRook:
         case objects::blackRook:
@@ -137,6 +131,7 @@ void Board::AddPiece(unsigned int objectId, Field *field){
         case objects::blackPawn:
             piece = new Pawn(this, objectId, field);
             break;
+        default:break;
     }
     if(piece){
         _pieces.push_back(piece);
@@ -179,6 +174,7 @@ void Board::setState(int state){
         case 4:
             std::cout << "ChessInfo: State: Draw" << std::endl;
             break;
+        default:break;
     }
 }
 
@@ -199,14 +195,14 @@ bool Board::isWhitesTurn() {
 
 void Board::doAI(){
     if(_state != Running) return;
-    if(_whiteTurn || !_useAI || ObjectManager::Instance.Animations.isBusy()){
+    if(_whiteTurn || !_useAI || ObjectManager::Animations.isBusy()){
         _aiOverdue = true;
         return;
     }
     _aiOverdue = false;
     vector<Piece*> validPieces;
     for(Piece* piece : _pieces)
-        if(piece->isWhite() == _whiteTurn && getValid(piece->GetMoves()).size())
+        if(piece->isWhite() == _whiteTurn && !getValid(piece->GetMoves()).empty())
             validPieces.push_back(piece);
     std::uniform_int_distribution<int> distribution(0,validPieces.size()-1);
     Piece *piece = validPieces[distribution(generator)];
@@ -222,7 +218,7 @@ Field* Board::GetSideField(bool whiteSide){
         if(!field->CurrentPiece)
             return field;
     std::cerr << "ChessErr: No empty side field found" << std::endl;
-    return NULL;
+    return nullptr;
 }
 
 MoveBase* Board::GetLastMove(){
@@ -232,7 +228,7 @@ MoveBase* Board::GetLastMove(){
 }
 
 void Board::UndoMove(bool sim){
-    if(_allMoves.empty() || ObjectManager::Instance.Animations.isBusy()) return;
+    if(_allMoves.empty() || ObjectManager::Animations.isBusy()) return;
     setState(Running);
     MoveBase* move = _allMoves.top();
     move->Undo(this);
@@ -250,7 +246,7 @@ void Board::UndoMove(bool sim){
 
 void Board::PieceClick(Piece *piece){
     if(_state > Running) return;
-    if(ObjectManager::Instance.Animations.isBusy()) return;
+    if(ObjectManager::Animations.isBusy()) return;
     if(!locked && piece->isWhite() == _whiteTurn) {
         clearOverlays();
         tuple<vector<MoveBase*>,vector<MoveBase*>> moves = getValidAndInvalid(piece->GetMoves());
@@ -320,7 +316,7 @@ void Board::clearOverlays(){
 
 bool Board::existsValidMove(){
     for(Piece* piece : _pieces)
-        if(piece->isWhite() == _whiteTurn && getValid(piece->GetMoves()).size())
+        if(piece->isWhite() == _whiteTurn && !getValid(piece->GetMoves()).empty())
             return true;
     return false;
 }
@@ -389,8 +385,7 @@ bool Board::isKingInMate(){
 }
 
 bool Board::intersectsGame(Collision* collider, Piece *except){
-    // TODO intersect with board
-    foreach (Piece* piece, _pieces)
+    for (auto piece: _pieces)
         if(piece != except && piece->BoundingBox->Intersects(collider))
             return true;
     return collider->Intersects(BoundingBox);

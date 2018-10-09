@@ -2,14 +2,7 @@
 #define TEXMANAGER_H
 
 #include <GL/glew.h>
-
-#define GLM_FORCE_RADIANS
-
-#ifdef _WIN32
-    #include <windows.h>
-#endif
-
-#include <GL/gl.h>
+#include <GLFW/glfw3.h>
 #include <vector>
 #include <map>
 #include "texturewrapper.hpp"

@@ -1,21 +1,17 @@
+#include <utility>
+
 #include <GL/glew.h>
 
 #include "fullscreenQuad.hpp"
 #include <iostream>
-#include "gltool.hpp"
 #include <glm/common.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/transform.hpp>
 #include "objectManager.hpp"
-#include "config.h"
-#include "objects.hpp"
-
-#define GLM_FORCE_RADIANS
-#define GLM_SWIZZLE
+#include "src/config.h"
+#include "src/objects.hpp"
 #include "math.h"
-#ifndef M_PI
-#define M_PI glm::pi<float>()
-#endif
+#include "src/logger.h"
 
 using glm::value_ptr;
 using glm::vec3;
@@ -24,8 +20,8 @@ using glm::mat4;
 FullscreenQuad::FullscreenQuad(string vertexShader, string fragmentShader)
     :Drawable(objects::FullscreenQuad)
 {
-    _vertexShader = vertexShader;
-    _fragmentShader = fragmentShader;
+    _vertexShader = std::move(vertexShader);
+    _fragmentShader = std::move(fragmentShader);
 }
 
 void FullscreenQuad::init(){
@@ -34,8 +30,7 @@ void FullscreenQuad::init(){
 }
 
 void FullscreenQuad::recreateGeoemtry(){
-    if(_geo)
-        delete _geo;
+    delete _geo;
     _geo = ObjectManager::Geos.GetGeometry(_objectId);
 }
 
@@ -43,14 +38,15 @@ void FullscreenQuad::draw(glm::mat4 projection_matrix){
     // Ignore parameter unused
     (void)projection_matrix;
 
-    if(_program == 0){
-        std::cerr << "program not loaded" << std::endl;
+    if(_program == nullptr){
+        Logger::error("program not loaded");
     }
-    glUseProgram(_program);
+    _program->use();
+
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, PostTexture);
-    glUniform1i(glGetUniformLocation(_program, "tex"), 0);
-    glUniform1f(glGetUniformLocation(_program, "overlayOpacity"), OverlayOpacity);
+    _program->bind(0, "tex");
+    _program->bind(OverlayOpacity, "overlayOpacity");
 
     vec2 overlaySize(2.f, 1.f);
     float overlayRatio = overlaySize.x / overlaySize.y, viewPortRatio = (float)Config::viewportWidth / (float)Config::viewportHeight;
@@ -58,16 +54,16 @@ void FullscreenQuad::draw(glm::mat4 projection_matrix){
             ? vec2(1.f, overlayRatio / viewPortRatio)
             : vec2(viewPortRatio / overlayRatio , 1.f);
     fac *= 1.5f;
-    glUniform2fv(glGetUniformLocation(_program, "overlayFac"), 1, glm::value_ptr(fac));
+    _program->bind(fac, "overlayFac");
 
-    // Make sure textures are loaded before needed, popin and framedrop is not nice..
+    // Make sure textures are loaded before needed, popping and frame drop are not nice!
     ObjectManager::Textures.Texture(_objectId);
     if(OverlayOpacity > 0 && OverlayState >= 0){
         ObjectManager::Textures.Texture(_objectId)[OverlayState]->Bind(GL_TEXTURE_2D, 1);
-        glUniform1i(glGetUniformLocation(_program, "texOverlay"), 1);
-        glUniform1i(glGetUniformLocation(_program, "texOverlayEnabled"), 1);
+        _program->bind(1, "texOverlay");
+        _program->bind(1, "texOverlayEnabled");
     } else {
-        glUniform1i(glGetUniformLocation(_program, "texOverlayEnabled"), 0);
+        _program->bind(0, "texOverlayEnabled");
     }
 
     _geo->Draw();
@@ -90,12 +86,12 @@ void FullscreenQuad::MouseClick(glm::vec3 position){
 
 std::string FullscreenQuad::getVertexShader()
 {
-    return Drawable::loadShaderFile(_vertexShader);
+    return _vertexShader;
 }
 
 std::string FullscreenQuad::getFragmentShader()
 {
-    return Drawable::loadShaderFile(_fragmentShader);
+    return _fragmentShader;
 }
 
 vec3 FullscreenQuad::Position3D(){

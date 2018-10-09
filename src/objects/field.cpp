@@ -1,18 +1,16 @@
 #include <GL/glew.h>
-
 #include "field.hpp"
-
-#include "glbase/gltool.hpp"
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "objectManager.hpp"
-#include "objects.hpp"
-#include "animation/loopingAnimation.hpp"
-#include "animation/backLoopingAnimation.hpp"
-#include "animation/fadeAnimation.hpp"
-#include "config.h"
+#include "src/objects.hpp"
+#include "src/animation/loopingAnimation.hpp"
+#include "src/animation/backLoopingAnimation.hpp"
+#include "src/animation/fadeAnimation.hpp"
+#include "src/config.h"
 
 #include <iostream>
+#include <src/logger.h>
 
 using glm::mat2;
 using glm::vec3;
@@ -25,7 +23,7 @@ Field::constructor Field::cons;
 
 Field::constructor::constructor(){
     ObjectManager::Instance.Animations.PlayIndependent(new BackLoopingAnimation<float>(new FadeAnimation<float>(500, overlayScale, 1, 1.2)));
-    ObjectManager::Instance.Animations.PlayIndependent(new LoopingAnimation<float>(new LinearAnimation<float>(5000, overlayRotation, 0, 2 * M_PI)));
+    ObjectManager::Instance.Animations.PlayIndependent(new LoopingAnimation<float>(new LinearAnimation<float>(5000, overlayRotation, 0, 2 * glm::pi<float>())));
 }
 
 Field::Field(Board* board, int boardX, int boardY, bool inactive):
@@ -55,20 +53,20 @@ void Field::recreateGeoemtry(){
 void Field::draw(glm::mat4 projection_matrix){
     if(_inactive) return;
 
-    if(_program == 0){
-        std::cerr << "program not loaded" << std::endl;
+    if(_program == nullptr){
+        Logger::error("program not loaded");
     }
-    glUseProgram(_program);
+    _program->use();
 
     ObjectManager::Textures.Texture(_objectId)[0]->Bind();
     if(_ovelayOpacity > 0){
         ObjectManager::Textures.Texture(_objectId)[_overlayNumber]->Bind(GL_TEXTURE_2D, 1);
         bool animateOverlay = _overlayNumber == 2;
-        glUniform1i(glGetUniformLocation(_program, "textureAnimated"), animateOverlay);
+        _program->bind(animateOverlay, "textureAnimated");
         if(animateOverlay){
             mat2 rotation = mat2(cos(overlayRotation), sin(overlayRotation), -sin(overlayRotation), cos(overlayRotation));
             rotation *= overlayScale;
-            glUniformMatrix2fv(glGetUniformLocation(_program, "texTransform"), 1, GL_FALSE, glm::value_ptr(rotation));
+            _program->bind(rotation, "texTransform");
         }
     }
 
@@ -77,43 +75,50 @@ void Field::draw(glm::mat4 projection_matrix){
     glActiveTexture(GL_TEXTURE0 + 3);
     glBindTexture(GL_TEXTURE_2D, ShadowTexture);
 
-    glUniform1i(glGetUniformLocation(_program, "tex"), 0);
-    glUniform1i(glGetUniformLocation(_program, "texOverlay"), 1);
-    glUniform1i(glGetUniformLocation(_program, "texReflection"), 2);
-    glUniform1i(glGetUniformLocation(_program, "texShadow"), 3);
+    _program->bind(0, "tex");
+    _program->bind(1, "texOverlay");
+    _program->bind(2, "texReflection");
+    _program->bind(3, "texShadow");
 
-    glUniform2fv(glGetUniformLocation(_program, "texSize"), 1, value_ptr(vec2(Config::viewportWidth, Config::viewportHeight)));
+    _program->bind(3, "texShadow");
 
-    glUniform1f(glGetUniformLocation(_program, "overlayOpacity"), _ovelayOpacity);
+    auto texSize = vec2(Config::viewportWidth, Config::viewportHeight);
+    _program->bind(texSize, "texSize");
 
-    glUniformMatrix4fv(glGetUniformLocation(_program, "view_projection_matrix"), 1, GL_FALSE, glm::value_ptr(projection_matrix));
-    glUniformMatrix4fv(glGetUniformLocation(_program, "view_projection_shadow"), 1, GL_FALSE, glm::value_ptr(ShadowViewProjection * _modelViewMatrix));
-    glUniformMatrix4fv(glGetUniformLocation(_program, "model_matrix"), 1, GL_FALSE, glm::value_ptr(_modelViewMatrix));
-    glUniformMatrix4fv(glGetUniformLocation(_program, "tra_inv_model_matrix"), 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(_modelViewMatrix))));
+    _program->bind(_ovelayOpacity, "overlayOpacity");
 
-    glUniform3fv(glGetUniformLocation(_program, "lightPos"), 1, value_ptr(_lightPos));
-    glUniform3fv(glGetUniformLocation(_program, "camPos"), 1, value_ptr(_camPos));
+    auto view_projection_shadow = ShadowViewProjection * _modelViewMatrix;
+    auto tra_inv_model_matrix = glm::transpose(glm::inverse(_modelViewMatrix));
+    _program->bind(projection_matrix, "view_projection_matrix");
+    _program->bind(view_projection_shadow, "view_projection_shadow");
+    _program->bind(_modelViewMatrix, "model_matrix");
+    _program->bind(tra_inv_model_matrix, "tra_inv_model_matrix");
+
+    _program->bind(_lightPos, "lightPos");
+    _program->bind(_camPos, "camPos");
 
     vec3 La = vec3(.5, .5, .5);
-    glUniform3fv(glGetUniformLocation(_program, "La"), 1, value_ptr(La));
     vec3 ka = vec3(.5, .5, .5);
-    glUniform3fv(glGetUniformLocation(_program, "ka"), 1, value_ptr(ka));
     vec3 Ld = vec3(.5, .5, .5);
-    glUniform3fv(glGetUniformLocation(_program, "Ld"), 1, value_ptr(Ld));
     vec3 kd = vec3(1, 1, 1);
-    glUniform3fv(glGetUniformLocation(_program, "kd"), 1, value_ptr(kd));
+    _program->bind(La, "La");
+    _program->bind(ka, "ka");
+    _program->bind(Ld, "Ld");
+    _program->bind(kd, "kd");
 
-    glUniform1f(glGetUniformLocation(_program, "reflectivity"), ObjectManager::Textures.reflectivity(_objectId));
-    glUniform1f(glGetUniformLocation(_program, "shininess"), ObjectManager::Textures.shininess(_objectId));
+    _program->bind(ObjectManager::Textures.reflectivity(_objectId), "reflectivity");
+    _program->bind(ObjectManager::Textures.shininess(_objectId), "shininess");
 
     _geo->Draw();
 }
 
 void Field::drawShadow(glm::mat4 projection_matrix){
     if(_inactive) return;
+    _programShadow->use();
 
-    glUseProgram(_programShadow);
-    glUniformMatrix4fv(glGetUniformLocation(_programShadow, "view_projection_shadow"), 1, GL_FALSE, glm::value_ptr(projection_matrix * _modelViewMatrix));
+    auto view_projection_shadow = projection_matrix * _modelViewMatrix;
+    _programShadow->bind(view_projection_shadow, "view_projection_shadow");
+
     _geo->Draw();
 }
 
@@ -141,11 +146,11 @@ vec3 Field::CenterPosition(){
 }
 
 std::string Field::getVertexShader(){
-    return Drawable::loadShaderFile(":/shader/mirror.vs.glsl");
+    return "res/shader/mirror.vs.glsl";
 }
 
 std::string Field::getFragmentShader(){
-    return Drawable::loadShaderFile(":/shader/mirror.fs.glsl");
+    return "res/shader/mirror.fs.glsl";
 }
 
 void Field::EnableOverlay(bool enabled){

@@ -2,14 +2,10 @@
 
 #include "basicObject.hpp"
 #include <iostream>
-#include "config.h"
+#include "src/config.h"
+#include "src/logger.h"
 
-#define GLM_FORCE_RADIANS
-#define GLM_SWIZZLE
 #include "math.h"
-#ifndef M_PI
-#define M_PI glm::pi<float>()
-#endif
 
 using glm::value_ptr;
 using glm::vec3;
@@ -26,9 +22,7 @@ void BasicObject::init(){
 }
 
 void BasicObject::recreateGeoemtry(){
-    if(_geo) {
-        delete _geo;
-    }
+    delete _geo;
     _geo = ObjectManager::Geos.GetGeometry(_objectId);
 }
 
@@ -37,14 +31,14 @@ vec3 BasicObject::Position(){
 }
 
 void BasicObject::Position(vec3 position){
-    ObjectManager::Instance.Animations.PlayIndependent(new FadeAnimation<vec3>(500, _position, _position, position));
+    ObjectManager::Animations.PlayIndependent(new FadeAnimation<vec3>(500, _position, _position, position));
 }
 
 void BasicObject::draw(glm::mat4 projection_matrix){
-    if(_program == 0){
-        std::cerr << "program not loaded" << std::endl;
+    if(_program == nullptr){
+        Logger::error("program not loaded");
     }
-    glUseProgram(_program);
+    _program->use();
 
     ObjectManager::Textures.Texture(_objectId)[0]->Bind(GL_TEXTURE_2D);
 
@@ -53,39 +47,44 @@ void BasicObject::draw(glm::mat4 projection_matrix){
     glActiveTexture(GL_TEXTURE0 + 3);
     glBindTexture(GL_TEXTURE_2D, ShadowTexture);
 
-    glUniform1i(glGetUniformLocation(_program, "tex"), 0);
-    glUniform1i(glGetUniformLocation(_program, "texReflection"), 2);
-    glUniform1i(glGetUniformLocation(_program, "texShadow"), 3);
+    _program->bind(0, "tex");
+    _program->bind(2, "texReflection");
+    _program->bind(3, "texShadow");
 
-    glUniform2fv(glGetUniformLocation(_program, "texSize"), 1, value_ptr(vec2(Config::viewportWidth, Config::viewportHeight)));
+    auto size = vec2(Config::viewportWidth, Config::viewportHeight);
+    _program->bind(size, "texSize");
 
-    glUniformMatrix4fv(glGetUniformLocation(_program, "view_projection_matrix"), 1, GL_FALSE, glm::value_ptr(projection_matrix));
-    glUniformMatrix4fv(glGetUniformLocation(_program, "view_projection_shadow"), 1, GL_FALSE, glm::value_ptr(ShadowViewProjection * _modelViewMatrix));
+    auto view_projection_shadow = ShadowViewProjection * _modelViewMatrix;
+    _program->bind(projection_matrix, "view_projection_matrix");
+    _program->bind(view_projection_shadow, "view_projection_shadow");
 
-    glUniformMatrix4fv(glGetUniformLocation(_program, "model_matrix"), 1, GL_FALSE, glm::value_ptr(_modelViewMatrix));
-    glUniformMatrix4fv(glGetUniformLocation(_program, "tra_inv_model_matrix"), 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(_modelViewMatrix))));
+    auto tra_inv_model_matrix = glm::transpose(glm::inverse(_modelViewMatrix));
+    _program->bind(_modelViewMatrix, "model_matrix");
+    _program->bind(tra_inv_model_matrix, "tra_inv_model_matrix");
 
-    glUniform3fv(glGetUniformLocation(_program, "lightPos"), 1, value_ptr(_lightPos));
-    glUniform3fv(glGetUniformLocation(_program, "camPos"), 1, value_ptr(_camPos));
+    _program->bind(_lightPos, "lightPos");
+    _program->bind(_camPos, "camPos");
 
     vec3 La = vec3(.5, .5, .5);
-    glUniform3fv(glGetUniformLocation(_program, "La"), 1, value_ptr(La));
     vec3 ka = vec3(.5, .5, .5);
-    glUniform3fv(glGetUniformLocation(_program, "ka"), 1, value_ptr(ka));
     vec3 Ld = vec3(.5, .5, .5);
-    glUniform3fv(glGetUniformLocation(_program, "Ld"), 1, value_ptr(Ld));
     vec3 kd = vec3(1, 1, 1);
-    glUniform3fv(glGetUniformLocation(_program, "kd"), 1, value_ptr(kd));
+    _program->bind(La, "La");
+    _program->bind(ka, "ka");
+    _program->bind(Ld, "Ld");
+    _program->bind(kd, "kd");
 
-    glUniform1f(glGetUniformLocation(_program, "reflectivity"), ObjectManager::Textures.reflectivity(_objectId));
-    glUniform1f(glGetUniformLocation(_program, "shininess"), ObjectManager::Textures.shininess(_objectId));
+    _program->bind(ObjectManager::Textures.reflectivity(_objectId), "reflectivity");
+    _program->bind(ObjectManager::Textures.shininess(_objectId), "shininess");
 
     _geo->Draw();
 }
 
 void BasicObject::drawShadow(glm::mat4 projection_matrix){
-    glUseProgram(_programShadow);
-    glUniformMatrix4fv(glGetUniformLocation(_programShadow, "view_projection_shadow"), 1, GL_FALSE, glm::value_ptr(projection_matrix * _modelViewMatrix));
+    _programShadow->use();
+
+    auto view_projection_shadow = projection_matrix * _modelViewMatrix;
+    _programShadow->bind(view_projection_shadow, "view_projection_shadow");
     _geo->Draw();
 }
 
@@ -106,12 +105,12 @@ void BasicObject::MouseClick(glm::vec3 position){
 
 std::string BasicObject::getVertexShader()
 {
-    return Drawable::loadShaderFile(":/shader/" + _shader + ".vs.glsl");
+    return "res/shader/" + _shader + ".vs.glsl";
 }
 
 std::string BasicObject::getFragmentShader()
 {
-    return Drawable::loadShaderFile(":/shader/" + _shader + ".fs.glsl");
+    return "res/shader/" + _shader + ".fs.glsl";
 }
 
 vec3 BasicObject::Position3D(){

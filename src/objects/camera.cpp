@@ -1,21 +1,15 @@
 #include <GL/glew.h>
-#define GLM_FORCE_RADIANS
-#define GLM_SWIZZLE
 #include <glm/gtx/transform.hpp>
 #include "camera.hpp"
 #include "objectManager.hpp"
 #include <iostream>
-
 #include "math.h"
-#ifndef M_PI
-#define M_PI glm::pi<float>()
-#endif
 
 using glm::vec2;
 using glm::vec3;
 using glm::mat4;
 
-const float camSpeed = .01, camZoom = 10, quarterRot = (const float) (M_PI / 2.);
+const float camSpeed = .01, camZoom = 10, quarterRot = (const float) (glm::pi<float>() / 2.f);
 
 Camera::Camera() : _zoomFactor(1.7), _cameraRotation(0, -.75), _smoothCameraRotation(0, -.75), _autoRotation(), _whiteSide(true)
 {
@@ -61,7 +55,7 @@ void Camera::Update(){
 void Camera::SetBoardSide(bool whiteSide){
     // TODO create delay animation instead of this hack
     float fakeProperty = 0;
-    ObjectManager::Instance.Animations.PlayLast(new LinearAnimation<float>(500, fakeProperty, 0, 1));
+    ObjectManager::Animations.PlayLast(new LinearAnimation<float>(500, fakeProperty, 0, 1));
 
     if(whiteSide == _whiteSide) return;
     _whiteSide = whiteSide;
@@ -71,23 +65,19 @@ void Camera::SetBoardSide(bool whiteSide){
     _smoothCameraRotation = _cameraRotation = resetPos;
 
     // ensure the camera will always rotate along the smaller angle
-    if(whiteSide && _autoRotation.x > M_PI)
-        _autoRotation.x -= 2. * M_PI;
+    if(whiteSide && _autoRotation.x > glm::pi<float>())
+        _autoRotation.x -= 2.f * glm::pi<float>();
     if(!whiteSide && _autoRotation.x < 0)
-        _autoRotation.x += 2. * M_PI;
-    ObjectManager::Instance.Animations.PlayLast(
-                new FadeAnimation<vec2>(1500, _autoRotation, _autoRotation, vec2(whiteSide ? 0 : M_PI, 0)));
+        _autoRotation.x += 2.f * glm::pi<float>();
+    ObjectManager::Animations.PlayLast(
+                new FadeAnimation<vec2>(1500, _autoRotation, _autoRotation, vec2(whiteSide ? 0 : glm::pi<float>(), 0)));
 }
 
-void Camera::MouseDown(vec2 mousePos){
+void Camera::MouseDown(){
     _mouseMoving = true;
-    _oldMouse = mousePos;
 }
 
-void Camera::MouseUp(vec2 mousePos){
-    // Ignore parameter unused
-    (void)mousePos;
-
+void Camera::MouseUp(){
     _mouseMoving = false;
 }
 

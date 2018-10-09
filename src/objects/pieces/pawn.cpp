@@ -2,21 +2,15 @@
 
 #include "pawn.hpp"
 #include <iostream>
-#include "gltool.hpp"
 #include <glm/common.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/transform.hpp>
 
-#define GLM_FORCE_RADIANS
-#define GLM_SWIZZLE
 #include "math.h"
-#ifndef M_PI
-#define M_PI glm::pi<float>()
-#endif
 
-#include "objects/objectManager.hpp"
-#include "objects/moves/move.hpp"
-#include "objects/moves/hit.hpp"
+#include "src/objects/objectManager.hpp"
+#include "src/objects/moves/move.hpp"
+#include "src/objects/moves/hit.hpp"
 
 using glm::vec3;
 using glm::mat4;

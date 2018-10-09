@@ -1,8 +1,8 @@
 #ifndef SKYBOX_H
 #define SKYBOX_H
 
-#include "texture/texturewrapper.hpp"
-#include "objects/drawable.hpp"
+#include "src/texture/texturewrapper.hpp"
+#include "src/objects/drawable.hpp"
 
 class Skybox : public Drawable
 {

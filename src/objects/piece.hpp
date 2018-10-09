@@ -2,21 +2,16 @@
 #ifndef PIECE_H
 #define PIECE_H
 
-#define GLM_FORCE_RADIANS
-
-#ifdef _WIN32
-    #include <windows.h>
-#endif
-
-#include <GL/gl.h>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include "drawable.hpp"
 #include "field.hpp"
-#include "animation/loopingAnimation.hpp"
-#include "animation/linearAnimation.hpp"
-#include "animation/fadeAnimation.hpp"
 #include "moves/moveBase.hpp"
 #include "objectManager.hpp"
-#include "collision/collManager.hpp"
+#include "src/animation/loopingAnimation.hpp"
+#include "src/animation/linearAnimation.hpp"
+#include "src/animation/fadeAnimation.hpp"
+#include "src/collision/collManager.hpp"
 
 class MoveBase;
 class Field;

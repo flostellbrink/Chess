@@ -1,14 +1,9 @@
 #ifndef CUBE_H
 #define CUBE_H
 
-#define GLM_FORCE_RADIANS
-
-#ifdef _WIN32
-    #include <windows.h>
-#endif
-
-#include <GL/gl.h>
-#include "geometry/geometry.hpp"
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include "src/geometry/geometry.hpp"
 
 class Cube : public Geometry{
     public:

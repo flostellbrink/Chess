@@ -1,16 +1,11 @@
 #ifndef CURVE_H
 #define CURVE_H
 
-#define GLM_FORCE_RADIANS
-
-#ifdef _WIN32
-    #include <windows.h>
-#endif
-
-#include <GL/gl.h>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include <vector>
 #include <glm/common.hpp>
-#include "geometry/controlPoints.hpp"
+#include "src/geometry/controlPoints.hpp"
 
 using std::vector;
 using glm::vec2;

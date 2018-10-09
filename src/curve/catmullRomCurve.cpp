@@ -1,11 +1,6 @@
 #include <GL/glew.h>
 #include <iostream>
-
 #include "math.h"
-#ifndef M_PI
-#define M_PI glm::pi<float>()
-#endif
-
 #include "catmullRomCurve.hpp"
 
 CatmullRomCurve::CatmullRomCurve(ControlPoints controlPoints, int curveID, int objectID){

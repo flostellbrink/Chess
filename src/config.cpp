@@ -19,3 +19,5 @@ bool Config::undoTurn = false;
 bool Config::demo = false;
 
 bool Config::changed = false;
+
+bool Config::fullScreen = false;

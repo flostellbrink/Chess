@@ -2,13 +2,7 @@
 #define CLOCK_H
 
 #include <GL/glew.h>
-#define GLM_FORCE_RADIANS
-
-#ifdef _WIN32
-    #include <windows.h>
-#endif
-
-#include <GL/gl.h>
+#include <GLFW/glfw3.h>
 #include "drawable.hpp"
 #include <vector>
 #include <random>
@@ -16,8 +10,8 @@
 
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "geometry/geometry.hpp"
-#include "geometry/geoManager.hpp"
+#include "src/geometry/geometry.hpp"
+#include "src/geometry/geoManager.hpp"
 
 using std::string;
 using std::vector;

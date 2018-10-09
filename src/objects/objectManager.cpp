@@ -1,21 +1,18 @@
 #include <GL/glew.h>
-
 #include <vector>
 #include <iostream>
-
 #include "objectManager.hpp"
-#include "objects.hpp"
-
+#include "src/objects.hpp"
 #include "drawable.hpp"
 #include "board.hpp"
 #include "skybox.hpp"
 #include "piece.hpp"
 #include "basicObject.hpp"
-#include "config.h"
+#include "src/config.h"
 #include "fullscreenQuad.hpp"
-
-#include "glbase/gltool.hpp"
 #include <algorithm>
+#include <src/config.h>
+#include <src/objects.hpp>
 
 using std::vector;
 using glm::vec4;
@@ -35,8 +32,7 @@ ObjectManager::ObjectManager(): _skybox(){
 void ObjectManager::NewGame(){
     _objects.clear();
     _postProcessors.clear();
-    if(GameBoard)
-        delete GameBoard;
+    delete GameBoard;
     AddObject(&_skybox);
     AddObject(new BasicObject(objects::Table, vec3(0,-1,0), 0, "basic"));
     // Creates all game related objects itself
@@ -44,9 +40,9 @@ void ObjectManager::NewGame(){
     _clock = new Clock();
 
     // Post processing
-    AddPost(new FullscreenQuad(":/shader/blurVer.vs.glsl", ":/shader/blur.fs.glsl"));
-    AddPost(new FullscreenQuad(":/shader/blurHor.vs.glsl", ":/shader/blur.fs.glsl"));
-    AddPost(new FullscreenQuad(":/shader/overlay.vs.glsl", ":/shader/overlay.fs.glsl"));
+    AddPost(new FullscreenQuad("res/shader/blurVer.vs.glsl", "res/shader/blur.fs.glsl"));
+    AddPost(new FullscreenQuad("res/shader/blurHor.vs.glsl", "res/shader/blur.fs.glsl"));
+    AddPost(new FullscreenQuad("res/shader/overlay.vs.glsl", "res/shader/overlay.fs.glsl"));
 }
 
 void ObjectManager::UpdateFramebuffer(GLuint& framebuffer, GLuint& texture, GLuint& depth, int width, int height){
@@ -85,11 +81,10 @@ void ObjectManager::UpdateFramebuffer(GLuint& framebuffer, GLuint& texture, GLui
     assert(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);
 }
 
-void ObjectManager::Update(float elapsedTime, mat4 projection, vec2 mouse){
+void ObjectManager::Update(float elapsedTime, mat4 projection){
     // Ignore parameter unused
     (void)projection;
 
-    _lastMouse = mouse;
     if(Config::changed){
         Config::changed = false;
         Geos.Regenerate();
@@ -139,7 +134,7 @@ void ObjectManager::Update(float elapsedTime, mat4 projection, vec2 mouse){
  * @brief The DepthSort struct compares objects depth, using a given projection
  */
 struct DepthSort {
-    DepthSort(mat4 projection) { this->_projection = projection; }
+    explicit DepthSort(mat4 projection) { this->_projection = projection; }
     bool operator () (Drawable* obj1, Drawable* obj2) {
         vec4 projected1 = _projection * vec4(obj1->Position3D(), 1),
              projected2 = _projection * vec4(obj2->Position3D(), 1);
@@ -226,13 +221,13 @@ void ObjectManager::Draw(mat4 projection){
     }
 
     // Do Post and render to screen
-    if(!_postProcessors.size()) return;
+    if(_postProcessors.empty()) return;
     glDisable(GL_DEPTH_TEST);
     bool renderToPost = false;
     glBindFramebuffer(GL_FRAMEBUFFER, _mirrorFrameBuffer);
     Drawable::PostTexture = _postTexture;
 
-    for (uint i = 0; i < _postProcessors.size() - 1; ++i) {
+    for (int i = 0; i < _postProcessors.size() - 1; ++i) {
         _postProcessors[i]->draw(mat4());
         // Switch Framebuffer
         renderToPost = !renderToPost;
@@ -270,24 +265,29 @@ void ObjectManager::SetTheme(int theme){
         obj->recreateGeoemtry();
 }
 
-void ObjectManager::MouseDown(QMouseEvent *event){
-    if(event->button() & Qt::LeftButton)
-        _clickHappened = true;
-    if(event->button() & Qt::RightButton)
-        _camera.MouseDown(vec2(event->x(), event->y()));
+void ObjectManager::MouseButton(int button, int action){
+    if (action == GLFW_PRESS) {
+        if (button == GLFW_MOUSE_BUTTON_LEFT) {
+            _clickHappened = true;
+        } else {
+            _camera.MouseDown();
+        }
+    } else {
+        if (button == GLFW_MOUSE_BUTTON_LEFT) {
+            // Ignored
+        } else {
+            _camera.MouseUp();
+        }
+    }
 }
 
-void ObjectManager::MouseUp(QMouseEvent *event){
-    if(event->button() & Qt::RightButton)
-        _camera.MouseUp(vec2(event->x(), event->y()));
+void ObjectManager::MouseMove(double xPos, double yPos){
+    _lastMouse = vec2(xPos, yPos);
+    _camera.MouseMove(_lastMouse);
 }
 
-void ObjectManager::MouseMove(QMouseEvent *event){
-    _camera.MouseMove(vec2(event->x(), event->y()));
-}
-
-void ObjectManager::MouseWheel(QWheelEvent *event){
-    _camera.MouseWheel(event->angleDelta().ry() / -360.0f);
+void ObjectManager::MouseWheel(double xOffset, double yOffset){
+    _camera.MouseWheel((float)yOffset / -360.0f);
 }
 
 /**
@@ -302,7 +302,7 @@ vec3 ObjectManager::checkDepth(vec2 mousePos, mat4 viewProjection){
         return vec3();
     mousePos.y = height - mousePos.y;
     float pixel;
-    glReadPixels(mousePos.x, mousePos.y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &pixel);
+    glReadPixels(static_cast<GLint>(mousePos.x), static_cast<GLint>(mousePos.y), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &pixel);
 
     vec4 windowCoords((float)mousePos.x / (float)width * 2.f - 1.f,
                       (float)mousePos.y /(float)height * 2.f - 1.f,

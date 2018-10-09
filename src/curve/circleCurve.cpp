@@ -2,14 +2,9 @@
 #include <glm/common.hpp>
 #include <iostream>
 
-#define GLM_FORCE_RADIANS
-#define GLM_SWIZZLE
 #include <glm/gtx/transform.hpp>
 
 #include "math.h"
-#ifndef M_PI
-#define M_PI glm::pi<float>()
-#endif
 
 #include "circleCurve.hpp"
 
@@ -35,7 +30,7 @@ vector<vec2> CircleCurve::InterpolatedPoints(int resolution){
 }
 
 vec2 CircleCurve::InterpolatedPoint(float value){
-    value *= M_PI * 2.f;
+    value *= glm::pi<float>() * 2.f;
     return _radius * vec2(cos(value), sin(value));
 }
 
@@ -45,6 +40,6 @@ vector<vec2> CircleCurve::InterpolatedTangents(){
 
 vec2 CircleCurve::InterpolatedTangent(float value){
     value -= .25;
-    value *= M_PI * 2.f;
+    value *= glm::pi<float>() * 2.f;
     return vec2(cos(value), sin(value));
 }

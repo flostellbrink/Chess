@@ -1,15 +1,10 @@
 #ifndef BISHOP_H
 #define BISHOP_H
 
-#define GLM_FORCE_RADIANS
-
-#ifdef _WIN32
-    #include <windows.h>
-#endif
-
-#include <GL/gl.h>
-#include "objects/field.hpp"
-#include "objects/piece.hpp"
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include "src/objects/field.hpp"
+#include "src/objects/piece.hpp"
 
 class Bishop: public Piece{
     public:

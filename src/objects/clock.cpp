@@ -1,19 +1,12 @@
 #include <GL/glew.h>
-
 #include "clock.hpp"
 #include <string>
-
 #include "math.h"
-#ifndef M_PI
-#define M_PI glm::pi<float>()
-#endif
-
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <geometry/geoManager.hpp>
+#include <src/geometry/geoManager.hpp>
 #include <iostream>
-#include "glbase/gltool.hpp"
-#include "objects.hpp"
+#include "src/objects.hpp"
 #include "objectManager.hpp"
 #include "moves/moveBase.hpp"
 #include "moves/move.hpp"
@@ -60,7 +53,7 @@ Clock::Clock() {
 
     // Time cap indicator
     tmp = new BasicObject(objects::ClockTimeCap, vec3(3.4, 3, 16.8), 0, "noLight");
-    tmp->setRotationZ( 2*M_PI * (blackTime / 3600000) );
+    tmp->setRotationZ( 2*glm::pi<float>() * (blackTime / 3600000) );
     mngr->AddObject(tmp);
 
     /* Clock parts for WHITE */
@@ -85,13 +78,13 @@ Clock::Clock() {
 
     // Time cap indicator
     tmp = new BasicObject(objects::ClockTimeCap, vec3(-3.4, 3, 16.8), 0, "noLight");
-    tmp->setRotationZ( 2*M_PI * (whiteTime / 3600000) );
+    tmp->setRotationZ( 2*glm::pi<float>() * (whiteTime / 3600000) );
     mngr->AddObject(tmp);
 }
 
 float Clock::getHandRotation(float time, int secondsPerRotation){
     float msPerRotation = (float)(secondsPerRotation * 1000);
-    return -2 * M_PI * (time - startTime) / msPerRotation;
+    return -2 * glm::pi<float>() * (time - startTime) / msPerRotation;
 }
 
 void Clock::Update(float elapsedTimeMs, bool whiteTurn) {

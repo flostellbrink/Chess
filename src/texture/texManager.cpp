@@ -1,26 +1,23 @@
+#include <utility>
+
 #include <GL/glew.h>
 
 #include "texManager.hpp"
-#include "objects.hpp"
+#include "src/objects.hpp"
 #include <iostream>
+#include <src/logger.h>
 
 using std::string;
 
 TexManager::TexManager()
-{
-
-}
+= default;
 
 bool TexManager::IsReflected(int object){
-    if(object >= objects::whiteKing && object <= objects::blackPawn)
-        return true;
-    return false;
+    return object >= objects::whiteKing && object <= objects::blackPawn;
 }
 
 bool TexManager::IsTranslucent(int object){
-    if(_theme == themes::Glass && object >= objects::whiteKing && object <= objects::blackPawn)
-        return true;
-    return false;
+    return _theme == themes::Glass && object >= objects::whiteKing && object <= objects::blackPawn;
 }
 
 vector<TextureWrapper*> TexManager::Texture(int object){
@@ -37,10 +34,11 @@ float TexManager::reflectivity(int object){
         case objects::ClockGlassBorder:
         case objects::ClockFace:
             return 1;
+        default:break;
     }
     if(_theme == themes::Glass && object >= objects::whiteKing && object <= objects::blackPawn)
-        return .8;
-    return .1;
+        return .8f;
+    return .1f;
 }
 
 float TexManager::shininess(int object){
@@ -50,6 +48,7 @@ float TexManager::shininess(int object){
         case objects::ClockGlass:
         case objects::ClockGlassBorder:
             return 15;
+        default:break;
     }
     if(_theme == themes::Glass && object >= objects::whiteKing && object <= objects::blackPawn)
         return 10;
@@ -59,18 +58,18 @@ float TexManager::shininess(int object){
 vector<TextureWrapper*> TexManager::loadTexture(int object){
     switch( object ) {
         case objects::Table:
-            return storeTexture(object, ":/res/images/Melamine-wood-005.png");
+            return storeTexture(object, "res/images/Melamine-wood-005.png");
         case objects::Skybox:
-            return storeTexture(object, ":/res/images/LancellottiChapel/cube", GL_TEXTURE_CUBE_MAP);
+            return storeTexture(object, "res/images/LancellottiChapel/cube", GL_TEXTURE_CUBE_MAP);
         case objects::ClockBase:
-            return storeTexture(object, ":/res/images/Melamine-wood-004.png");
+            return storeTexture(object, "res/images/Melamine-wood-004.png");
         case objects::ClockFace:
-            return storeTexture(object, ":/res/images/clockFace.png", GL_TEXTURE_2D);
+            return storeTexture(object, "res/images/clockFace.png", GL_TEXTURE_2D);
         case objects::ClockTimeCap:
-            return storeTexture(object, ":/res/images/redMark.png");
+            return storeTexture(object, "res/images/redMark.png");
         case objects::ClockMarks:
-            return storeTexture(object, ":/res/images/Melamine-wood-006.png");
-            case objects::ClockLeg:
+            return storeTexture(object, "res/images/Melamine-wood-006.png");
+        case objects::ClockLeg:
         case objects::ClockGlassBorder:
         case objects::ClockButton:
         case objects::ClockButtonBorder:
@@ -78,80 +77,85 @@ vector<TextureWrapper*> TexManager::loadTexture(int object){
         case objects::blackSecondsHand:
         case objects::whiteMinutesHand:
         case objects::blackMinutesHand:
-            return storeTexture(object, ":/res/images/metal.png");
-        case objects::FullscreenQuad:
+            return storeTexture(object, "res/images/metal.png");
+        case objects::FullscreenQuad: {
             vector<TextureWrapper*> result;
-            result.push_back( Texture(":/res/images/whiteWins.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) );
-            result.push_back( Texture(":/res/images/blackWins.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) );
-            result.push_back( Texture(":/res/images/draw.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) );
+            result.push_back( Texture("res/images/whiteWins.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) );
+            result.push_back( Texture("res/images/blackWins.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) );
+            result.push_back( Texture("res/images/draw.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) );
             return result;
+        }
+        default:break;
     }
     switch( _theme ) {
         case themes::Default:
             switch( object ) {
                 case objects::BoardBorderTop:
                 case objects::BoardBorderBottom:
-                    return storeTexture(object, ":/res/images/Melamine-wood-004.png");
+                    return storeTexture(object, "res/images/Melamine-wood-004.png");
+                default:break;
             }
             if((object >= objects::Field00) && (object <= objects::Field77)){
                 vector<TextureWrapper*> result;
                 int row = (object - objects::Field00) / 8,
                     column = (object - objects::Field00) % 8;
                 if(row % 2 == column % 2) // black
-                    result.push_back( Texture(":/res/images/Melamine-wood-004.png") );
+                    result.push_back( Texture("res/images/Melamine-wood-004.png") );
                 else //white
-                    result.push_back( Texture(":/res/images/Melamine-wood-001.png") );
-                result.push_back( Texture(":/res/images/overlayMove.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) );
-                result.push_back( Texture(":/res/images/overlayHit.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) );
-                result.push_back( Texture(":/res/images/OverlayMate1.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) );
-                result.push_back( Texture(":/res/images/OverlayMate2.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) ); //broken
+                    result.push_back( Texture("res/images/Melamine-wood-001.png") );
+                result.push_back( Texture("res/images/overlayMove.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) );
+                result.push_back( Texture("res/images/overlayHit.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) );
+                result.push_back( Texture("res/images/OverlayMate1.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) );
+                result.push_back( Texture("res/images/OverlayMate2.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) ); //broken
 
                 _textureCollections[_theme][object] = result;
                 return result;
             }
             if((object >= objects::whiteKing && object <= objects::blackPawn)){
                 if(!(object % 2))// white
-                    return storeTexture(object, ":/res/images/Melamine-wood-001.png");
+                    return storeTexture(object, "res/images/Melamine-wood-001.png");
                 else //black
-                    return storeTexture(object, ":/res/images/Melamine-wood-004.png");
+                    return storeTexture(object, "res/images/Melamine-wood-004.png");
             }
         break;
         case themes::Glass:
             switch( object ) {
                 case objects::BoardBorderTop:
                 case objects::BoardBorderBottom:
-                    return storeTexture(object, ":/res/images/Melamine-wood-004.png");
+                    return storeTexture(object, "res/images/Melamine-wood-004.png");
+                default:break;
             }
             if((object >= objects::Field00) && (object <= objects::Field77)){
                 vector<TextureWrapper*> result;
                 int row = (object - objects::Field00) / 8,
                     column = (object - objects::Field00) % 8;
                 if(row % 2 == column % 2) // black
-                    result.push_back( Texture(":/res/images/Melamine-wood-004.png") );
+                    result.push_back( Texture("res/images/Melamine-wood-004.png") );
                 else //white
-                    result.push_back( Texture(":/res/images/Melamine-wood-001.png") );
-                result.push_back( Texture(":/res/images/overlayMove.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) );
-                result.push_back( Texture(":/res/images/overlayHit.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) );
-                result.push_back( Texture(":/res/images/OverlayMate1.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) );
-                result.push_back( Texture(":/res/images/OverlayMate2.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) ); //broken
+                    result.push_back( Texture("res/images/Melamine-wood-001.png") );
+                result.push_back( Texture("res/images/overlayMove.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) );
+                result.push_back( Texture("res/images/overlayHit.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) );
+                result.push_back( Texture("res/images/OverlayMate1.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) );
+                result.push_back( Texture("res/images/OverlayMate2.png", GL_TEXTURE_2D, GL_CLAMP_TO_EDGE) ); //broken
 
                 _textureCollections[_theme][object] = result;
                 return result;
             }
             if((object >= objects::whiteKing && object <= objects::blackPawn)){
                 if(!(object % 2))// white
-                    return storeTexture(object, ":/res/images/whiteGlass.png");
+                    return storeTexture(object, "res/images/whiteGlass.png");
                 else //black
-                    return storeTexture(object, ":/res/images/blackGlass.png");
+                    return storeTexture(object, "res/images/blackGlass.png");
             }
         break;
+        default:break;
     }
     std::cerr << "ChessWarn: Using default texture for objectID: " << object << std::endl;
-    return storeTexture(object, ":/res/images/Melamine-wood-001.png");
+    return storeTexture(object, "res/images/Melamine-wood-001.png");
 }
 
 vector<TextureWrapper*> TexManager::storeTexture(int object, std::string filePath, GLenum target, GLenum textureRepeat){
-    vector<TextureWrapper*> result = vector<TextureWrapper*> { Texture(filePath, target, textureRepeat) };
+    vector<TextureWrapper*> result = vector<TextureWrapper*> { Texture(std::move(filePath), target, textureRepeat) };
     _textureCollections[_theme][object] = result;
     return result;
 }
@@ -163,14 +167,11 @@ TextureWrapper* TexManager::Texture(string path, GLenum target, GLenum textureRe
 }
 
 TextureWrapper* TexManager::loadTexture(string path, GLenum target, GLenum textureRepeat){
-     TextureWrapper* result = new TextureWrapper(path, target, textureRepeat);
-     _textures[_theme][path] = result;
-     return result;
+    auto * result = new TextureWrapper(path, target, textureRepeat);
+    _textures[_theme][path] = result;
+    return result;
 }
 
 void TexManager::SetTheme(int theme){
     _theme = theme;
-    /*if(!_textures.count(theme))
-        _textures[theme] = map<string, TextureWrapper*>();
-    if necessary intialize, also _textureCollections */
 }

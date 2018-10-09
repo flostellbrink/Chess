@@ -1,13 +1,8 @@
 #ifndef LINECURVE_H
 #define LINECURVE_H
 
-#define GLM_FORCE_RADIANS
-
-#ifdef _WIN32
-    #include <windows.h>
-#endif
-
-#include <GL/gl.h>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include "curve.hpp"
 
 class LineCurve : public Curve{

@@ -2,13 +2,7 @@
 #define BOARD_H
 
 #include <GL/glew.h>
-#define GLM_FORCE_RADIANS
-
-#ifdef _WIN32
-    #include <windows.h>
-#endif
-
-#include <GL/gl.h>
+#include <GLFW/glfw3.h>
 #include "drawable.hpp"
 #include <vector>
 #include <random>
@@ -17,9 +11,9 @@
 
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "collision/collision.hpp"
-#include "geometry/geometry.hpp"
-#include "geometry/geoManager.hpp"
+#include "src/collision/collision.hpp"
+#include "src/geometry/geometry.hpp"
+#include "src/geometry/geoManager.hpp"
 #include "field.hpp"
 #include "piece.hpp"
 #include "clock.hpp"
@@ -44,7 +38,7 @@ public:
     void FieldClick(Field* field);
     void PieceClick(Piece* piece);
     Field* GetSideField(bool whiteSide);
-    void AddPiece(unsigned int objectId, Field* field);
+    void AddPiece(int objectId, Field* field);
     MoveBase* GetLastMove();
     void UndoMove(bool sim = true);
     void EnableAI(bool enabled = true);

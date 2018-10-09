@@ -1,25 +1,18 @@
 #ifndef OBJECTMANAGER_H
 #define OBJECTMANAGER_H
 
-#define GLM_FORCE_RADIANS
-
-#ifdef _WIN32
-    #include <windows.h>
-#endif
-
 #include <GL/glew.h>
-#include <GL/gl.h>
+#include <GLFW/glfw3.h>
 #include <vector>
 #include "drawable.hpp"
 #include "board.hpp"
 #include "camera.hpp"
-#include <QMouseEvent>
-#include "texture/texManager.hpp"
+#include "src/texture/texManager.hpp"
 #include "skybox.hpp"
-#include "geometry/geoManager.hpp"
-#include "animation/aniManager.hpp"
+#include "src/geometry/geoManager.hpp"
+#include "src/animation/aniManager.hpp"
 #include "basicObject.hpp"
-#include "collision/collManager.hpp"
+#include "src/collision/collManager.hpp"
 
 using std::vector;
 using glm::mat4;
@@ -32,15 +25,14 @@ class ObjectManager{
     public:
     ObjectManager();
     void NewGame();
-    void Update(float elapsedTime, mat4 projection, vec2 mouse);
+    void Update(float elapsedTime, mat4 projection);
     void Draw(mat4 projection);
     void AddObject(Drawable* object);
     void AddPost(Drawable* object);
 
-    void MouseDown(QMouseEvent *event);
-    void MouseUp(QMouseEvent *event);
-    void MouseMove(QMouseEvent *event);
-    void MouseWheel(QWheelEvent *event);
+    void MouseButton(int button, int action);
+    void MouseMove(double xPos, double yPos);
+    void MouseWheel(double xOffset, double yOffset);
 
     // Stores the state of the game. represents current game
     Board* GameBoard = 0;

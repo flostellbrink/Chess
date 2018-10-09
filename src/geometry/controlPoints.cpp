@@ -3,7 +3,7 @@
 #include <GL/glew.h>
 
 #include "controlPoints.hpp"
-#include "objects.hpp"
+#include "src/objects.hpp"
 
 ControlPoints::ControlPoints()
 {

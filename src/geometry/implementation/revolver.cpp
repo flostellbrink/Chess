@@ -2,7 +2,7 @@
 
 #include "glm/glm.hpp"
 #include "revolver.hpp"
-#include "config.h"
+#include "src/config.h"
 #include <iostream>
 
 using glm::cross;
@@ -14,7 +14,7 @@ Revolver::Revolver(Curve* baseCurve, Curve* heightCurve, float scale, bool clock
 
 void Revolver::Create() {
     // TODO respect heights max x and bases max size
-    int texWidth = _scale * 4 + 1; // Texture needs to seemlesly wrap around
+    int texWidth = static_cast<int>(_scale * 4 + 1); // Texture needs to seemlesly wrap around
 
     vector<vec2> basePoints = _baseCurve->InterpolatedPoints(Config::geoResolution1),
         heightPoints = _heightCurve->InterpolatedPoints(Config::geoResolution2),
@@ -32,10 +32,10 @@ void Revolver::Create() {
             _geoPositions.push_back(_scale * vec3(height.x * base.x, height.y, height.x * base.y));
 
             if(_clockTexture)
-                _geoTextureCoords.push_back(vec2((height.x * base.x) / -2.f + .5f, (height.x * base.y) / -2.f + .5f));
+                _geoTextureCoords.emplace_back((height.x * base.x) / -2.f + .5f, (height.x * base.y) / -2.f + .5f);
             else
-                _geoTextureCoords.push_back(vec2((float)j / ((float)baseRes - 1) * (float)texWidth,
-                    i == 0 ? 0 : glm::length(heightPoints[i-1] - height) * _scale / 5));
+                _geoTextureCoords.emplace_back((float)j / ((float)baseRes - 1) * (float)texWidth,
+                    i == 0 ? 0 : glm::length(heightPoints[i-1] - height) * _scale / 5);
 
             if(i < heightRes - 1)
                 _geoNormals.push_back(glm::normalize(cross(
@@ -43,15 +43,15 @@ void Revolver::Create() {
                     vec3(baseTangent[j].x, 0, baseTangent[j].y))));
             else
                 // Last points tangent is ususally undefined. set it to up
-                _geoNormals.push_back(vec3(0,1,0));
+                _geoNormals.emplace_back(0,1,0);
 
             if(i < heightRes - 1 && j < baseRes - 1){
-                _geoIndices.push_back((i + 0) * baseRes + (j + 0));
-                _geoIndices.push_back((i + 0) * baseRes + (j + 1));
-                _geoIndices.push_back((i + 1) * baseRes + (j + 0));
-                _geoIndices.push_back((i + 0) * baseRes + (j + 1));
-                _geoIndices.push_back((i + 1) * baseRes + (j + 1));
-                _geoIndices.push_back((i + 1) * baseRes + (j + 0));
+                _geoIndices.push_back(static_cast<unsigned int &&>((i + 0) * baseRes + (j + 0)));
+                _geoIndices.push_back(static_cast<unsigned int &&>((i + 0) * baseRes + (j + 1)));
+                _geoIndices.push_back(static_cast<unsigned int &&>((i + 1) * baseRes + (j + 0)));
+                _geoIndices.push_back(static_cast<unsigned int &&>((i + 0) * baseRes + (j + 1)));
+                _geoIndices.push_back(static_cast<unsigned int &&>((i + 1) * baseRes + (j + 1)));
+                _geoIndices.push_back(static_cast<unsigned int &&>((i + 1) * baseRes + (j + 0)));
             }
         }
     }

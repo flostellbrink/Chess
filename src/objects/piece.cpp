@@ -2,22 +2,16 @@
 
 #include "piece.hpp"
 #include <iostream>
-#include "gltool.hpp"
 #include <glm/common.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/transform.hpp>
-
-#define GLM_FORCE_RADIANS
-#define GLM_SWIZZLE
+#include <src/logger.h>
 #include "math.h"
-#ifndef M_PI
-#define M_PI glm::pi<float>()
-#endif
 
 #include "objectManager.hpp"
-#include "animation/fadeAnimation.hpp"
-#include "animation/backLoopingAnimation.hpp"
-#include "animation/catmullRomAnimation.hpp"
+#include "src/animation/fadeAnimation.hpp"
+#include "src/animation/backLoopingAnimation.hpp"
+#include "src/animation/catmullRomAnimation.hpp"
 #include "moves/hit.hpp"
 #include "moves/move.hpp"
 
@@ -123,10 +117,10 @@ int Piece::GetIdWithoutColor(){
 }
 
 void Piece::draw(glm::mat4 projection_matrix){
-    if(_program == 0){
-        std::cerr << "program not loaded" << std::endl;
+    if(_program == nullptr){
+        Logger::error("program not loaded");
     }
-    glUseProgram(_program);
+    _program->use();
 
     vector<TextureWrapper*> textures = ObjectManager::Textures.Texture(_objectId);
     if(textures.size() > 0)
@@ -135,35 +129,40 @@ void Piece::draw(glm::mat4 projection_matrix){
     glActiveTexture(GL_TEXTURE0 + 3);
     glBindTexture(GL_TEXTURE_2D, ShadowTexture);
 
-    glUniform1i(glGetUniformLocation(_program, "tex"), 0);
-    glUniform1i(glGetUniformLocation(_program, "texShadow"), 3);
+    _program->bind(0, "tex");
+    _program->bind(3, "texShadow");
 
-    glUniformMatrix4fv(glGetUniformLocation(_program, "view_projection_matrix"), 1, GL_FALSE, glm::value_ptr(projection_matrix));
-    glUniformMatrix4fv(glGetUniformLocation(_program, "view_projection_shadow"), 1, GL_FALSE, glm::value_ptr(ShadowViewProjection * _modelViewMatrix));
-    glUniformMatrix4fv(glGetUniformLocation(_program, "model_matrix"), 1, GL_FALSE, glm::value_ptr(_modelViewMatrix));
-    glUniformMatrix4fv(glGetUniformLocation(_program, "tra_inv_model_matrix"), 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(_modelViewMatrix))));
+    auto view_projection_shadow = ShadowViewProjection * _modelViewMatrix;
+    auto tra_inv_model_matrix = glm::transpose(glm::inverse(_modelViewMatrix));
+    _program->bind(projection_matrix, "view_projection_matrix");
+    _program->bind(view_projection_shadow, "view_projection_shadow");
+    _program->bind(_modelViewMatrix, "model_matrix");
+    _program->bind(tra_inv_model_matrix, "tra_inv_model_matrix");
 
-    glUniform3fv(glGetUniformLocation(_program, "lightPos"), 1, value_ptr(_lightPos));
-    glUniform3fv(glGetUniformLocation(_program, "camPos"), 1, value_ptr(_camPos));
+    _program->bind(_lightPos, "lightPos");
+    _program->bind(_camPos, "camPos");
 
     vec3 La = vec3(.5, .5, .5);
-    glUniform3fv(glGetUniformLocation(_program, "La"), 1, value_ptr(La));
     vec3 ka = vec3(.5, .5, .5);
-    glUniform3fv(glGetUniformLocation(_program, "ka"), 1, value_ptr(ka));
     vec3 Ld = vec3(.5, .5, .5);
-    glUniform3fv(glGetUniformLocation(_program, "Ld"), 1, value_ptr(Ld));
     vec3 kd = vec3(1, 1, 1);
-    glUniform3fv(glGetUniformLocation(_program, "kd"), 1, value_ptr(kd));
+    _program->bind(La, "La");
+    _program->bind(ka, "ka");
+    _program->bind(Ld, "Ld");
+    _program->bind(kd, "kd");
 
-    glUniform1f(glGetUniformLocation(_program, "reflectivity"), ObjectManager::Textures.reflectivity(_objectId));
-    glUniform1f(glGetUniformLocation(_program, "shininess"), ObjectManager::Textures.shininess(_objectId));
+    _program->bind(ObjectManager::Textures.reflectivity(_objectId), "reflectivity");
+    _program->bind(ObjectManager::Textures.shininess(_objectId), "shininess");
 
     _geo->Draw();
 }
 
 void Piece::drawShadow(glm::mat4 projection_matrix){
-    glUseProgram(_programShadow);
-    glUniformMatrix4fv(glGetUniformLocation(_programShadow, "view_projection_shadow"), 1, GL_FALSE, glm::value_ptr(projection_matrix * _modelViewMatrix));
+    _programShadow->use();
+
+    auto view_projection_shadow = projection_matrix * _modelViewMatrix;
+    _programShadow->bind(_modelViewMatrix, "view_projection_shadow");
+
     _geo->Draw();
 }
 
@@ -191,12 +190,12 @@ void Piece::AddHitOrMove(Field *field, vector<MoveBase *> &moves){
 
 std::string Piece::getVertexShader()
 {
-    return Drawable::loadShaderFile(":/shader/basic.vs.glsl");
+    return "res/shader/basic.vs.glsl";
 }
 
 std::string Piece::getFragmentShader()
 {
-    return Drawable::loadShaderFile(":/shader/basic.fs.glsl");
+    return "res/shader/basic.fs.glsl";
 }
 
 vec3 Piece::Position3D(){

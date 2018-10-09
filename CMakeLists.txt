@@ -22,6 +22,10 @@ add_executable(${PROJECT_NAME}
         src/objects.hpp
         src/config.h
         src/config.cpp
+        src/logger.h
+        src/logger.cpp
+        src/window.h
+        src/window.cpp
         src/objects/camera.hpp
         src/objects/camera.cpp
         src/objects/objectManager.hpp
@@ -128,6 +132,14 @@ add_executable(${PROJECT_NAME}
         src/texture/image.cpp
         src/texture/texturewrapper.hpp
         src/texture/texturewrapper.cpp
+        src/texture/shader.h
+        src/texture/shader.cpp
+        )
+
+target_link_libraries(${PROJECT_NAME}
+        ${CONAN_LIBS}
+        ${OPENGL_LIBRARY}
+        lodepng
         )
 
 # Copy shaders to build directory

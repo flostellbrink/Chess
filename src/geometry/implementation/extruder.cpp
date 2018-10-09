@@ -4,15 +4,9 @@
 #include "extruder.hpp"
 #include <iostream>
 
-#define GLM_FORCE_RADIANS
-#define GLM_SWIZZLE
 #include <glm/gtx/transform.hpp>
-#include "config.h"
-
+#include "src/config.h"
 #include "math.h"
-#ifndef M_PI
-#define M_PI glm::pi<float>()
-#endif
 
 using glm::cross;
 

@@ -1,10 +1,9 @@
 #include <GL/glew.h>
 
 #include "collision.hpp"
-#include "glbase/gltool.hpp"
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
-#include "objects/objectManager.hpp"
+#include "src/objects/objectManager.hpp"
 
 using std::min;
 using std::max;

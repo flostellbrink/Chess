@@ -2,22 +2,16 @@
 
 #include "king.hpp"
 #include <iostream>
-#include "gltool.hpp"
 #include <glm/common.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/transform.hpp>
 
-#define GLM_FORCE_RADIANS
-#define GLM_SWIZZLE
 #include "math.h"
-#ifndef M_PI
-#define M_PI glm::pi<float>()
-#endif
 
-#include "objects/objectManager.hpp"
-#include "objects/moves/move.hpp"
-#include "objects/moves/hit.hpp"
-#include "objects/moves/rochade.hpp"
+#include "src/objects/objectManager.hpp"
+#include "src/objects/moves/move.hpp"
+#include "src/objects/moves/hit.hpp"
+#include "src/objects/moves/rochade.hpp"
 
 using glm::vec3;
 using glm::mat4;
@@ -28,7 +22,7 @@ King::King(Board* board, int objectID, Field *field) : Piece(board, objectID, fi
 
 void King::init(){
     Piece::init();
-    _yRotation = M_PI / 2.;
+    _yRotation = glm::pi<float>() / 2.f;
 }
 
 vector<MoveBase*> King::GetMoves(){
@@ -45,10 +39,10 @@ vector<MoveBase*> King::GetMoves(){
         AddHitOrMove(_field->Down->Left, result);
         AddHitOrMove(_field->Down->Right, result);
     }
-    if(_board->isRochadePossible(isWhite(), 1))
-        result.push_back(new Rochade(this, _board->GetRook(isWhite(), 1), _field->Left->Left, _field->Left));
-    if(_board->isRochadePossible(isWhite(), 0))
-        result.push_back(new Rochade(this, _board->GetRook(isWhite(), 0), _field->Right->Right, _field->Right));
+    if(_board->isRochadePossible(isWhite(), true))
+        result.push_back(new Rochade(this, _board->GetRook(isWhite(), true), _field->Left->Left, _field->Left));
+    if(_board->isRochadePossible(isWhite(), false))
+        result.push_back(new Rochade(this, _board->GetRook(isWhite(), false), _field->Right->Right, _field->Right));
     return result;
 }
 

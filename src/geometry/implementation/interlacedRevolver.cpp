@@ -3,7 +3,7 @@
 #include "glm/glm.hpp"
 #include "interlacedRevolver.hpp"
 #include <iostream>
-#include "config.h"
+#include "src/config.h"
 
 using glm::cross;
 
@@ -39,8 +39,8 @@ void InterlacedRevolver::Create() {
 
             _geoPositions.push_back(_scale * vec3(height.x * base.x, height.y, height.x * base.y));
 
-            _geoTextureCoords.push_back(vec2((float)j / ((float)baseRes - 1) * (float)texWidth,
-                                             i == 0 ? 0 : glm::length(heightPoints[i-1] - height) * _scale / 5));
+            _geoTextureCoords.emplace_back((float)j / ((float)baseRes - 1) * (float)texWidth,
+                                             i == 0 ? 0 : glm::length(heightPoints[i-1] - height) * _scale / 5);
 
             if(i < heightRes - 1)
                 _geoNormals.push_back(glm::normalize(cross(
@@ -48,15 +48,15 @@ void InterlacedRevolver::Create() {
                     vec3(baseTangent[j].x, 0, baseTangent[j].y))));
             else
                 // Last points tangent is ususally undefined. set it to up
-                _geoNormals.push_back(vec3(0,1,0));
+                _geoNormals.emplace_back(0,1,0);
 
             if(i < heightRes - 1 && j < baseRes - 1){
-                _geoIndices.push_back((uint &&) ((i + 0) + heightRes * (j + 0)));
-                _geoIndices.push_back((uint &&) ((i + 0) + heightRes * (j + 1)));
-                _geoIndices.push_back((uint &&) ((i + 1) + heightRes * (j + 0)));
-                _geoIndices.push_back((uint &&) ((i + 0) + heightRes * (j + 1)));
-                _geoIndices.push_back((uint &&) ((i + 1) + heightRes * (j + 1)));
-                _geoIndices.push_back((uint &&) ((i + 1) + heightRes * (j + 0)));
+                _geoIndices.push_back(((i + 0) + heightRes * (j + 0)));
+                _geoIndices.push_back(((i + 0) + heightRes * (j + 1)));
+                _geoIndices.push_back(((i + 1) + heightRes * (j + 0)));
+                _geoIndices.push_back(((i + 0) + heightRes * (j + 1)));
+                _geoIndices.push_back(((i + 1) + heightRes * (j + 1)));
+                _geoIndices.push_back(((i + 1) + heightRes * (j + 0)));
             }
         }
     }

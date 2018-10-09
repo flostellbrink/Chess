@@ -2,14 +2,9 @@
 #include <glm/common.hpp>
 #include <iostream>
 
-#define GLM_FORCE_RADIANS
-#define GLM_SWIZZLE
 #include <glm/gtx/transform.hpp>
 
 #include "math.h"
-#ifndef M_PI
-#define M_PI glm::pi<float>()
-#endif
 
 #include "lineCurve.hpp"
 
@@ -33,7 +28,7 @@ vector<vec2> LineCurve::InterpolatedPoints(int resolution) {
 vec2 LineCurve::InterpolatedPoint(float value){
     // Move value into -1 1 range
     value = (value - .5f) * 2;
-    return vec2(value * 2, cos(value * M_PI * _radius));
+    return vec2(value * 2, cos(value * glm::pi<float>() * _radius));
 }
 
 vector<vec2> LineCurve::InterpolatedTangents(){
@@ -43,8 +38,8 @@ vector<vec2> LineCurve::InterpolatedTangents(){
 vec2 LineCurve::InterpolatedTangent(float value){
     // Move value into -1 1 range
     value = (value - .5f) * 2;
-    value *= M_PI * _radius;
+    value *= glm::pi<float>() * _radius;
     // Shift by a quarter rotation
-    value -= M_PI * .25f;
+    value -= glm::pi<float>() * .25f;
     return vec2(sin(value), cos(value));
 }

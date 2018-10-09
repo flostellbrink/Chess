@@ -1,7 +1,6 @@
 #include <GL/glew.h>
 #include "texturewrapper.hpp"
-#include <texture/image.hpp>
-#include "glbase/gltool.hpp"
+#include <src/texture/image.hpp>
 #include <iostream>
 
 TextureWrapper::TextureWrapper(){
@@ -13,11 +12,10 @@ TextureWrapper::TextureWrapper(const std::string& texturePath, GLenum target, GL
     _textureHandle = 0;
     glGenTextures(1, &_textureHandle);
     glBindTexture(target, _textureHandle);
-    VERIFY(CG::checkError());
 
     if(target == GL_TEXTURE_CUBE_MAP){
         for(GLuint i = 0; i < 6; i++){
-            Image image = Image(texturePath + std::to_string(i) + ".jpg");
+            Image image = Image(texturePath + std::to_string(i) + ".png");
             glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, image.getWidth(), image.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.getData());
         }
 
@@ -38,7 +36,6 @@ TextureWrapper::TextureWrapper(const std::string& texturePath, GLenum target, GL
 }
 
 void TextureWrapper::Bind(GLenum target, unsigned int textureNum) const {
-    //TODO: expand to support binding multiple textures
     glActiveTexture(GL_TEXTURE0 + textureNum);
     glBindTexture(target, _textureHandle);
 }
