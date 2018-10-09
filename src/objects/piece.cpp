@@ -161,7 +161,7 @@ void Piece::drawShadow(glm::mat4 projection_matrix){
     _programShadow->use();
 
     auto view_projection_shadow = projection_matrix * _modelViewMatrix;
-    _programShadow->bind(_modelViewMatrix, "view_projection_shadow");
+    _programShadow->bind(view_projection_shadow, "view_projection_shadow");
 
     _geo->Draw();
 }

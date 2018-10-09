@@ -5,6 +5,13 @@
 #include "window.h"
 #include "logger.h"
 
+void Window::UpdateSize()
+{
+    glfwGetFramebufferSize(handle, &width, &height);
+    Config::viewportWidth = width;
+    Config::viewportHeight = height;
+}
+
 /**
  * Initialize a new window.
  */
@@ -31,10 +38,9 @@ Window::Window() {
     }
     glfwMakeContextCurrent(handle);
 
-    glfwGetFramebufferSize(handle, &width, &height);
+    UpdateSize();
 
     glfwSetInputMode(handle, GLFW_STICKY_KEYS, GL_TRUE);
-    glfwSetInputMode(handle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     glfwPollEvents();
     glfwSetCursorPos(handle, width / 2, height / 2);
@@ -59,5 +65,6 @@ void Window::SetFullScreen() {
     } else {
         glfwSetWindowMonitor(handle, nullptr, 0, 0, 1280, 720, 0);
     }
-    glfwGetFramebufferSize(handle, &width, &height);
+
+    UpdateSize();
 }

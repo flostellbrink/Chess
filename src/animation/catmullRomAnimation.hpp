@@ -53,9 +53,9 @@ CatmullRomAnimation<T>::CatmullRomAnimation(int duration, T& property, vector<T>
 template<class T>
 T CatmullRomAnimation<T>::ValueAt(float value){
     // Figure out what segment we are in
-    auto segments = _values.size() / 3 - 1;
+    auto segments = static_cast<int>(_values.size()) / 3 - 1;
     value *= segments;
-    auto segment = value;
+    auto segment = static_cast<int>(value);
     if (segment == segments)
         segment--;
     value -= segment;

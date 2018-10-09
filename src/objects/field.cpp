@@ -80,8 +80,6 @@ void Field::draw(glm::mat4 projection_matrix){
     _program->bind(2, "texReflection");
     _program->bind(3, "texShadow");
 
-    _program->bind(3, "texShadow");
-
     auto texSize = vec2(Config::viewportWidth, Config::viewportHeight);
     _program->bind(texSize, "texSize");
 

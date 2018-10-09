@@ -5,7 +5,7 @@
 #include "src/texture/image.hpp"
 #include "src/objects/objectManager.hpp"
 
-vec3 Drawable::_lightPos = vec3(0,20,0);
+vec3 Drawable::_lightPos = vec3(0,20,-5);
 vec3 Drawable::_camPos = vec3();
 GLuint Drawable::ReflectionTexture;
 GLuint Drawable::PostTexture;

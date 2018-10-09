@@ -24,7 +24,7 @@ AniManager ObjectManager::Animations;
 ObjectManager ObjectManager::Instance;
 CollManager ObjectManager::Collisions;
 
-const GLuint defaultFrambuffer = 1;
+const GLuint defaultFrambuffer = 0;
 
 ObjectManager::ObjectManager(): _skybox(){
 }
@@ -240,11 +240,11 @@ void ObjectManager::Draw(mat4 projection){
     _postProcessors[_postProcessors.size()-1]->draw(mat4());
     glEnable(GL_DEPTH_TEST);
 
-    /*
+    /* Blits shadow map when uncommented
     glBindFramebuffer(GL_READ_FRAMEBUFFER, _shadowFrameBuffer);
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, defaultFrambuffer);
     glBlitFramebuffer(0, 0, _shadowRes, _shadowRes, 0, 0, Config::viewportWidth, Config::viewportHeight, GL_COLOR_BUFFER_BIT, GL_NEAREST);
-    /**/
+    // */
 }
 
 void ObjectManager::AddObject(Drawable *object){
@@ -287,7 +287,7 @@ void ObjectManager::MouseMove(double xPos, double yPos){
 }
 
 void ObjectManager::MouseWheel(double xOffset, double yOffset){
-    _camera.MouseWheel((float)yOffset / -360.0f);
+    _camera.MouseWheel(static_cast<float>(yOffset));
 }
 
 /**

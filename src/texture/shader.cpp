@@ -104,21 +104,16 @@ void Shader::use() {
  * @return Handle of uniform variable.
  */
 GLint Shader::getUniform(const std::string &uniform_name) {
-  // Look name up in cache
-  auto cache_result = cache_.find(uniform_name);
-  if (cache_result != cache_.end()) {
-    return cache_result->second;
-  }
-
-  // Look name up in shader
-  auto result = glGetUniformLocation(handle, uniform_name.data());
+  const auto result = glGetUniformLocation(handle, uniform_name.data());
   if (result < 0) {
     Logger::error("Could not find uniform: " + uniform_name);
   }
-
-  // Create cache entry and return value
-  cache_[uniform_name] = result;
   return result;
+}
+
+bool Shader::hasUniform(const std::string &uniform_name)
+{
+    return glGetUniformLocation(handle, uniform_name.data()) > 0;
 }
 
 /**

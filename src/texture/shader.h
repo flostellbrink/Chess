@@ -11,13 +11,12 @@
  * Holds a shader program.
  */
 class Shader {
- private:
-  std::map<std::string, int> cache_;
  public:
   Shader(const std::string & vertex_file_path, const std::string & fragment_file_path);
   GLuint handle;
   void use();
   GLint getUniform(const std::string &uniform_name);
+  bool hasUniform(const std::string &uniform_name);
   void bind(int scalar, const std::string &uniform_name);
   void bind(float scalar, const std::string &uniform_name);
   void bind(glm::vec2 &vector, const std::string &uniform_name);

@@ -20,4 +20,4 @@ bool Config::demo = false;
 
 bool Config::changed = false;
 
-bool Config::fullScreen = false;
+bool Config::fullScreen = true;

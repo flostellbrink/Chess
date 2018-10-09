@@ -24,7 +24,18 @@ void messageCallback(GLenum source,
                      const GLchar *message,
                      const void *userParam) {
     // OpenGL debug callback - great location for a breakpoint ;)
-    Logger::warn(message);
+    switch (severity) {
+        case GL_DEBUG_SEVERITY_HIGH:
+            Logger::error(message);
+            break;
+        case GL_DEBUG_SEVERITY_NOTIFICATION:
+            // Do not log info messages
+            // Logger::info(message);
+            break;
+        default:
+            Logger::warn(message);
+            break;
+    }
 }
 
 /**
@@ -116,6 +127,30 @@ void keyCallback(GLFWwindow *handle, int key, int scancode, int action, int mods
 }
 
 /**
+ * Callback on cursor movement.
+ */
+static void cursorPosCallback(GLFWwindow* window, double xpos, double ypos)
+{
+    ObjectManager::Instance.MouseMove(xpos, ypos);
+}
+
+/**
+ * Callback on mouse button clicks.
+ */
+void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+{
+    ObjectManager::Instance.MouseButton(button, action);
+}
+
+/**
+ * Callback on scroll wheel movement.
+ */
+void scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
+{
+    ObjectManager::Instance.MouseWheel(xoffset, yoffset);
+}
+
+/**
  * Entry point for engine.
  * @param argc Number of arguments.
  * @param argv Arguments pointer.
@@ -131,23 +166,27 @@ int main(int argc, char *argv[]) {
 
         // Setup input callback
         glfwSetKeyCallback(window->handle, keyCallback);
+        glfwSetCursorPosCallback(window->handle, cursorPosCallback);
+        glfwSetMouseButtonCallback(window->handle, mouseButtonCallback);
+        glfwSetScrollCallback(window->handle, scrollCallback);
 
         // Create game and renderer
         ObjectManager::Instance.NewGame();
 
-        double lastFrameTime = glfwGetTime();
+        auto lastFrameTime = glfwGetTime();
         do {
             auto currentFrame = glfwGetTime();
             auto deltaTime = static_cast<float>(currentFrame - lastFrameTime);
             lastFrameTime = currentFrame;
 
             // Update and render game
-            ObjectManager::Instance.Update(deltaTime, glm::perspective(90.0f, 16.f/9.f, 0.1f, 100.0f));
+            ObjectManager::Instance.Update(deltaTime * 1000, glm::perspective(90.0f, 16.f/9.f, 0.1f, 100.0f));
             ObjectManager::Instance.Draw(glm::perspective(90.0f, 16.f/9.f, 0.1f, 100.0f));
-
+            
             glfwSwapBuffers(window->handle);
             glfwPollEvents();
         } while (glfwWindowShouldClose(window->handle) == GLFW_FALSE);
+
         glfwTerminate();
         return 0;
     } catch (std::exception &exception) {

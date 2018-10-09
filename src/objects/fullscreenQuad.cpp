@@ -54,16 +54,21 @@ void FullscreenQuad::draw(glm::mat4 projection_matrix){
             ? vec2(1.f, overlayRatio / viewPortRatio)
             : vec2(viewPortRatio / overlayRatio , 1.f);
     fac *= 1.5f;
-    _program->bind(fac, "overlayFac");
+    if (_program->hasUniform("overlayFac")) {
+        _program->bind(fac, "overlayFac");
+    }
 
     // Make sure textures are loaded before needed, popping and frame drop are not nice!
     ObjectManager::Textures.Texture(_objectId);
-    if(OverlayOpacity > 0 && OverlayState >= 0){
-        ObjectManager::Textures.Texture(_objectId)[OverlayState]->Bind(GL_TEXTURE_2D, 1);
-        _program->bind(1, "texOverlay");
-        _program->bind(1, "texOverlayEnabled");
-    } else {
-        _program->bind(0, "texOverlayEnabled");
+    if (_program->hasUniform("texOverlay")) {
+        if (OverlayOpacity > 0 && OverlayState >= 0) {
+            ObjectManager::Textures.Texture(_objectId)[OverlayState]->Bind(GL_TEXTURE_2D, 1);
+            _program->bind(1, "texOverlay");
+            _program->bind(1, "texOverlayEnabled");
+        }
+        else {
+            _program->bind(0, "texOverlayEnabled");
+        }
     }
 
     _geo->Draw();

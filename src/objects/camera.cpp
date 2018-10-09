@@ -39,11 +39,9 @@ mat4 Camera::ViewMatAtCamera(){
 }
 
 mat4 Camera::ViewProjectionShadow(){
-    vec3 up(0,1,0), lightDir = -up, lightPos = Drawable::_lightPos;
-    // There is some trick to perspective shadows I don't quite get
-    mat4 //shadowProjection = glm::perspective(glm::radians(120.0f), 1.0f, 10.f, 25.0f),
-         shadowProjection = glm::ortho<float>(-30,30,-30,30,10,25),
-         shadowView = glm::lookAt(lightPos, lightPos + lightDir, vec3(1,0,0));
+    auto lightPos = Drawable::_lightPos;
+    auto shadowProjection = glm::ortho<float>(-30, 30, -30, 30, 10, 100);
+    auto shadowView = glm::lookAt(lightPos, vec3(), vec3(0,1,0));
 
     return shadowProjection * shadowView;
 }

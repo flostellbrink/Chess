@@ -98,8 +98,6 @@ Board::Board(Camera* camera) {
 
 void Board::ResetGame(){
     Drawable::OverlayState = -1;
-    // On a proper reset this has to be animated
-    //Drawable::OverlayOpacity = 0;
     ObjectManager::Animations.Reset();
     ObjectManager::Instance.NewGame();
 }

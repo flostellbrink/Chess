@@ -8,6 +8,8 @@
  * Holds a window and can be used instead of a framebuffer for output.
  */
 class Window {
+    void UpdateSize();
+
 public:
     Window();
 
