@@ -18,122 +18,66 @@ include_directories(
 )
 
 add_executable(${PROJECT_NAME}
-        src/main.cpp
-        src/objects.hpp
-        src/config.h
-        src/config.cpp
-        src/logger.h
-        src/logger.cpp
-        src/window.h
-        src/window.cpp
-        src/objects/camera.hpp
-        src/objects/camera.cpp
-        src/objects/objectManager.hpp
-        src/objects/objectManager.cpp
-        src/objects/drawable.hpp
-        src/objects/drawable.cpp
-        src/objects/basicObject.hpp
-        src/objects/basicObject.cpp
-        src/objects/fullscreenQuad.hpp
-        src/objects/fullscreenQuad.cpp
-        src/objects/board.hpp
-        src/objects/board.cpp
-        src/objects/field.hpp
-        src/objects/field.cpp
-        src/objects/piece.hpp
-        src/objects/piece.cpp
-        src/objects/pieces/bishop.hpp
-        src/objects/pieces/bishop.cpp
-        src/objects/pieces/king.hpp
-        src/objects/pieces/king.cpp
-        src/objects/pieces/knight.hpp
-        src/objects/pieces/knight.cpp
-        src/objects/pieces/pawn.hpp
-        src/objects/pieces/pawn.cpp
-        src/objects/pieces/queen.hpp
-        src/objects/pieces/queen.cpp
-        src/objects/pieces/rook.hpp
-        src/objects/pieces/rook.cpp
-        src/objects/clock.hpp
-        src/objects/clock.cpp
-        src/objects/skybox.hpp
-        src/objects/skybox.cpp
-        src/objects/moves/moveBase.hpp
-        src/objects/moves/moveBase.cpp
-        src/objects/moves/move.hpp
-        src/objects/moves/move.cpp
-        src/objects/moves/hit.hpp
-        src/objects/moves/hit.cpp
-        src/objects/moves/rochade.hpp
-        src/objects/moves/rochade.cpp
-        src/objects/moves/transform.hpp
-        src/objects/moves/transform.cpp
-        src/collision/collManager.hpp
-        src/collision/collManager.cpp
-        src/collision/collision.hpp
-        src/collision/collision.cpp
-        src/geometry/geoManager.hpp
-        src/geometry/geoManager.cpp
-        src/geometry/controlPoints.hpp
-        src/geometry/controlPoints.cpp
-        src/geometry/geometry.hpp
-        src/geometry/geometry.cpp
-        src/geometry/compositeGeometry.hpp
-        src/geometry/compositeGeometry.cpp
-        src/geometry/implementation/boardBorderBottom.hpp
-        src/geometry/implementation/boardBorderBottom.cpp
-        src/geometry/implementation/boardBorderTop.hpp
-        src/geometry/implementation/boardBorderTop.cpp
-        src/geometry/implementation/cube.hpp
-        src/geometry/implementation/cube.cpp
-        src/geometry/implementation/extruder.hpp
-        src/geometry/implementation/extruder.cpp
-        src/geometry/implementation/extruderFace.hpp
-        src/geometry/implementation/extruderFace.cpp
-        src/geometry/implementation/interlacedRevolver.hpp
-        src/geometry/implementation/interlacedRevolver.cpp
-        src/geometry/implementation/quad.hpp
-        src/geometry/implementation/quad.cpp
-        src/geometry/implementation/revolver.hpp
-        src/geometry/implementation/revolver.cpp
-        src/geometry/implementation/square.hpp
-        src/geometry/implementation/square.cpp
-        src/curve/curve.hpp
-        src/curve/curve.cpp
-        src/curve/catmullRomCurve.hpp
-        src/curve/catmullRomCurve.cpp
-        src/curve/circleCurve.hpp
-        src/curve/circleCurve.cpp
-        src/curve/fixedPointsCurve.hpp
-        src/curve/fixedPointsCurve.cpp
-        src/curve/lineCurve.hpp
-        src/curve/lineCurve.cpp
-        src/animation/aniManager.hpp
-        src/animation/aniManager.cpp
-        src/animation/animationBase.hpp
-        src/animation/animation.hpp
-        src/animation/animation.cpp
-        src/animation/loopingAnimation.hpp
-        src/animation/loopingAnimation.cpp
-        src/animation/parallelAnimation.hpp
-        src/animation/parallelAnimation.cpp
-        src/animation/serialAnimation.hpp
-        src/animation/serialAnimation.cpp
-        src/animation/backLoopingAnimation.hpp
-        src/animation/backLoopingAnimation.cpp
-        src/animation/catmullRomAnimation.hpp
-        src/animation/fadeAnimation.hpp
-        src/animation/fadeAnimation.cpp
-        src/animation/linearAnimation.hpp
-        src/animation/linearAnimation.cpp
-        src/texture/texManager.hpp
-        src/texture/texManager.cpp
-        src/texture/image.hpp
-        src/texture/image.cpp
-        src/texture/texturewrapper.hpp
-        src/texture/texturewrapper.cpp
-        src/texture/shader.h
-        src/texture/shader.cpp
+        src/Main.cpp
+        src/Objects.h
+        src/Config.h src/Config.cpp
+        src/Logger.h src/Logger.cpp
+        src/Window.h src/Window.cpp
+        src/objects/Camera.h src/objects/Camera.cpp
+        src/objects/ObjectManager.h src/objects/ObjectManager.cpp
+        src/objects/Drawable.h src/objects/Drawable.cpp
+        src/objects/BasicObject.h src/objects/BasicObject.cpp
+        src/objects/FullScreenQuad.h src/objects/FullScreenQuad.cpp
+        src/objects/Board.h src/objects/Board.cpp
+        src/objects/Field.h src/objects/Field.cpp
+        src/objects/Piece.h src/objects/Piece.cpp
+        src/objects/pieces/Bishop.h src/objects/pieces/Bishop.cpp
+        src/objects/pieces/King.h src/objects/pieces/King.cpp
+        src/objects/pieces/Knight.h src/objects/pieces/Knight.cpp
+        src/objects/pieces/Pawn.h src/objects/pieces/Pawn.cpp
+        src/objects/pieces/Queen.h src/objects/pieces/Queen.cpp
+        src/objects/pieces/Rook.h src/objects/pieces/Rook.cpp
+        src/objects/Clock.h src/objects/Clock.cpp
+        src/objects/Skybox.h src/objects/Skybox.cpp
+        src/objects/moves/MoveBase.h src/objects/moves/MoveBase.cpp
+        src/objects/moves/Move.h src/objects/moves/Move.cpp
+        src/objects/moves/Hit.h src/objects/moves/Hit.cpp
+        src/objects/moves/Rochade.h src/objects/moves/Rochade.cpp
+        src/objects/moves/Transform.h src/objects/moves/Transform.cpp
+        src/collision/CollisionManager.h src/collision/CollisionManager.cpp
+        src/collision/Collision.h src/collision/Collision.cpp
+        src/geometry/GeometryManager.h src/geometry/GeometryManager.cpp
+        src/geometry/ControlPoints.h src/geometry/ControlPoints.cpp
+        src/geometry/Geometry.h src/geometry/Geometry.cpp
+        src/geometry/CompositeGeometry.h src/geometry/CompositeGeometry.cpp
+        src/geometry/implementation/BoardBorderBottom.h src/geometry/implementation/BoardBorderBottom.cpp
+        src/geometry/implementation/BoardBorderTop.h src/geometry/implementation/BoardBorderTop.cpp
+        src/geometry/implementation/Cube.h src/geometry/implementation/Cube.cpp
+        src/geometry/implementation/Extruder.h src/geometry/implementation/Extruder.cpp
+        src/geometry/implementation/ExtruderFace.h src/geometry/implementation/ExtruderFace.cpp
+        src/geometry/implementation/InterlacedRevolver.h src/geometry/implementation/InterlacedRevolver.cpp
+        src/geometry/implementation/Quad.h src/geometry/implementation/Quad.cpp
+        src/geometry/implementation/Revolver.h src/geometry/implementation/Revolver.cpp
+        src/geometry/implementation/Square.h src/geometry/implementation/Square.cpp
+        src/curve/Curve.h src/curve/Curve.cpp
+        src/curve/CatmullRomCurve.h src/curve/CatmullRomCurve.cpp
+        src/curve/CircleCurve.h src/curve/CircleCurve.cpp
+        src/curve/FixedPointsCurve.h src/curve/FixedPointsCurve.cpp
+        src/curve/LineCurve.h src/curve/LineCurve.cpp
+        src/animation/AnimationManager.h src/animation/AnimationManager.cpp
+        src/animation/AnimationBase.h
+        src/animation/Animation.h src/animation/Animation.cpp
+        src/animation/LoopingAnimation.h src/animation/LoopingAnimation.cpp
+        src/animation/ParallelAnimation.h src/animation/ParallelAnimation.cpp
+        src/animation/SerialAnimation.h src/animation/SerialAnimation.cpp
+        src/animation/BackLoopingAnimation.h src/animation/BackLoopingAnimation.cpp
+        src/animation/CatmullRomAnimation.h
+        src/animation/FadeAnimation.h src/animation/FadeAnimation.cpp
+        src/animation/LinearAnimation.h src/animation/LinearAnimation.cpp
+        src/texture/TextureManager.h src/texture/TextureManager.cpp
+        src/texture/Image.h src/texture/Image.cpp
+        src/texture/Texture.h src/texture/Texture.cpp
+        src/texture/Shader.h src/texture/Shader.cpp
         )
 
 target_link_libraries(${PROJECT_NAME}
