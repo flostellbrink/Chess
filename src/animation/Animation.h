@@ -20,7 +20,6 @@ protected:
   bool active_ = true;
 };
 
-//Apparently template classes functions cannot be implemented in cpp files..
 template<class T>
 Animation<T>::Animation(float duration, T &property) : duration_(duration), property_(property) {
 

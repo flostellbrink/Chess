@@ -14,7 +14,9 @@ int Config::viewport_height = 1;
 int Config::windowed_width = 1920;
 int Config::windowed_height = 1080;
 
-bool Config::ai = false;
+bool Config::ai = true;
+float Config::ai_click_delay = 500;
+float Config::ai_move_delay = 1000;
 
 bool Config::change_theme = false;
 bool Config::new_game = false;

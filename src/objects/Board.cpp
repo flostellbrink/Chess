@@ -25,6 +25,8 @@
 #include "src/animation/LinearAnimation.h"
 #include "src/animation/LoopingAnimation.h"
 #include "src/animation/BackLoopingAnimation.h"
+#include "src/animation/DelayAnimation.h"
+#include "src/Config.h"
 
 const int board_size = 8;
 
@@ -33,7 +35,7 @@ Board::Board(Camera* camera) {
   auto manager = &ObjectManager::instance;
   const auto center = glm::vec3(0, -1, 0);
   const auto size = glm::vec3(8.5f, 1, 8.5f);
-  BoundingBox = CollisionManager::GetAABB(center - size, center + size);
+  bounding_box_ = CollisionManager::GetAABB(center - size, center + size);
 
   // Create fields
   for (auto i = 0; i < board_size; ++i) {
@@ -158,15 +160,15 @@ void Board::AddPiece(int objectId, Field *field) {
 }
 
 void Board::NewTurn() {
-  whiteTurn_ = !whiteTurn_;
+  white_turn_ = !white_turn_;
   if (!ExistsValidMove()) {
     if (IsKingInMate())
-      SetState(WhiteWon + whiteTurn_);
+      SetState(WhiteWon + white_turn_);
     else
       SetState(Draw);
   }
   else {
-    whiteTurn_ = !whiteTurn_;
+    white_turn_ = !white_turn_;
     ChangeTurn();
     DoAi();
   }
@@ -197,41 +199,66 @@ void Board::SetState(int state) {
   }
 }
 
-void Board::Update() {
-  if (aiOverdue_)
+void Board::Update(const float elapsedTime) {
+  if (ai_overdue_) {
+    ai_timer_ += elapsedTime;
     DoAi();
+  }
 }
 
 void Board::ChangeTurn() {
-  whiteTurn_ = !whiteTurn_;
-  camera_->SetBoardSide(useAI_ ? true : whiteTurn_);
-  std::cout << "ChessInfo: " << (whiteTurn_ ? "Whites" : "Blacks") << " turn" << std::endl;
+  white_turn_ = !white_turn_;
+  camera_->SetBoardSide(use_ai_ ? true : white_turn_);
+  std::cout << "ChessInfo: " << (white_turn_ ? "Whites" : "Blacks") << " turn" << std::endl;
 }
 
 bool Board::IsWhitesTurn() const
 {
-  return whiteTurn_;
+  return white_turn_;
 }
 
 void Board::DoAi() {
   if (state_ != Running) return;
-  if (whiteTurn_ || !useAI_ || ObjectManager::animation.IsBusy()) {
-    aiOverdue_ = true;
+  if (white_turn_ || !use_ai_ || ObjectManager::animation.IsBusy()) {
+    ai_overdue_ = true;
+    ai_timer_ = 0.0f;
     return;
   }
-  aiOverdue_ = false;
-  std::vector<Piece*> validPieces;
-  for (auto piece : pieces_) {
-    if (piece->IsWhite() == whiteTurn_ && !GetValid(piece->GetMoves()).empty()) {
-      validPieces.push_back(piece);
-    }
+
+  // Check that enough time has passed to click a piece
+  if(ai_timer_ < Config::ai_click_delay)
+  {
+    return;
   }
 
-  const auto pieceIndex = std::uniform_int_distribution<int>(0, static_cast<int>(validPieces.size()) - 1)(generator);
-  PieceClick(validPieces[pieceIndex]);
+  // Click a piece if none is selected
+  if (currentMoves_.empty()) {
+    std::vector<Piece*> validPieces;
+    for (auto piece : pieces_) {
+      if (piece->IsWhite() == white_turn_ && !GetValid(piece->GetMoves()).empty()) {
+        validPieces.push_back(piece);
+      }
+    }
 
-  const auto moveIndex = std::uniform_int_distribution<int>(0, static_cast<int>(currentMoves_.size()) - 1)(generator);
-  FieldClick(currentMoves_[moveIndex]->click_field);
+    const auto pieceIndex = std::uniform_int_distribution<int>(0, static_cast<int>(validPieces.size()) - 1)(generator);
+    PieceClick(validPieces[pieceIndex]);
+  }
+
+  // Check that enough time has passed to make a move
+  if (ai_timer_ < Config::ai_click_delay + Config::ai_move_delay)
+  {
+    return;
+  }
+
+  // Make a move until no moves are left (promotions)
+  while (!currentMoves_.empty()) {
+    const auto moveIndex = std::uniform_int_distribution<int>(0, static_cast<int>(currentMoves_.size()) - 1)(generator);
+    FieldClick(currentMoves_[moveIndex]->click_field);
+  }
+
+  // Reset timer
+  ai_overdue_ = false;
+  ai_timer_ = 0.0f;
 }
 
 Field* Board::GetSideField(bool whiteSide) {
@@ -282,7 +309,7 @@ void Board::PieceClick(Piece *piece) {
     return;
   }
 
-  if (!locked && piece->IsWhite() == whiteTurn_) {
+  if (!locked_ && piece->IsWhite() == white_turn_) {
     ClearOverlays();
     auto moves = GetValidAndInvalid(piece->GetMoves());
     currentMoves_ = std::get<0>(moves);
@@ -295,18 +322,18 @@ void Board::PieceClick(Piece *piece) {
 }
 
 void Board::EnableAi(const bool enabled) {
-  useAI_ = enabled;
+  use_ai_ = enabled;
   if (enabled) {
     DoAi();
   }
   else {
-    aiOverdue_ = false;
+    ai_overdue_ = false;
   }
 }
 
 bool Board::GetAi() const
 {
-  return useAI_;
+  return use_ai_;
 }
 
 void Board::FieldClick(Field *field) {
@@ -314,14 +341,14 @@ void Board::FieldClick(Field *field) {
   for (auto move : currentMoves_)
     if (move->click_field == field) {
       SetState(Running);
-      locked = false;
+      locked_ = false;
       allMoves_.push(move);
       move->Apply(this, false);
       ClearOverlays();
       currentMoves_.clear();
       if (field->CurrentPiece && field->CurrentPiece->IsTransformable() && field->Row() == (field->CurrentPiece->IsWhite() ? 7 : 0)) {
         std::cout << "ChessInfo: Pawn is being promoted" << std::endl;
-        locked = true;
+        locked_ = true;
         for (auto piece : pieces_) {
           if (piece->IsCopyable()) {
             currentMoves_.push_back(new Transform(field->CurrentPiece, piece));
@@ -342,7 +369,7 @@ void Board::SetOverlays() {
   }
 
   for (auto move : currentInvalidMoves_) {
-    move->click_field->SetOverlayNumber(whiteTurn_ ? 3 : 4);
+    move->click_field->SetOverlayNumber(white_turn_ ? 3 : 4);
     move->click_field->EnableOverlay();
   }
 }
@@ -362,7 +389,7 @@ void Board::ClearOverlays() {
 
 bool Board::ExistsValidMove() {
   for (auto piece : pieces_) {
-    if (piece->IsWhite() == whiteTurn_ && !GetValid(piece->GetMoves()).empty()) {
+    if (piece->IsWhite() == white_turn_ && !GetValid(piece->GetMoves()).empty()) {
       return true;
     }
   }
@@ -422,10 +449,10 @@ Piece* Board::GetRook(const bool isWhite, const bool isLeft) {
 }
 
 bool Board::IsKingInMate() {
-  const auto king = GetKing(whiteTurn_);
+  const auto king = GetKing(white_turn_);
   const auto kingField = king->field;
   for (auto piece : pieces_) {
-    if (piece->IsWhite() != whiteTurn_) {
+    if (piece->IsWhite() != white_turn_) {
       auto moves = piece->GetMoves();
       for (auto move : moves) {
         allMoves_.push(move);
@@ -451,7 +478,7 @@ bool Board::IntersectsGame(Collision* collision, Piece *except) {
     }
   }
 
-  return collision->Intersects(BoundingBox);
+  return collision->Intersects(bounding_box_);
 }
 
 bool Board::IsRochadePossible(const bool isWhite, const bool isLeft) {

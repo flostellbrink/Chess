@@ -8,6 +8,7 @@
 #include "ObjectManager.h"
 #include "src/animation/LinearAnimation.h"
 #include "src/animation/FadeAnimation.h"
+#include "src/animation/DelayAnimation.h"
 
 const float camSpeed = 0.01f, camZoom = 10;
 
@@ -63,9 +64,7 @@ void Camera::Update() {
 }
 
 void Camera::SetBoardSide(bool whiteSide) {
-  // TODO create delay animation instead of this hack
-  float fakeProperty = 0;
-  ObjectManager::animation.PlayLast(new LinearAnimation<float>(500, fakeProperty, 0, 1));
+  ObjectManager::animation.PlayLast(new DelayAnimation<float>(500));
 
   if (whiteSide == white_side_) {
     return;

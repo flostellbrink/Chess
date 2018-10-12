@@ -117,11 +117,10 @@ void key_callback(GLFWwindow *handle, const int key, int scancode, const int act
   }
 
   signal(Config::demo, "demo", key, GLFW_KEY_D);
-  signal(Config::ai, "artificial intelligence", key, GLFW_KEY_A);
+  toggle(Config::ai, "artificial intelligence", key, GLFW_KEY_A);
   signal(Config::undo_turn, "undo turn", key, GLFW_KEY_Z);
   signal(Config::new_game, "new game", key, GLFW_KEY_N);
   signal(Config::change_theme, "change theme", key, GLFW_KEY_T);
-  
 
   if (key == GLFW_KEY_F) {
     toggle(Config::full_screen, "full screen", key, GLFW_KEY_F);

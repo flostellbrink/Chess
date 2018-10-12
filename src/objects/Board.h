@@ -17,7 +17,7 @@ public:
   explicit Board(Camera* camera);
   static void ResetGame();
   void NewTurn();
-  void Update();
+  void Update(float elapsedTime);
   void FieldClick(Field* field);
   void PieceClick(Piece* piece);
   Field* GetSideField(bool whiteSide);
@@ -61,9 +61,13 @@ private:
   std::vector<MoveBase*> currentMoves_, currentInvalidMoves_;
   std::vector<Piece*> pieces_;
   std::stack<MoveBase*> allMoves_;
-  bool whiteTurn_ = false, locked = false, useAI_ = false, aiOverdue_ = false;
+  bool white_turn_ = false;
+  bool locked_ = false;
+  bool use_ai_ = false;
+  bool ai_overdue_ = false;
+  float ai_timer_ = 0.0f;
   Camera* camera_;
-  Collision* BoundingBox;
+  Collision* bounding_box_;
   void ApplyAndPushMove(MoveBase* move);
 
   std::default_random_engine generator;

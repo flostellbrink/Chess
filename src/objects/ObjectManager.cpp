@@ -117,7 +117,7 @@ void ObjectManager::Update(float elapsedTime) {
   for (Drawable *obj : objects_) {
     obj->Update(elapsedTime);
   }
-  game_board->Update();
+  game_board->Update(elapsedTime);
   camera_.Update();
   animation.Update(elapsedTime);
 

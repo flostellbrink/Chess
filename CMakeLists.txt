@@ -66,14 +66,13 @@ add_executable(${PROJECT_NAME}
         src/curve/LineCurve.h src/curve/LineCurve.cpp
         src/animation/AnimationManager.h src/animation/AnimationManager.cpp
         src/animation/AnimationBase.h
-        src/animation/Animation.h src/animation/Animation.cpp
-        src/animation/LoopingAnimation.h src/animation/LoopingAnimation.cpp
-        src/animation/ParallelAnimation.h src/animation/ParallelAnimation.cpp
-        src/animation/SerialAnimation.h src/animation/SerialAnimation.cpp
-        src/animation/BackLoopingAnimation.h src/animation/BackLoopingAnimation.cpp
+        src/animation/Animation.h
+        src/animation/LoopingAnimation.h
+        src/animation/BackLoopingAnimation.h
         src/animation/CatmullRomAnimation.h
-        src/animation/FadeAnimation.h src/animation/FadeAnimation.cpp
-        src/animation/LinearAnimation.h src/animation/LinearAnimation.cpp
+        src/animation/FadeAnimation.h
+        src/animation/LinearAnimation.h
+        src/animation/DelayAnimation.h
         src/texture/TextureManager.h src/texture/TextureManager.cpp
         src/texture/Image.h src/texture/Image.cpp
         src/texture/Texture.h src/texture/Texture.cpp
