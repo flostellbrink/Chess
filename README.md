@@ -1,29 +1,54 @@
-# Chess (2015)
-Chess project from computer graphics assignment.
-Focus of this project is on generation of geometry from curves. All pieces, the clock and the table are generated from curves.
-Also notable are reflections of the environment on the chess board and the real time shadows cast by all objects.
-Fast Gaussian blur removes details of scene when overlays are rendered.
+# Chess [![Build Status](https://travis-ci.com/Owlinated/Chess.svg?branch=master)](https://travis-ci.com/Owlinated/Chess)
 
-## Demo
-[![Demo on YouTube](https://img.youtube.com/vi/nMwJrqzJMXk/0.jpg)](https://www.youtube.com/watch?v=nMwJrqzJMXk)
+Project for the Practical Computer Graphics Course at University of Siegen.
 
-## Build
-Use CMake and MinGW.
-Tested on Windows 10 with Qt Creator 3.5.1 and Qt 5.4/5.5.
+Features:
+- Runtime generation of geometry from curves.
+- Fully functional chess gameplay, including [En Passant](https://en.wikipedia.org/wiki/En_passant) and [Castling](https://en.wikipedia.org/wiki/Castling).
+- Ability to undo all moves.
+- Dynamic shadows and reflections of the entire environment.
+- Overlays with dynamically blurred background.
+- Multiple themes and transparency.
+- Computer controlled opponent.
 
 ## Controls
-| Control          | Action                 | UI Control Alias
-|------------------|------------------------|---------------------|
-| Left Click       | Select and move pieces |                     |
-| Drag Right Click | Move camera            |                     |
-| Mouse Wheel      | Zoom                   |                     |
-| F                | Toggle Fullscreen      |                     |
-| Z                | Undo turn              | Zug zurücknehmen    |
-| T                | Switch theme           |                     |
-| D                | Run demo game          | Demo starten!       |
-| Delete           | Reset game             | Neues Spiel starten |
-| Escape/Q         | Quit game              |                     |
-|                  | Toggle AI              | Computergegner      |
 
-## UI Controls
-First slider controls the generated geometries profile curve resolution. The second slider controls the rotation resolution.
+| Control          | Action                 |
+|------------------|------------------------|
+| Left Click       | Select and move pieces |
+| Drag Right Click | Rotate camera          |
+| Mouse Wheel      | Zoom                   |
+| D                | Run demo game          |
+| A                | Toggle AI              |
+| Z                | Undo last move         |
+| T                | Switch theme           |
+| F                | Toggle Fullscreen      |
+| N                | New game               |
+| Escape/Q         | Quit game              |
+
+## Installation
+
+60% of the time, it works every time!
+
+### Preparation
+
+1. Setup your C++ compiler of choice.
+2. Install [CMake](https://cmake.org/download/)
+3. Install [Python](https://www.python.org/downloads/) for Conan (Tested with 3.6)
+4. Install [Conan](https://www.conan.io/downloads.html) as admin: `pip install conan`
+5. Add Conan remote: `conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan True`
+
+### Dependencies
+
+1. Clone the repository: `git clone --recurse-submodules https://github.com/Owlinated/Chess`
+2. Navigate into directory: `cd Chess`
+3. Get dependencies: `conan install ./ --build`  
+Depending on your environment you might want to specify your compiler:  
+E.g. `-s compiler=gcc -s compiler.version=6.1`
+
+### Build
+
+1. Create build files: `cmake ./`  
+Again, you might want to specify your profile:  
+E.g. `-G "MinGW Makefiles"`
+2. Build the project: `cmake --build ./ --target Chess`
