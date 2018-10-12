@@ -4,12 +4,15 @@
  *  Default values. Change them as needed.
  */
 
-int Config::geo_resolution1 = 50,
-Config::geo_resolution2 = 50,
-Config::shadow_resolution = 8000;
+int Config::geo_resolution1 = 50;
+int Config::geo_resolution2 = 50;
+int Config::shadow_resolution = 8000;
 
-int Config::viewport_width = 1,
-Config::viewport_height = 1;
+int Config::viewport_width = 1;
+int Config::viewport_height = 1;
+
+int Config::windowed_width = 1920;
+int Config::windowed_height = 1080;
 
 bool Config::ai = false;
 

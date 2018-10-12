@@ -7,13 +7,13 @@ class Window {
 public:
   Window();
 
-  void SetFullScreen();
   void Update();
 
   int width, height;
   GLFWwindow *handle;
 
 private:
+  void SetFullScreen();
   void UpdateSize();
 
   bool is_full_screen_{};

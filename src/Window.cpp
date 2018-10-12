@@ -5,18 +5,10 @@
 #include "Window.h"
 #include "Logger.h"
 
-void Window::UpdateSize()
-{
-  glfwGetFramebufferSize(handle, &width, &height);
-  Config::viewport_width = width;
-  Config::viewport_height = height;
-  is_full_screen_ = glfwGetWindowMonitor(handle) != nullptr;
-}
-
 /**
  * Initialize a new window.
  */
-Window::Window() : width(), height() {
+Window::Window() : width(), height(), is_full_screen_(Config::full_screen) {
   if (!glfwInit()) {
     Logger::Error("Failed to initialize GLFW.");
   }
@@ -26,12 +18,34 @@ Window::Window() : width(), height() {
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-  handle = glfwCreateWindow(1280, 720, "Chess", nullptr, nullptr);
+  const auto monitor = glfwGetPrimaryMonitor();
+  const auto mode = glfwGetVideoMode(monitor);
+  if (is_full_screen_) {
+    handle = glfwCreateWindow(
+      mode->width,
+      mode->height,
+      "Chess",
+      monitor,
+      nullptr);
+  }
+  else {
+    handle = glfwCreateWindow(
+      Config::windowed_width,
+      Config::windowed_height,
+      "Chess",
+      nullptr,
+      nullptr);
+
+    glfwSetWindowPos(handle,
+      (mode->width - Config::windowed_width) / 2,
+      (mode->height - Config::windowed_height) / 2);
+  }
 
   if (handle == nullptr) {
     Logger::Error("Failed to open GLFW window.");
   }
-  SetFullScreen();
+
+  UpdateSize();
 
   glfwMakeContextCurrent(handle);
   glfwSetInputMode(handle, GLFW_STICKY_KEYS, GL_TRUE);
@@ -44,27 +58,48 @@ Window::Window() : width(), height() {
   }
 }
 
+void Window::Update()
+{
+  if (is_full_screen_ != Config::full_screen)
+  {
+    SetFullScreen();
+  }
+}
+
 /**
  * Set full screen mode
  */
 void Window::SetFullScreen() {
+  is_full_screen_ = Config::full_screen;
   const auto monitor = glfwGetPrimaryMonitor();
-  const auto mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-  if (Config::full_screen) {
-    glfwSetWindowMonitor(handle, monitor, 0, 0, mode->width, mode->height, 0);
+  const auto mode = glfwGetVideoMode(monitor);
+  if (is_full_screen_) {
+    glfwSetWindowMonitor(
+      handle,
+      monitor,
+      0,
+      0,
+      mode->width,
+      mode->height,
+      0);
   }
   else {
-    glfwSetWindowMonitor(handle, nullptr, 0, 0, 1280, 720, 0);
-    glfwSetWindowPos(handle, (mode->width - 1280) / 2, (mode->height - 720) / 2);
+    glfwSetWindowMonitor(
+      handle,
+      nullptr,
+      (mode->width - Config::windowed_width) / 2,
+      (mode->height - Config::windowed_height) / 2,
+      Config::windowed_width,
+      Config::windowed_height,
+      0);
   }
 
   UpdateSize();
 }
 
-void Window::Update()
+void Window::UpdateSize()
 {
-  if(is_full_screen_ != Config::full_screen)
-  {
-    SetFullScreen();
-  }
+  glfwGetFramebufferSize(handle, &width, &height);
+  Config::viewport_width = width;
+  Config::viewport_height = height;
 }
