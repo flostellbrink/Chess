@@ -19,3 +19,7 @@ CMakeLists.txt.user
 conanbuildinfo\.cmake
 conanbuildinfo\.txt
 conaninfo\.txt
+
+build/
+
+\.vscode/
