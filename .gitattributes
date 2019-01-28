@@ -5,3 +5,4 @@
 *.glsl text
 
 *.png binary
+*.psd binary
