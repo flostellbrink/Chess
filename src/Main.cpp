@@ -57,10 +57,10 @@ void toggle(bool &value, const std::string &name, const int key, const int toggl
  * @param value Property to toggle.
  * @param name Name of property to output to console.
  * @param key Current key code.
- * @param toggle_key Key code for toggling property.
+ * @param signalKey Key code for singaling property.
  */
-void signal(bool &value, const std::string &name, const int key, const int toggle_key) {
-  if (key == toggle_key) {
+void signal(bool &value, const std::string &name, const int key, const int signalKey) {
+  if (key == signalKey) {
     value = true;
     std::stringstream message;
     message << "Signaled " << name << ".";
@@ -121,6 +121,12 @@ void key_callback(GLFWwindow *handle, const int key, int scancode, const int act
   signal(Config::undo_turn, "undo turn", key, GLFW_KEY_Z);
   signal(Config::new_game, "new game", key, GLFW_KEY_N);
   signal(Config::change_theme, "change theme", key, GLFW_KEY_T);
+  modify(Config::geo_resolution1, "horizontal resolution", key, GLFW_KEY_U, GLFW_KEY_J, 3, 100, 1);
+  modify(Config::geo_resolution2, "vertical resolution", key, GLFW_KEY_I, GLFW_KEY_K, 3, 100, 1);
+  signal(Config::geo_changed, "geometry changed", key, GLFW_KEY_U);
+  signal(Config::geo_changed, "geometry changed", key, GLFW_KEY_J);
+  signal(Config::geo_changed, "geometry changed", key, GLFW_KEY_I);
+  signal(Config::geo_changed, "geometry changed", key, GLFW_KEY_K);
 
   if (key == GLFW_KEY_F) {
     toggle(Config::full_screen, "full screen", key, GLFW_KEY_F);

@@ -6,11 +6,11 @@ public:
 
   static int geo_resolution1, geo_resolution2, shadow_resolution;
 
+  static bool geo_changed;
+
   static bool ai;
 
   static float ai_click_delay, ai_move_delay;
-
-  static bool changed;
 
   static int viewport_width, viewport_height;
 

@@ -78,8 +78,8 @@ void ObjectManager::UpdateFramebuffer(GLuint &framebuffer, GLuint &texture, GLui
 }
 
 void ObjectManager::Update(float elapsedTime) {
-  if (Config::changed) {
-    Config::changed = false;
+  if (Config::geo_changed) {
+    Config::geo_changed = false;
     geometry.Regenerate();
   }
   if (Config::change_theme) {

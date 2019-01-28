@@ -13,18 +13,20 @@ Features:
 
 ## Controls
 
-| Control          | Action                 |
-|------------------|------------------------|
-| Left Click       | Select and move pieces |
-| Drag Right Click | Rotate camera          |
-| Mouse Wheel      | Zoom                   |
-| D                | Run demo game          |
-| A                | Toggle AI              |
-| Z                | Undo last move         |
-| T                | Switch theme           |
-| F                | Toggle Fullscreen      |
-| N                | New game               |
-| Escape/Q         | Quit game              |
+| Control          | Action                         |
+|------------------|--------------------------------|
+| Left Click       | Select and move pieces         |
+| Drag Right Click | Rotate camera                  |
+| Mouse Wheel      | Zoom                           |
+| D                | Run demo game                  |
+| A                | Toggle AI                      |
+| Z                | Undo last move                 |
+| T                | Switch theme                   |
+| F                | Toggle Fullscreen              |
+| N                | New game                       |
+| U/J              | Horizontal geometry resolution |
+| I/K              | Vertical geometry resolution   |
+| Escape/Q         | Quit game                      |
 
 ## Installation
 
