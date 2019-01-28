@@ -4,7 +4,7 @@
 
 #include "King.h"
 #include "src/objects/ObjectManager.h"
-#include "src/objects/moves/Rochade.h"
+#include "src/objects/moves/Castling.h"
 #include "src/objects/Field.h"
 #include "src/objects/Board.h"
 
@@ -32,10 +32,10 @@ std::vector<MoveBase*> King::GetMoves() {
     AddHitOrMove(field->Down->Left, result);
     AddHitOrMove(field->Down->Right, result);
   }
-  if (board_->IsRochadePossible(IsWhite(), true))
-    result.push_back(new Rochade(this, board_->GetRook(IsWhite(), true), field->Left->Left, field->Left));
-  if (board_->IsRochadePossible(IsWhite(), false))
-    result.push_back(new Rochade(this, board_->GetRook(IsWhite(), false), field->Right->Right, field->Right));
+  if (board_->IsCastlingPossible(IsWhite(), true))
+    result.push_back(new Castling(this, board_->GetRook(IsWhite(), true), field->Left->Left, field->Left));
+  if (board_->IsCastlingPossible(IsWhite(), false))
+    result.push_back(new Castling(this, board_->GetRook(IsWhite(), false), field->Right->Right, field->Right));
   return result;
 }
 

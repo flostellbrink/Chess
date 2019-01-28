@@ -26,7 +26,7 @@ public:
   void UndoMove(bool sim = true);
   void EnableAi(bool enabled = true);
   bool GetAi() const;
-  bool IsRochadePossible(bool isWhite, bool isLeft);
+  bool IsCastlingPossible(bool isWhite, bool isLeft);
   Piece* GetKing(bool isWhite);
   Piece* GetRook(bool isWhite, bool isLeft);
   Field* GetField(int column, int row);

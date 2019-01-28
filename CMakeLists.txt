@@ -42,7 +42,7 @@ add_executable(${PROJECT_NAME}
         src/objects/moves/MoveBase.h src/objects/moves/MoveBase.cpp
         src/objects/moves/Move.h src/objects/moves/Move.cpp
         src/objects/moves/Hit.h src/objects/moves/Hit.cpp
-        src/objects/moves/Rochade.h src/objects/moves/Rochade.cpp
+        src/objects/moves/Castling.h src/objects/moves/Castling.cpp
         src/objects/moves/Transform.h src/objects/moves/Transform.cpp
         src/collision/CollisionManager.h src/collision/CollisionManager.cpp
         src/collision/Collision.h src/collision/Collision.cpp

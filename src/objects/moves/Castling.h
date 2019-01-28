@@ -3,9 +3,9 @@
 
 #include "MoveBase.h"
 
-class Rochade : public MoveBase {
+class Castling : public MoveBase {
 public:
-  Rochade(Piece* king, Piece* rook, Field* toKing, Field* toRook);
+  Castling(Piece* king, Piece* rook, Field* toKing, Field* toRook);
   void Apply(Board* board, bool) override;
   void Undo(Board* board, bool) override;
 

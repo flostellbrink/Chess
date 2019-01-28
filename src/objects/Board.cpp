@@ -10,7 +10,7 @@
 #include "src/objects/moves/MoveBase.h"
 #include "src/objects/moves/Move.h"
 #include "src/objects/moves/Hit.h"
-#include "src/objects/moves/Rochade.h"
+#include "src/objects/moves/Castling.h"
 #include "src/objects/moves/Transform.h"
 #include "src/objects/pieces/Pawn.h"
 #include "src/objects/pieces/Bishop.h"
@@ -481,7 +481,7 @@ bool Board::IntersectsGame(Collision* collision, Piece *except) {
   return collision->Intersects(bounding_box_);
 }
 
-bool Board::IsRochadePossible(const bool isWhite, const bool isLeft) {
+bool Board::IsCastlingPossible(const bool isWhite, const bool isLeft) {
   auto king = GetKing(isWhite);
   auto rook = GetRook(isWhite, isLeft);
 
@@ -563,14 +563,14 @@ void Board::RunDemo() {
   ApplyAndPushMove(new Move(GetField(a, 2)->CurrentPiece, GetField(a, 3)));
   ApplyAndPushMove(new Move(GetField(e, 7)->CurrentPiece, GetField(e, 5)));
   // 11. O-O-O Qe7
-  ApplyAndPushMove(new Rochade(GetKing(true), GetRook(true, true), GetField(c, 1), GetField(d, 1)));
+  ApplyAndPushMove(new Castling(GetKing(true), GetRook(true, true), GetField(c, 1), GetField(d, 1)));
   ApplyAndPushMove(new Move(GetField(d, 8)->CurrentPiece, GetField(e, 7)));
   // 12. Kb1 a6
   ApplyAndPushMove(new Move(GetField(c, 1)->CurrentPiece, GetField(b, 1)));
   ApplyAndPushMove(new Move(GetField(a, 7)->CurrentPiece, GetField(a, 6)));
   // 13. Nc1 O-O-O
   ApplyAndPushMove(new Move(GetField(e, 2)->CurrentPiece, GetField(c, 1)));
-  ApplyAndPushMove(new Rochade(GetKing(false), GetRook(false, true), GetField(c, 8), GetField(d, 8)));
+  ApplyAndPushMove(new Castling(GetKing(false), GetRook(false, true), GetField(c, 8), GetField(d, 8)));
   // 14. Nb3 exd4
   ApplyAndPushMove(new Move(GetField(c, 1)->CurrentPiece, GetField(b, 3)));
   ApplyAndPushMove(new Hit(GetField(e, 5)->CurrentPiece, GetField(d, 4)->CurrentPiece));
