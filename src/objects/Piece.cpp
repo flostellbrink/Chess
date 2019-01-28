@@ -29,12 +29,7 @@ Piece::Piece(Board* board, int objectID, Field* field)
 
 void Piece::Init() {
   Drawable::Init();
-  RecreateGeometry();
-}
-
-void Piece::RecreateGeometry() {
-  delete geometry_;
-  geometry_ = ObjectManager::geometry.GetGeometry(object_id_);
+  geometry_ = ObjectManager::geometry.GetGeometryCached(object_id_);
 }
 
 void Piece::UpdateBb(glm::vec3 position) {

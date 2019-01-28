@@ -3,7 +3,7 @@
 #ifndef GEOMANAGER_H
 #define GEOMANAGER_H
 
-#include <vector>
+#include <unordered_map>
 #include "ControlPoints.h"
 
 class Geometry;
@@ -13,14 +13,10 @@ public:
   GeometryManager();
   void SetTheme(int themeId);
   void Regenerate();
-  void Remove(Geometry* geo);
-
-  Geometry* GetSquare();
-  Geometry* GetCube();
-  Geometry* GetGeometry(int objectId);
+  Geometry* GetGeometryCached(int objectId);
 
 protected:
-  Geometry* AddAndRecreate(Geometry* geo);
+  Geometry* GetGeometry(int objectId);
   Geometry* GetRevolver(int objectId);
   Geometry* GetRevolver(int objectId, float scale);
   Geometry* GetInterlacedRevolver(int objectId, float length1, float length2);
@@ -28,7 +24,7 @@ protected:
   Geometry* GetExtruded(int objectId, float scale = .1f, float radius = .2f);
 
   int theme_id_;
-  std::vector<Geometry*> geos_;
+  std::unordered_map<int, Geometry*> geos_;
   ControlPoints control_points_;
 };
 

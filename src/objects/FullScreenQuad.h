@@ -15,7 +15,6 @@ public:
   void Update(float elapsedTimeMs) override;
   void MouseClick(glm::vec3 position) override;
   glm::vec3 Position3D() override;
-  void RecreateGeometry() override;
 
 protected:
   std::string GetVertexShader() override;

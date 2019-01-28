@@ -19,8 +19,6 @@ public:
   virtual void DrawReflection(glm::mat4 projection_matrix);
   virtual void DrawTranslucent(glm::mat4 projection_matrix);
 
-  virtual void RecreateGeometry() = 0;
-
   virtual glm::vec3 Position3D() = 0;
 
   virtual void Update(float elapsedTimeMs) = 0;

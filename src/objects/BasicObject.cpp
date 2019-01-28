@@ -17,12 +17,7 @@ BasicObject::BasicObject(int objectID, glm::vec3 position, float yRotation, std:
 
 void BasicObject::Init() {
   Drawable::Init();
-  RecreateGeometry();
-}
-
-void BasicObject::RecreateGeometry() {
-  delete geometry_;
-  geometry_ = ObjectManager::geometry.GetGeometry(object_id_);
+  geometry_ = ObjectManager::geometry.GetGeometryCached(object_id_);
 }
 
 glm::vec3 BasicObject::Position() const

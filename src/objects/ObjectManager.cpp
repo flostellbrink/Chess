@@ -258,9 +258,6 @@ void ObjectManager::SetTheme(int theme) {
   theme_ = theme;
   geometry.SetTheme(theme);
   texture.SetTheme(theme);
-  for (Drawable *obj : objects_) {
-    obj->RecreateGeometry();
-  }
 }
 
 void ObjectManager::MouseButton(int button, int action) {

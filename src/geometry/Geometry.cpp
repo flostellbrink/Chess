@@ -12,7 +12,6 @@ Geometry::~Geometry() {
   if (vertex_array_object_) {
     glDeleteVertexArrays(1, &vertex_array_object_);
   }
-  ObjectManager::geometry.Remove(this);
 }
 
 void Geometry::Recreate() {

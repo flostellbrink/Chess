@@ -7,16 +7,16 @@
 #include "src/Objects.h"
 #include "src/texture/Shader.h"
 #include "src/geometry/Geometry.h"
+#include "src/geometry/implementation/Cube.h"
 #include "src/texture/Texture.h"
 
 
 Skybox::Skybox() : Drawable(objects::skybox) {
-
 }
 
 void Skybox::Init() {
   Drawable::Init();
-  geometry_ = ObjectManager::geometry.GetCube();
+  geometry_ = ObjectManager::geometry.GetGeometryCached(object_id_);
 }
 
 void Skybox::Draw(glm::mat4 projection_matrix) {
@@ -62,8 +62,4 @@ std::string Skybox::GetFragmentShader() {
 
 glm::vec3 Skybox::Position3D() {
   return glm::vec3();
-}
-
-void Skybox::RecreateGeometry() {
-  // Box does not change
 }

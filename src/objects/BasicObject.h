@@ -24,8 +24,6 @@ public:
   void SetRotationY(float val);
   void SetRotationZ(float val);
 
-  void RecreateGeometry() override;
-
 protected:
   std::string GetVertexShader() override;
   std::string GetFragmentShader() override;

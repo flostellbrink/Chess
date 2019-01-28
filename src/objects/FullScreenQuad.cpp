@@ -22,12 +22,7 @@ FullScreenQuad::FullScreenQuad(std::string vertexShader, std::string fragmentSha
 
 void FullScreenQuad::Init() {
   Drawable::Init();
-  RecreateGeometry();
-}
-
-void FullScreenQuad::RecreateGeometry() {
-  delete geometry_;
-  geometry_ = ObjectManager::geometry.GetGeometry(object_id_);
+  geometry_ = ObjectManager::geometry.GetGeometryCached(object_id_);
 }
 
 void FullScreenQuad::Draw(glm::mat4 projection_matrix) {

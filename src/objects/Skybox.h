@@ -15,7 +15,6 @@ public:
   void DrawShadow(glm::mat4 projection_matrix) override;
   virtual void DrawSkybox(glm::mat4 projection_matrix);
 
-  void RecreateGeometry() override;
   glm::vec3 Position3D() override;
   void Update(float elapsedTimeMs) override;
   void MouseClick(glm::vec3 position) override;
