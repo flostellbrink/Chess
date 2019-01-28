@@ -34,14 +34,14 @@ namespace objects
     clock_pointers = 85,
     clock_glass_border = 86,
     clock_button_border = 87,
-    fullscreen_quad = 88,
-    clock_face = 89,
-    white_minutes_hand = 90,
-    white_seconds_hand = 91,
-    black_minutes_hand = 92,
-    black_seconds_hand = 93,
-    clock_time_cap = 94,
-    clock_marks = 95;
+    clock_face = 88,
+    white_minutes_hand = 89,
+    white_seconds_hand = 90,
+    black_minutes_hand = 91,
+    black_seconds_hand = 92,
+    clock_time_cap = 93,
+    clock_marks = 94,
+    fullscreen_quad = 95;
 }
 
 namespace themes {

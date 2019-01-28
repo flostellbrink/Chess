@@ -31,7 +31,7 @@ void ObjectManager::NewGame() {
   AddObject(new BasicObject(objects::table, glm::vec3(0, -1, 0), 0, "basic"));
   // Creates all game related objects itself
   game_board = new Board(&camera_);
-  clock = new Clock();
+  clock = new Clock;
 
   // Post processing
   AddPost(new FullScreenQuad("res/shader/BlurVer.vs.glsl", "res/shader/Blur.fs.glsl"));
