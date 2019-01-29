@@ -11,33 +11,33 @@ std::vector<MoveBase*> Rook::GetMoves() {
   std::vector<MoveBase*> result;
 
   auto currentField = field;
-  while ((currentField = currentField->Up)) {
+  while ((currentField = currentField->up)) {
     AddHitOrMove(currentField, result);
-    if (currentField->CurrentPiece) {
+    if (currentField->current_piece) {
       break;
     }
   }
 
   currentField = field;
-  while ((currentField = currentField->Down)) {
+  while ((currentField = currentField->down)) {
     AddHitOrMove(currentField, result);
-    if (currentField->CurrentPiece) {
+    if (currentField->current_piece) {
       break;
     }
   }
 
   currentField = field;
-  while ((currentField = currentField->Left)) {
+  while ((currentField = currentField->left)) {
     AddHitOrMove(currentField, result);
-    if (currentField->CurrentPiece) {
+    if (currentField->current_piece) {
       break;
     }
   }
 
   currentField = field;
-  while ((currentField = currentField->Right)) {
+  while ((currentField = currentField->right)) {
     AddHitOrMove(currentField, result);
-    if (currentField->CurrentPiece) {
+    if (currentField->current_piece) {
       break;
     }
   }

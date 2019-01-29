@@ -5,15 +5,15 @@
 #include "src/curve/Curve.h"
 
 Extruder::Extruder(Curve* profileCurve, Curve* widthCurve, const float scale) : scale_(scale) {
-  profileCurve_ = profileCurve;
-  widthCurve_ = widthCurve;
+  profile_curve_ = profileCurve;
+  width_curve_ = widthCurve;
 }
 
 void Extruder::Create() {
-  auto profilePoints = profileCurve_->InterpolatedPoints(Config::geo_resolution2);
-  auto profileTangents = profileCurve_->InterpolatedTangents();
-  auto widthPoints = widthCurve_->InterpolatedPoints(resolution_);
-  auto widthTangents = widthCurve_->InterpolatedTangents();
+  auto profilePoints = profile_curve_->InterpolatedPoints(Config::geo_resolution2);
+  auto profileTangents = profile_curve_->InterpolatedTangents();
+  auto widthPoints = width_curve_->InterpolatedPoints(resolution_);
+  auto widthTangents = width_curve_->InterpolatedTangents();
   const auto profileRes = static_cast<int>(profilePoints.size());
   const auto widthRes = static_cast<int>(widthPoints.size());
 

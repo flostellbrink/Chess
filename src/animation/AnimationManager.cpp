@@ -5,58 +5,58 @@
 AnimationManager::AnimationManager() = default;
 
 void AnimationManager::Update(const float elapsedTime) {
-  for (auto animation : activeAnimations_) {
+  for (auto animation : active_animations_) {
     animation->Update(elapsedTime);
     if (!animation->Active()) {
-      finishedAnimations_.push_back(animation);
+      finished_animations_.push_back(animation);
     }
   }
 
-  for (auto animation : finishedAnimations_) {
-    activeAnimations_.erase(std::remove(activeAnimations_.begin(), activeAnimations_.end(), animation), activeAnimations_.end());
+  for (auto animation : finished_animations_) {
+    active_animations_.erase(std::remove(active_animations_.begin(), active_animations_.end(), animation), active_animations_.end());
   }
-  finishedAnimations_.clear();
+  finished_animations_.clear();
 
-  for (auto animation : independentAnimations_) {
+  for (auto animation : independent_animations_) {
     animation->Update(elapsedTime);
     if (!animation->Active()) {
-      finishedAnimations_.push_back(animation);
+      finished_animations_.push_back(animation);
     }
   }
 
-  for (auto animation : finishedAnimations_) {
-    independentAnimations_.erase(std::remove(independentAnimations_.begin(), independentAnimations_.end(), animation), independentAnimations_.end());
+  for (auto animation : finished_animations_) {
+    independent_animations_.erase(std::remove(independent_animations_.begin(), independent_animations_.end(), animation), independent_animations_.end());
   }
-  finishedAnimations_.clear();
+  finished_animations_.clear();
 
-  if (activeAnimations_.empty() && !queuedAnimations_.empty()) {
-    activeAnimations_.push_back(queuedAnimations_[0]);
-    queuedAnimations_.erase(queuedAnimations_.begin());
+  if (active_animations_.empty() && !queued_animations_.empty()) {
+    active_animations_.push_back(queued_animations_[0]);
+    queued_animations_.erase(queued_animations_.begin());
   }
 }
 
 void AnimationManager::PlayNow(AnimationBase *animation) {
-  activeAnimations_.push_back(animation);
+  active_animations_.push_back(animation);
 }
 
 void AnimationManager::PlayNext(AnimationBase *animation) {
-  queuedAnimations_.insert(queuedAnimations_.begin(), animation);
+  queued_animations_.insert(queued_animations_.begin(), animation);
 }
 
 void AnimationManager::PlayLast(AnimationBase *animation) {
-  queuedAnimations_.push_back(animation);
+  queued_animations_.push_back(animation);
 }
 
 void AnimationManager::PlayIndependent(AnimationBase *animation) {
-  independentAnimations_.push_back(animation);
+  independent_animations_.push_back(animation);
 }
 
 bool AnimationManager::IsBusy() const
 {
-  return !activeAnimations_.empty() || !queuedAnimations_.empty();
+  return !active_animations_.empty() || !queued_animations_.empty();
 }
 
 void AnimationManager::Reset() {
-  activeAnimations_.clear();
-  queuedAnimations_.clear();
+  active_animations_.clear();
+  queued_animations_.clear();
 }

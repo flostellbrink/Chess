@@ -1,5 +1,5 @@
-#ifndef MOVEBASE_H
-#define MOVEBASE_H
+#ifndef MOVE_BASE_H
+#define MOVE_BASE_H
 
 class Board;
 class Field;
@@ -26,4 +26,4 @@ protected:
 };
 
 
-#endif // MOVEBASE_H
+#endif // MOVE_BASE_H

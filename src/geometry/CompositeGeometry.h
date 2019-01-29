@@ -1,11 +1,11 @@
-#ifndef COMPOSITEGEOMETRY_H
-#define COMPOSITEGEOMETRY_H
+#ifndef COMPOSITE_GEOMETRY_H
+#define COMPOSITE_GEOMETRY_H
 
 #include "src/geometry/Geometry.h"
 
 class CompositeGeometry : public Geometry {
 public:
-  explicit CompositeGeometry(std::vector<Geometry*> geos);
+  explicit CompositeGeometry(std::vector<Geometry*> geometries);
   CompositeGeometry(Geometry* first, Geometry* second);
 
   void Recreate() override;
@@ -15,8 +15,8 @@ protected:
   void Create() override;
 
 private:
-  std::vector<Geometry*> geos_;
+  std::vector<Geometry*> geometries_;
 };
 
 
-#endif // COMPOSITEGEOMETRY_H
+#endif // COMPOSITE_GEOMETRY_H

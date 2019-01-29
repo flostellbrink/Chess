@@ -45,10 +45,10 @@ bool aabb_coll_ray(Collision* a, Collision* b, float minLength, float maxLength)
   const auto t5 = (a->min.z - b->origin.z) / b->dir.z;
   const auto t6 = (a->max.z - b->origin.z) / b->dir.z;
 
-  const auto tmin = std::max(std::max(std::min(t1, t2), std::min(t3, t4)), std::min(t5, t6));
-  const auto tmax = std::min(std::min(std::max(t1, t2), std::max(t3, t4)), std::max(t5, t6));
+  const auto tMin = std::max(std::max(std::min(t1, t2), std::min(t3, t4)), std::min(t5, t6));
+  const auto tMax = std::min(std::min(std::max(t1, t2), std::max(t3, t4)), std::max(t5, t6));
 
-  return tmax >= tmin && tmax >= minLength && tmin <= maxLength;
+  return tMax >= tMin && tMax >= minLength && tMin <= maxLength;
 }
 
 bool Collision::Intersects(Collision* other) {

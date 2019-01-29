@@ -1,5 +1,5 @@
-#ifndef ANIMANAGER_H
-#define ANIMANAGER_H
+#ifndef ANIMATION_MANAGER_H
+#define ANIMATION_MANAGER_H
 
 #include <vector>
 
@@ -17,8 +17,8 @@ public:
   void Reset();
 
 protected:
-  std::vector<AnimationBase*> activeAnimations_, queuedAnimations_, independentAnimations_, finishedAnimations_;
+  std::vector<AnimationBase*> active_animations_, queued_animations_, independent_animations_, finished_animations_;
 };
 
 
-#endif // ANIMANAGER_H
+#endif // ANIMATION_MANAGER_H

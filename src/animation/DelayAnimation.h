@@ -1,5 +1,5 @@
-#ifndef DELAYANIMATION_H
-#define DELAYANIMATION_H
+#ifndef DELAY_ANIMATION_H
+#define DELAY_ANIMATION_H
 
 #include "AnimationBase.h"
 
@@ -11,7 +11,7 @@ public:
   bool Active() override;
 
 private:
-  float duration_, elapsedTotal_ = 0;
+  float duration_, elapsed_total_ = 0;
   bool active_ = true;
 };
 
@@ -22,8 +22,8 @@ DelayAnimation<T>::DelayAnimation(float duration) : duration_(duration) {
 
 template<class T>
 void DelayAnimation<T>::Update(const float elapsedTime) {
-  elapsedTotal_ += elapsedTime;
-  if(elapsedTotal_ >= duration_)
+  elapsed_total_ += elapsedTime;
+  if(elapsed_total_ >= duration_)
   {
     active_ = false;
   }
@@ -34,4 +34,4 @@ bool DelayAnimation<T>::Active() {
   return active_;
 }
 
-#endif // DELAYANIMATION_H
+#endif // DELAY_ANIMATION_H

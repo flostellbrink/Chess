@@ -1,5 +1,5 @@
-#ifndef OBJECTMANAGER_H
-#define OBJECTMANAGER_H
+#ifndef OBJECT_MANAGER_H
+#define OBJECT_MANAGER_H
 
 #include <GL/glew.h>
 #include <vector>
@@ -65,4 +65,4 @@ private:
 };
 
 
-#endif // OBJECTMANAGER_H
+#endif // OBJECT_MANAGER_H

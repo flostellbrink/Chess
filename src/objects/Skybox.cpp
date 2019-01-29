@@ -19,22 +19,22 @@ void Skybox::Init() {
   geometry_ = ObjectManager::geometry.GetGeometryCached(object_id_);
 }
 
-void Skybox::Draw(glm::mat4 projection_matrix) {
-  (void)projection_matrix;
+void Skybox::Draw(glm::mat4 projectionMatrix) {
+  (void)projectionMatrix;
 }
 
-void Skybox::DrawShadow(glm::mat4 projection_matrix) {
-  (void)projection_matrix;
+void Skybox::DrawShadow(glm::mat4 projectionMatrix) {
+  (void)projectionMatrix;
 }
 
-void Skybox::DrawSkybox(glm::mat4 projection_matrix) {
+void Skybox::DrawSkybox(glm::mat4 projectionMatrix) {
   // Load program
   program_->Use();
 
   ObjectManager::texture.GetTexture(object_id_)[0]->Bind(GL_TEXTURE_CUBE_MAP);
 
   // set parameter
-  program_->Bind(projection_matrix, "projection_matrix");
+  program_->Bind(projectionMatrix, "projection_matrix");
   program_->Bind(model_view_matrix_, "modelview_matrix");
 
   glDisable(GL_DEPTH_TEST);

@@ -13,11 +13,11 @@ public:
   explicit Drawable(int objectId = 0);
 
   virtual void Init();
-  virtual void Draw(glm::mat4 projection_matrix) = 0;
-  virtual void DrawOpaque(glm::mat4 projection_matrix);
-  virtual void DrawShadow(glm::mat4 projection_matrix) = 0;
-  virtual void DrawReflection(glm::mat4 projection_matrix);
-  virtual void DrawTranslucent(glm::mat4 projection_matrix);
+  virtual void Draw(glm::mat4 projectionMatrix) = 0;
+  virtual void DrawOpaque(glm::mat4 projectionMatrix);
+  virtual void DrawShadow(glm::mat4 projectionMatrix) = 0;
+  virtual void DrawReflection(glm::mat4 projectionMatrix);
+  virtual void DrawTranslucent(glm::mat4 projectionMatrix);
 
   virtual glm::vec3 Position3D() = 0;
 

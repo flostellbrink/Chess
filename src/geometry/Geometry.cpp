@@ -40,39 +40,39 @@ void Geometry::FinishCreate() {
   glBindVertexArray(vertex_array_object_);
 
   // fill vertex array object with data
-  GLuint position_buffer;
-  glGenBuffers(1, &position_buffer);
-  glBindBuffer(GL_ARRAY_BUFFER, position_buffer);
+  GLuint positionBuffer;
+  glGenBuffers(1, &positionBuffer);
+  glBindBuffer(GL_ARRAY_BUFFER, positionBuffer);
   glBufferData(GL_ARRAY_BUFFER, positions_.size() * 3 * sizeof(float), positions_.data(), GL_STATIC_DRAW);
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
   glEnableVertexAttribArray(0);
 
-  GLuint texture_buffer;
-  glGenBuffers(1, &texture_buffer);
-  glBindBuffer(GL_ARRAY_BUFFER, texture_buffer);
+  GLuint textureBuffer;
+  glGenBuffers(1, &textureBuffer);
+  glBindBuffer(GL_ARRAY_BUFFER, textureBuffer);
   glBufferData(GL_ARRAY_BUFFER, texture_coordinates_.size() * sizeof(glm::vec2), texture_coordinates_.data(), GL_STATIC_DRAW);
   glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
   glEnableVertexAttribArray(1);
 
-  GLuint normal_buffer;
-  glGenBuffers(1, &normal_buffer);
-  glBindBuffer(GL_ARRAY_BUFFER, normal_buffer);
+  GLuint normalBuffer;
+  glGenBuffers(1, &normalBuffer);
+  glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
   glBufferData(GL_ARRAY_BUFFER, normals_.size() * 3 * sizeof(float), normals_.data(), GL_STATIC_DRAW);
   glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
   glEnableVertexAttribArray(2);
 
-  GLuint index_buffer;
-  glGenBuffers(1, &index_buffer);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer);
+  GLuint indexBuffer;
+  glGenBuffers(1, &indexBuffer);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices_.size() * sizeof(unsigned int), indices_.data(), GL_STATIC_DRAW);
 
   // unbind vertex array object
   glBindVertexArray(0);
   // delete buffers (the data is stored in the vertex array object)
-  glDeleteBuffers(1, &position_buffer);
-  glDeleteBuffers(1, &index_buffer);
-  glDeleteBuffers(1, &normal_buffer);
-  glDeleteBuffers(1, &texture_buffer);
+  glDeleteBuffers(1, &positionBuffer);
+  glDeleteBuffers(1, &indexBuffer);
+  glDeleteBuffers(1, &normalBuffer);
+  glDeleteBuffers(1, &textureBuffer);
 }
 
 void Geometry::AddPosition(float x, float y, float z) {

@@ -57,7 +57,7 @@ void toggle(bool &value, const std::string &name, const int key, const int toggl
  * @param value Property to toggle.
  * @param name Name of property to output to console.
  * @param key Current key code.
- * @param signalKey Key code for singaling property.
+ * @param signalKey Key code for signaling property.
  */
 void signal(bool &value, const std::string &name, const int key, const int signalKey) {
   if (key == signalKey) {
@@ -74,8 +74,8 @@ void signal(bool &value, const std::string &name, const int key, const int signa
  * @param value Value to update.
  * @param name Name of property to output to console.
  * @param key Current key code.
- * @param increase_key Key code for increasing the value.
- * @param decrease_key Key code for decreasing the value.
+ * @param increaseKey Key code for increasing the value.
+ * @param decreaseKey Key code for decreasing the value.
  * @param min Minimum value for decreasing the property.
  * @param max Maximum value for increasing the property.
  * @param step Step size for increments and decrements.
@@ -84,19 +84,19 @@ template <typename Numeric>
 void modify(Numeric& value,
             const std::string &name,
             const int key,
-            const int increase_key,
-            const int decrease_key,
+            const int increaseKey,
+            const int decreaseKey,
             Numeric min,
             Numeric max,
             Numeric step)
 {
   std::stringstream message;
-  if (key == increase_key && value < max) {
+  if (key == increaseKey && value < max) {
     value += step;
     message << "Increased " << name << " to " << value << ".";
     Logger::Info(message.str());
   }
-  else if (key == decrease_key && value > min) {
+  else if (key == decreaseKey && value > min) {
     value -= step;
     message << "Decreased " << name << " to " << value << ".";
     Logger::Info(message.str());
@@ -107,11 +107,11 @@ void modify(Numeric& value,
  * Callback on key state change. Applies changes to config.
  * @param handle Window on which key event was registered.
  * @param key Key with state change.
- * @param scancode Scancode of change.
+ * @param scanCode Scan code of change.
  * @param action Registered key action.
  * @param mods Key modifiers.
  */
-void key_callback(GLFWwindow *handle, const int key, int scancode, const int action, int mods) {
+void key_callback(GLFWwindow *handle, const int key, int scanCode, const int action, int mods) {
   if (action != GLFW_PRESS) {
     return;
   }
@@ -140,9 +140,9 @@ void key_callback(GLFWwindow *handle, const int key, int scancode, const int act
 /**
  * Callback on cursor movement.
  */
-static void cursor_pos_callback(GLFWwindow* window, const double xpos, const double ypos)
+static void cursor_pos_callback(GLFWwindow* window, const double xPos, const double yPos)
 {
-  ObjectManager::instance.MouseMove(xpos, ypos);
+  ObjectManager::instance.MouseMove(xPos, yPos);
 }
 
 /**
@@ -156,9 +156,9 @@ void mouse_button_callback(GLFWwindow* window, const int button, const int actio
 /**
  * Callback on scroll wheel movement.
  */
-void scroll_callback(GLFWwindow* window, const double xoffset, const double yoffset)
+void scroll_callback(GLFWwindow* window, const double xOffset, const double yOffset)
 {
-  ObjectManager::instance.MouseWheel(xoffset, yoffset);
+  ObjectManager::instance.MouseWheel(xOffset, yOffset);
 }
 
 /**

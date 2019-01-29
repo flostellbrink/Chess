@@ -15,7 +15,7 @@ public:
 
 protected:
   virtual float Value();
-  float duration_, elapsedTotal_ = 0;
+  float duration_, elapsed_total_ = 0;
   T& property_;
   bool active_ = true;
 };
@@ -27,7 +27,7 @@ Animation<T>::Animation(float duration, T &property) : duration_(duration), prop
 
 template<class T>
 void Animation<T>::Update(const float elapsedTime) {
-  elapsedTotal_ += elapsedTime;
+  elapsed_total_ += elapsedTime;
   property_ = ValueAt(Value());
 }
 
@@ -38,7 +38,7 @@ bool Animation<T>::Active() {
 
 template<class T>
 float Animation<T>::Value() {
-  const auto result = elapsedTotal_ / duration_;
+  const auto result = elapsed_total_ / duration_;
   if (result > 1) {
     active_ = false;
     return 1;

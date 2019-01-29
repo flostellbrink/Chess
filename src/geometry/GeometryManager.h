@@ -1,7 +1,7 @@
 // Loads geometry for all objects
-// Also handles recreation on reolution/ theme change
-#ifndef GEOMANAGER_H
-#define GEOMANAGER_H
+// Also handles recreation on resolution/ theme change
+#ifndef GEOMETRY_MANAGER_H
+#define GEOMETRY_MANAGER_H
 
 #include <unordered_map>
 #include "ControlPoints.h"
@@ -24,9 +24,9 @@ protected:
   Geometry* GetExtruded(int objectId, float scale = .1f, float radius = .2f);
 
   int theme_id_;
-  std::unordered_map<int, Geometry*> geos_;
+  std::unordered_map<int, Geometry*> geometries_;
   ControlPoints control_points_;
 };
 
 
-#endif // GEOMANAGER_H
+#endif // GEOMETRY_MANAGER_H

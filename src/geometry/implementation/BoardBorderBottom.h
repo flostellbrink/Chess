@@ -1,5 +1,5 @@
-#ifndef BOARDBORDERBOTTOM_H
-#define BOARDBORDERBOTTOM_H
+#ifndef BOARD_BORDER_BOTTOM_H
+#define BOARD_BORDER_BOTTOM_H
 
 #include "src/geometry/Geometry.h"
 
@@ -12,4 +12,4 @@ protected:
 };
 
 
-#endif // BOARDBORDERBOTTOM_H
+#endif // BOARD_BORDER_BOTTOM_H

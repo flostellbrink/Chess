@@ -25,21 +25,21 @@ public:
    * @brief getWidth Getter for the image width
    * @return the width of the image in pixels
    */
-  unsigned int getWidth() const;
+  unsigned int GetWidth() const;
 
   /**
    * @brief getHeight Getter for the image height
    * @return the height of the image in pixels
    */
-  unsigned int getHeight() const;
+  unsigned int GetHeight() const;
 
   /**
    * @brief getData Getter for the image data
-   * @return the image data as uchar array
+   * @return the image data as unsigned char array
    *
    * You can pass this data directly to the shader
    */
-  void *getData();
+  void *GetData();
 
 private:
   /**

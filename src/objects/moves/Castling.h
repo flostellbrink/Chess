@@ -1,5 +1,5 @@
-#ifndef ROCHADE_H
-#define ROCHADE_H
+#ifndef CASTLING_H
+#define CASTLING_H
 
 #include "MoveBase.h"
 
@@ -15,4 +15,4 @@ private:
 };
 
 
-#endif // ROCHADE_H
+#endif // CASTLING_H

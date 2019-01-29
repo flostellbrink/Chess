@@ -21,9 +21,9 @@
 
 Piece::Piece(Board* board, int objectID, Field* field)
   : Drawable(objectID), field(field), position_(field->TopPosition()), y_rotation_(0) {
-  field->CurrentPiece = this;
+  field->current_piece = this;
   board_ = board;
-  bounding_box = CollisionManager::GetAABB(glm::vec3(), glm::vec3());
+  bounding_box = CollisionManager::GetAabb(glm::vec3(), glm::vec3());
   Piece::UpdateBb(Position());
 }
 
@@ -50,12 +50,12 @@ Field* Piece::GetField() const
 
 void Piece::SetField(Field* field, const bool sim) {
   if (field == Piece::field) {
-    field->CurrentPiece = this;
+    field->current_piece = this;
     return;
   }
 
-  if (Piece::field->CurrentPiece == this) {
-    Piece::field->CurrentPiece = nullptr;
+  if (Piece::field->current_piece == this) {
+    Piece::field->current_piece = nullptr;
   }
 
   if (!sim) {
@@ -82,7 +82,7 @@ void Piece::SetField(Field* field, const bool sim) {
   }
 
   Piece::field = field;
-  Piece::field->CurrentPiece = this;
+  Piece::field->current_piece = this;
 }
 
 bool Piece::IsWhite() {
@@ -101,7 +101,7 @@ int Piece::GetIdWithoutColor() {
   return object_id_ - 1 + IsWhite();
 }
 
-void Piece::Draw(glm::mat4 projection_matrix) {
+void Piece::Draw(glm::mat4 projectionMatrix) {
   if (program_ == nullptr) {
     Logger::Error("program not loaded");
   }
@@ -118,23 +118,23 @@ void Piece::Draw(glm::mat4 projection_matrix) {
   program_->Bind(0, "tex");
   program_->Bind(3, "texShadow");
 
-  auto view_projection_shadow = shadow_view_projection * model_view_matrix_;
-  auto tra_inv_model_matrix = transpose(inverse(model_view_matrix_));
-  program_->Bind(projection_matrix, "view_projection_matrix");
-  program_->Bind(view_projection_shadow, "view_projection_shadow");
+  auto viewProjectionShadow = shadow_view_projection * model_view_matrix_;
+  auto traInvModelMatrix = transpose(inverse(model_view_matrix_));
+  program_->Bind(projectionMatrix, "view_projection_matrix");
+  program_->Bind(viewProjectionShadow, "view_projection_shadow");
   program_->Bind(model_view_matrix_, "model_matrix");
-  program_->Bind(tra_inv_model_matrix, "tra_inv_model_matrix");
+  program_->Bind(traInvModelMatrix, "tra_inv_model_matrix");
 
   program_->Bind(light_pos, "lightPos");
   program_->Bind(cam_pos, "camPos");
 
-  glm::vec3 La = glm::vec3(0.5f, 0.5f, 0.5f);
+  glm::vec3 la = glm::vec3(0.5f, 0.5f, 0.5f);
   glm::vec3 ka = glm::vec3(0.5f, 0.5f, 0.5f);
-  glm::vec3 Ld = glm::vec3(0.5f, 0.5f, 0.5f);
+  glm::vec3 ld = glm::vec3(0.5f, 0.5f, 0.5f);
   glm::vec3 kd = glm::vec3(1, 1, 1);
-  program_->Bind(La, "La");
+  program_->Bind(la, "La");
   program_->Bind(ka, "ka");
-  program_->Bind(Ld, "Ld");
+  program_->Bind(ld, "Ld");
   program_->Bind(kd, "kd");
 
   program_->Bind(ObjectManager::texture.Reflectivity(object_id_), "reflectivity");
@@ -146,8 +146,8 @@ void Piece::Draw(glm::mat4 projection_matrix) {
 void Piece::DrawShadow(glm::mat4 projection_matrix) {
   program_shadow_->Use();
 
-  auto view_projection_shadow = projection_matrix * model_view_matrix_;
-  program_shadow_->Bind(view_projection_shadow, "view_projection_shadow");
+  auto viewProjectionShadow = projection_matrix * model_view_matrix_;
+  program_shadow_->Bind(viewProjectionShadow, "view_projection_shadow");
 
   geometry_->Draw();
 }
@@ -166,11 +166,11 @@ void Piece::MouseClick(glm::vec3 position) {
 
 void Piece::AddHitOrMove(Field *field, std::vector<MoveBase *> &moves) {
   if (!field) return;
-  if (!field->CurrentPiece) {
+  if (!field->current_piece) {
     moves.push_back(new Move(this, field));
   }
-  else if (field->CurrentPiece->IsWhite() != IsWhite()) {
-    moves.push_back(new Hit(this, field->CurrentPiece));
+  else if (field->current_piece->IsWhite() != IsWhite()) {
+    moves.push_back(new Hit(this, field->current_piece));
   }
 }
 

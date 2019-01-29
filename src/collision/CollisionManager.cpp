@@ -7,7 +7,7 @@
 
 CollisionManager::CollisionManager() = default;
 
-Collision* CollisionManager::GetAABB(const glm::vec3 min, const glm::vec3 max)
+Collision* CollisionManager::GetAabb(const glm::vec3 min, const glm::vec3 max)
 {
   return new Collision(Collision::aabb, min, max);
 }

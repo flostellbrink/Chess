@@ -1,5 +1,5 @@
-#ifndef FULLSCREENQUAD_H
-#define FULLSCREENQUAD_H
+#ifndef FULL_SCREEN_QUAD_H
+#define FULL_SCREEN_QUAD_H
 
 #include "Drawable.h"
 
@@ -9,8 +9,8 @@ class FullScreenQuad : public Drawable {
 public:
   FullScreenQuad(std::string vertexShader, std::string fragmentShader);
   void Init() override;
-  void Draw(glm::mat4 projection_matrix) override;
-  void DrawShadow(glm::mat4 projection_matrix) override;
+  void Draw(glm::mat4 projectionMatrix) override;
+  void DrawShadow(glm::mat4 projectionMatrix) override;
 
   void Update(float elapsedTimeMs) override;
   void MouseClick(glm::vec3 position) override;
@@ -25,4 +25,4 @@ protected:
 };
 
 
-#endif // FULLSCREENQUAD_H
+#endif // FULL_SCREEN_QUAD_H

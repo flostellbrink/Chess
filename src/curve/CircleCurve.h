@@ -1,5 +1,5 @@
-#ifndef CIRCLECURVE_H
-#define CIRCLECURVE_H
+#ifndef CIRCLE_CURVE_H
+#define CIRCLE_CURVE_H
 
 #include <glm/glm.hpp>
 #include "Curve.h"
@@ -16,4 +16,4 @@ protected:
   float radius_;
 };
 
-#endif // CIRCLECURVE_H
+#endif // CIRCLE_CURVE_H

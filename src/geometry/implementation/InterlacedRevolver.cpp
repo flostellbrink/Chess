@@ -10,7 +10,7 @@ InterlacedRevolver::InterlacedRevolver(Curve* baseCurve, Curve* heightCurve1, Cu
 }
 
 void InterlacedRevolver::Create() {
-  // Texture needs to seemlesly wrap around
+  // Texture needs to seamlessly wrap around
   const auto texWidth = static_cast<int>(scale_ * 4 + 1);
 
   auto basePoints = base_curve_->InterpolatedPoints(Config::geo_resolution1);

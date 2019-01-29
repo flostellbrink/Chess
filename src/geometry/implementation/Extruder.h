@@ -13,8 +13,8 @@ protected:
   void Create() override;
 
 private:
-  Curve* profileCurve_;
-  Curve* widthCurve_;
+  Curve* profile_curve_;
+  Curve* width_curve_;
   float scale_;
   int resolution_ = 10;
 };

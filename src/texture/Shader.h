@@ -9,7 +9,7 @@
  */
 class Shader {
 public:
-  Shader(const std::string & vertex_file_path, const std::string & fragment_file_path);
+  Shader(const std::string & vertexFilePath, const std::string & fragmentFilePath);
   GLuint handle;
   void Use() const;
   GLint GetUniform(const std::string &uniformName) const;

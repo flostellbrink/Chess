@@ -1,5 +1,5 @@
-#ifndef CATMULLROMANIMATION_H
-#define CATMULLROMANIMATION_H
+#ifndef CATMULL_ROM_ANIMATION_H
+#define CATMULL_ROM_ANIMATION_H
 
 #include <vector>
 #include "Animation.h"
@@ -61,4 +61,4 @@ T CatmullRomAnimation<T>::ValueAt(float value) {
     + point4 * static_cast<float>(pow(value, 3));
 }
 
-#endif // CATMULLROMANIMATION_H
+#endif // CATMULL_ROM_ANIMATION_H

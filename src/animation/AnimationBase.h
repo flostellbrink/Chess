@@ -1,5 +1,5 @@
-#ifndef ANIMATIONBASE_H
-#define ANIMATIONBASE_H
+#ifndef ANIMATION_BASE_H
+#define ANIMATION_BASE_H
 
 // Provides an interface for animations
 class AnimationBase {
@@ -9,4 +9,4 @@ public:
   virtual bool Active() = 0;
 };
 
-#endif // ANIMATIONBASE_H
+#endif // ANIMATION_BASE_H

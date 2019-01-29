@@ -1,5 +1,5 @@
-#ifndef INTERLACEDREVOLVER_H
-#define INTERLACEDREVOLVER_H
+#ifndef INTERLACED_REVOLVER_H
+#define INTERLACED_REVOLVER_H
 
 #include "src/geometry/Geometry.h"
 
@@ -28,4 +28,4 @@ private:
 };
 
 
-#endif // INTERLACEDREVOLVER_H
+#endif // INTERLACED_REVOLVER_H

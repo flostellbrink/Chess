@@ -20,7 +20,7 @@ void Transform::Apply(Board* board, bool sim) {
 }
 
 void Transform::Undo(Board* board, bool sim) {
-  from_field_->CurrentPiece->SetField(board->GetSideField(piece_->IsWhite()));
+  from_field_->current_piece->SetField(board->GetSideField(piece_->IsWhite()));
   piece_->SetField(from_field_, sim);
 }
 

@@ -11,21 +11,21 @@ public:
   int Timeout() const;
 
 protected:
-  BasicObject* whiteMinutesHand_;
-  BasicObject* whiteSecondsHand_;
-  BasicObject* whiteClockButton_;
+  BasicObject* white_minutes_hand_;
+  BasicObject* white_seconds_hand_;
+  BasicObject* white_clock_button_;
 
-  BasicObject* blackMinutesHand_;
-  BasicObject* blackSecondsHand_;
-  BasicObject* blackClockButton_;
+  BasicObject* black_minutes_hand_;
+  BasicObject* black_seconds_hand_;
+  BasicObject* black_clock_button_;
 
-  float getHandRotation(float time, int secondsPerRotation) const;
+  float GetHandRotation(float time, int secondsPerRotation) const;
 
 private:
-  float timeCounter = 0.f, delay = 7000.f; // after DELAY ms, reduce time from the clock
-  float whiteTime, blackTime, startTime = 300000.f; // time for the players
-  bool whiteOnClock_ = true;
-  int timeoutStatus_ = 0; // No player is timed out
+  float time_counter_ = 0.f, delay_ = 7000.f; // after DELAY ms, reduce time from the clock
+  float white_time_, black_time_, start_time_ = 300000.f; // time for the players
+  bool white_on_clock_ = true;
+  int timeout_status_ = 0; // No player is timed out
 };
 
 

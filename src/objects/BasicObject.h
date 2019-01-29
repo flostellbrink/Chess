@@ -1,5 +1,5 @@
-#ifndef BASICOBJECT_H
-#define BASICOBJECT_H
+#ifndef BASIC_OBJECT_H
+#define BASIC_OBJECT_H
 
 #include <glm/glm.hpp>
 #include <string>
@@ -10,10 +10,10 @@ class Field;
 
 class BasicObject : public Drawable {
 public:
-  explicit BasicObject(int objectID, glm::vec3 position = glm::vec3(), float yRotation = 0, std::string shader = "basic");
+  explicit BasicObject(int objectId, glm::vec3 position = glm::vec3(), float yRotation = 0, std::string shader = "basic");
   void Init() override;
-  void Draw(glm::mat4 projection_matrix) override;
-  void DrawShadow(glm::mat4 projection_matrix) override;
+  void Draw(glm::mat4 projectionMatrix) override;
+  void DrawShadow(glm::mat4 projectionMatrix) override;
 
   void Update(float elapsedTimeMs) override;
   void MouseClick(glm::vec3 position) override;
@@ -38,4 +38,4 @@ protected:
 };
 
 
-#endif // BASICOBJECT_H
+#endif // BASIC_OBJECT_H

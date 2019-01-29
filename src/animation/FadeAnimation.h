@@ -1,5 +1,5 @@
-#ifndef FADEANIMATION_H
-#define FADEANIMATION_H
+#ifndef FADE_ANIMATION_H
+#define FADE_ANIMATION_H
 
 #include <glm/glm.hpp>
 
@@ -31,4 +31,4 @@ T FadeAnimation<T>::ValueAt(float value) {
   return (1 - easeValue) * from_ + easeValue * to_;
 }
 
-#endif // FADEANIMATION_H
+#endif // FADE_ANIMATION_H

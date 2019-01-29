@@ -20,17 +20,17 @@ void Image::Load(const std::string& path) {
     Logger::Error("Failed to load png: " + std::string(lodepng_error_text(error)));
   }
 }
-void *Image::getData()
+void *Image::GetData()
 {
   return data_.data();
 }
 
-unsigned int Image::getWidth() const
+unsigned int Image::GetWidth() const
 {
   return width_;
 }
 
-unsigned int Image::getHeight() const
+unsigned int Image::GetHeight() const
 {
   return height_;
 }

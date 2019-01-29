@@ -2,23 +2,21 @@
 
 #include "CompositeGeometry.h"
 
-//TODO: merge child vertices into new lists
-
-CompositeGeometry::CompositeGeometry(std::vector<Geometry*> geos) {
-  geos_ = std::move(geos);
+CompositeGeometry::CompositeGeometry(std::vector<Geometry*> geometries) {
+  geometries_ = std::move(geometries);
 }
 
 CompositeGeometry::CompositeGeometry(Geometry* first, Geometry* second) {
-  geos_ = std::vector<Geometry*>{ first, second };
+  geometries_ = std::vector<Geometry*>{ first, second };
 }
 
 void CompositeGeometry::Recreate() {
-  for (Geometry* geo : geos_)
+  for (Geometry* geo : geometries_)
     geo->Recreate();
 }
 
 void CompositeGeometry::Draw() {
-  for (Geometry* geo : geos_)
+  for (Geometry* geo : geometries_)
     geo->Draw();
 }
 

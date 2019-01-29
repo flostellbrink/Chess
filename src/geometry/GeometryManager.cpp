@@ -30,7 +30,7 @@ void GeometryManager::SetTheme(int themeID) {
 }
 
 void GeometryManager::Regenerate() {
-  for (auto& pair : geos_) {
+  for (auto& pair : geometries_) {
     pair.second->Recreate();
   }
 }
@@ -41,14 +41,14 @@ Geometry* GeometryManager::GetGeometryCached(int objectId) {
     objectId = objects::field00;
   }
 
-  auto iter = geos_.find(objectId);
-  if (iter != geos_.end()) {
-    return iter->second;
+  auto iterator = geometries_.find(objectId);
+  if (iterator != geometries_.end()) {
+    return iterator->second;
   }
 
   auto geo = GetGeometry(objectId);
   geo->Recreate();
-  geos_[objectId] = geo;
+  geometries_[objectId] = geo;
   return geo;
 }
 

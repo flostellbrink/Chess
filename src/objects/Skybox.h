@@ -1,5 +1,5 @@
-#ifndef SKYBOX_H
-#define SKYBOX_H
+#ifndef SKY_BOX_H
+#define SKY_BOX_H
 
 #include "src/objects/Drawable.h"
 
@@ -11,9 +11,9 @@ public:
   Skybox();
 
   void Init() override;
-  void Draw(glm::mat4 projection_matrix) override;
-  void DrawShadow(glm::mat4 projection_matrix) override;
-  virtual void DrawSkybox(glm::mat4 projection_matrix);
+  void Draw(glm::mat4 projectionMatrix) override;
+  void DrawShadow(glm::mat4 projectionMatrix) override;
+  virtual void DrawSkybox(glm::mat4 projectionMatrix);
 
   glm::vec3 Position3D() override;
   void Update(float elapsedTimeMs) override;
@@ -27,4 +27,4 @@ private:
   Geometry* geometry_{};
 };
 
-#endif // SKYBOX_H
+#endif // SKY_BOX_H

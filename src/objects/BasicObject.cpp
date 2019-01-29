@@ -29,7 +29,7 @@ void BasicObject::Position(glm::vec3 position) {
   ObjectManager::animation.PlayIndependent(new FadeAnimation<glm::vec3>(500, position_, position_, position));
 }
 
-void BasicObject::Draw(glm::mat4 projection_matrix) {
+void BasicObject::Draw(glm::mat4 projectionMatrix) {
   if (program_ == nullptr) {
     Logger::Error("program not loaded");
   }
@@ -47,16 +47,16 @@ void BasicObject::Draw(glm::mat4 projection_matrix) {
     program_->Bind(3, "texShadow");
   }
 
-  program_->Bind(projection_matrix, "view_projection_matrix");
+  program_->Bind(projectionMatrix, "view_projection_matrix");
   if (program_->HasUniform("view_projection_shadow")) {
-    auto view_projection_shadow = shadow_view_projection * model_view_matrix_;
-    program_->Bind(view_projection_shadow, "view_projection_shadow");
+    auto viewProjectionShadow = shadow_view_projection * model_view_matrix_;
+    program_->Bind(viewProjectionShadow, "view_projection_shadow");
   }
 
   program_->Bind(model_view_matrix_, "model_matrix");
   if (program_->HasUniform("tra_inv_model_matrix")) {
-    auto tra_inv_model_matrix = transpose(inverse(model_view_matrix_));
-    program_->Bind(tra_inv_model_matrix, "tra_inv_model_matrix");
+    auto traInvModelMatrix = transpose(inverse(model_view_matrix_));
+    program_->Bind(traInvModelMatrix, "tra_inv_model_matrix");
   }
 
   if (program_->HasUniform("lightPos")) {
@@ -67,16 +67,16 @@ void BasicObject::Draw(glm::mat4 projection_matrix) {
   }
 
   if (program_->HasUniform("La")) {
-    auto La = glm::vec3(0.5f, 0.5f, 0.5f);
-    program_->Bind(La, "La");
+    auto la = glm::vec3(0.5f, 0.5f, 0.5f);
+    program_->Bind(la, "La");
   }
   if (program_->HasUniform("ka")) {
     auto ka = glm::vec3(0.5f, 0.5f, 0.5f);
     program_->Bind(ka, "ka");
   }
   if (program_->HasUniform("Ld")) {
-    auto Ld = glm::vec3(0.5f, 0.5f, 0.5f);
-    program_->Bind(Ld, "Ld");
+    auto ld = glm::vec3(0.5f, 0.5f, 0.5f);
+    program_->Bind(ld, "Ld");
   }
   if (program_->HasUniform("kd")) {
     auto kd = glm::vec3(1, 1, 1);
@@ -96,8 +96,8 @@ void BasicObject::Draw(glm::mat4 projection_matrix) {
 void BasicObject::DrawShadow(glm::mat4 projection_matrix) {
   program_shadow_->Use();
 
-  auto view_projection_shadow = projection_matrix * model_view_matrix_;
-  program_shadow_->Bind(view_projection_shadow, "view_projection_shadow");
+  auto viewProjectionShadow = projection_matrix * model_view_matrix_;
+  program_shadow_->Bind(viewProjectionShadow, "view_projection_shadow");
 
   geometry_->Draw();
 }

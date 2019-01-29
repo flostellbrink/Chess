@@ -11,10 +11,10 @@ class Geometry;
 
 class Field : public Drawable {
 public:
-  Field(Board* board_, int boardX, int boardY, bool inactive);
+  Field(Board* board, int boardX, int boardY, bool inactive);
   void Init() override;
-  void Draw(glm::mat4 projection_matrix) override;
-  void DrawShadow(glm::mat4 projection_matrix) override;
+  void Draw(glm::mat4 projectionMatrix) override;
+  void DrawShadow(glm::mat4 projectionMatrix) override;
 
   void Update(float elapsedTimeMs) override;
   void MouseClick(glm::vec3 position) override;
@@ -27,24 +27,24 @@ public:
   glm::vec3 CenterPosition() const;
   int Row() const;
   int Column() const;
-  Field *Up = 0, *Down = 0, *Left = 0, *Right = 0;
-  Piece* CurrentPiece = 0;
+  Field *up = 0, *down = 0, *left = 0, *right = 0;
+  Piece* current_piece = 0;
 
 protected:
   std::string GetVertexShader() override;
   std::string GetFragmentShader() override;
 
-  Collision* boundingBox_;
+  Collision* bounding_box_;
 
 private:
-  int boardX_, boardY_;
+  int board_x_, board_y_;
   Geometry* geometry_{};
   glm::vec3 position_;
   Board* board_;
   bool inactive_;
-  bool overlayEnabled_ = false;
-  int overlayNumber_ = 1;
-  float ovelayOpacity_ = 0;
+  bool overlay_enabled_ = false;
+  int overlay_number_ = 1;
+  float overlay_opacity_ = 0;
 };
 
 

@@ -19,7 +19,7 @@ AnimationManager ObjectManager::animation;
 ObjectManager ObjectManager::instance;
 CollisionManager ObjectManager::collision;
 
-const GLuint defaultFrambuffer = 0;
+const GLuint default_framebuffer = 0;
 
 ObjectManager::ObjectManager() = default;
 
@@ -50,7 +50,7 @@ void ObjectManager::UpdateFramebuffer(GLuint &framebuffer, GLuint &texture, GLui
   if (depth)
     glDeleteRenderbuffers(1, &depth);
 
-  // Generate Framebuffer
+  // Generate Frame Buffer
   glGenFramebuffers(1, &framebuffer);
   glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 
@@ -69,7 +69,7 @@ void ObjectManager::UpdateFramebuffer(GLuint &framebuffer, GLuint &texture, GLui
   glBindRenderbuffer(GL_RENDERBUFFER, depth);
   glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
 
-  // Setup Framebuffer
+  // Setup Frame Buffer
   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depth);
   glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texture, 0);
   glDrawBuffer(GL_COLOR_ATTACHMENT0);
@@ -94,7 +94,7 @@ void ObjectManager::Update(float elapsedTime) {
     game_board->EnableAi(Config::ai);
   }
   if (Config::new_game) {
-    std::cerr << "Spiel wird neugestartet!" << std::endl;
+    std::cerr << "Resetting game" << std::endl;
     Config::new_game = false;
     Board::ResetGame();
     //NewGame();
@@ -128,19 +128,19 @@ void ObjectManager::Update(float elapsedTime) {
  * @brief The DepthSort struct compares objects depth, using a given projection
  */
 struct DepthSort {
-  explicit DepthSort(glm::mat4 projection) { this->projection_ = projection; }
+  explicit DepthSort(glm::mat4 projection) { this->projection = projection; }
   bool operator()(Drawable *obj1, Drawable *obj2) const
   {
-    glm::vec4 projected1 = projection_ * glm::vec4(obj1->Position3D(), 1),
-      projected2 = projection_ * glm::vec4(obj2->Position3D(), 1);
+    glm::vec4 projected1 = projection * glm::vec4(obj1->Position3D(), 1),
+      projected2 = projection * glm::vec4(obj2->Position3D(), 1);
     return projected1.z > projected2.z;
   }
 
-  glm::mat4 projection_;
+  glm::mat4 projection;
 };
 
 void ObjectManager::Draw() {
-  // Setup framebuffer
+  // Setup frame buffer
   if (!mirror_frame_buffer_ || !post_frame_buffer_ || !shadow_frame_buffer_ ||
     Config::viewport_width != res_width_ || Config::viewport_height != res_height_) {
     res_width_ = Config::viewport_width;
@@ -233,13 +233,13 @@ void ObjectManager::Draw() {
   }
 
   // Render final pass to screen
-  glBindFramebuffer(GL_FRAMEBUFFER, defaultFrambuffer);
+  glBindFramebuffer(GL_FRAMEBUFFER, default_framebuffer);
   post_processors_[post_processors_.size() - 1]->Draw(glm::mat4());
   glEnable(GL_DEPTH_TEST);
 
   /* Blits shadow map when uncommented
   glBindFramebuffer(GL_READ_FRAMEBUFFER, _shadowFrameBuffer);
-  glBindFramebuffer(GL_DRAW_FRAMEBUFFER, defaultFrambuffer);
+  glBindFramebuffer(GL_DRAW_FRAMEBUFFER, defaultFramebuffer);
   glBlitFramebuffer(0, 0, _shadowRes, _shadowRes, 0, 0, Config::viewportWidth, Config::viewportHeight, GL_COLOR_BUFFER_BIT, GL_NEAREST);
   // */
 }
@@ -289,10 +289,10 @@ void ObjectManager::MouseWheel(double xOffset, double yOffset) {
 }
 
 /**
- * @brief ObjectManager::checkDepth Unprojects a point from window coordinates to world woordinates
+ * @brief ObjectManager::checkDepth Un projects a point from window coordinates to world coordinates
  * @param mousePos The mouse position in window coordinates
  * @param viewProjection The world to window projection
- * @return The mosue position in world coordinates
+ * @return The mouse position in world coordinates
  */
 glm::vec3 ObjectManager::CheckDepth(glm::vec2 mousePos, glm::mat4 viewProjection) const
 {
@@ -310,8 +310,8 @@ glm::vec3 ObjectManager::CheckDepth(glm::vec2 mousePos, glm::mat4 viewProjection
     GL_FLOAT,
     &pixel);
 
-  glm::vec4 windowCoordinates(mousePos.x / (float)width * 2.f - 1.f,
-    mousePos.y / (float)height * 2.f - 1.f,
+  glm::vec4 windowCoordinates(mousePos.x / static_cast<float>(width) * 2.f - 1.f,
+    mousePos.y / static_cast<float>(height) * 2.f - 1.f,
     pixel * 2.f - 1.f,
     1);
   glm::vec4 result = inverse(viewProjection) * windowCoordinates;

@@ -29,7 +29,7 @@ public:
   virtual std::vector<glm::vec2> InterpolatedTangents() = 0;
 
   /**
-   * @brief InterpolatedTangent calculates an interpolted tangent
+   * @brief InterpolatedTangent calculates an interpolated tangent
    * @param value position between 0 and 1 on the curve
    * @return interpolates tangent
    */

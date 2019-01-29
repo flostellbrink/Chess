@@ -20,22 +20,22 @@ void King::Init() {
 
 std::vector<MoveBase*> King::GetMoves() {
   std::vector<MoveBase*> result;
-  AddHitOrMove(field->Up, result);
-  AddHitOrMove(field->Down, result);
-  AddHitOrMove(field->Left, result);
-  AddHitOrMove(field->Right, result);
-  if (field->Up) {
-    AddHitOrMove(field->Up->Left, result);
-    AddHitOrMove(field->Up->Right, result);
+  AddHitOrMove(field->up, result);
+  AddHitOrMove(field->down, result);
+  AddHitOrMove(field->left, result);
+  AddHitOrMove(field->right, result);
+  if (field->up) {
+    AddHitOrMove(field->up->left, result);
+    AddHitOrMove(field->up->right, result);
   }
-  if (field->Down) {
-    AddHitOrMove(field->Down->Left, result);
-    AddHitOrMove(field->Down->Right, result);
+  if (field->down) {
+    AddHitOrMove(field->down->left, result);
+    AddHitOrMove(field->down->right, result);
   }
   if (board_->IsCastlingPossible(IsWhite(), true))
-    result.push_back(new Castling(this, board_->GetRook(IsWhite(), true), field->Left->Left, field->Left));
+    result.push_back(new Castling(this, board_->GetRook(IsWhite(), true), field->left->left, field->left));
   if (board_->IsCastlingPossible(IsWhite(), false))
-    result.push_back(new Castling(this, board_->GetRook(IsWhite(), false), field->Right->Right, field->Right));
+    result.push_back(new Castling(this, board_->GetRook(IsWhite(), false), field->right->right, field->right));
   return result;
 }
 

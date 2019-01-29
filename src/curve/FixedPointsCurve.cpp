@@ -1,9 +1,9 @@
 #include "FixedPointsCurve.h"
 
 FixedPointsCurve::FixedPointsCurve(ControlPoints controlPoints, int curveID, int objectID) {
-  controlPoints_ = controlPoints;
-  curveID_ = curveID;
-  objectID_ = objectID;
+  control_points_ = controlPoints;
+  curve_id_ = curveID;
+  object_id_ = objectID;
 }
 
 /**
@@ -12,7 +12,7 @@ FixedPointsCurve::FixedPointsCurve(ControlPoints controlPoints, int curveID, int
 std::vector<glm::vec2> FixedPointsCurve::InterpolatedPoints(int resolution) {
   (void)resolution;
 
-  auto controlPoints = controlPoints_.GetControlPoints2D(objectID_)[curveID_];
+  auto controlPoints = control_points_.GetControlPoints2D(object_id_)[curve_id_];
   tangents_.clear();
   tangents_.emplace_back(1, 0);
   for (auto i = 1; i < static_cast<int>(controlPoints.size()) - 1; ++i) {

@@ -16,36 +16,36 @@ std::vector<MoveBase*> Pawn::GetMoves() {
   MoveBase* lastMove = board_->GetLastMove();
   std::vector<MoveBase*> result;
   if (IsWhite()) {
-    if (field->Up) {
-      if (!field->Up->CurrentPiece) {
-        result.push_back(new Move(this, field->Up));
+    if (field->up) {
+      if (!field->up->current_piece) {
+        result.push_back(new Move(this, field->up));
       }
       if (!UsedDoubleMove()
-        && field->Up->Up
-        && !field->Up->Up->CurrentPiece
-        && !field->Up->CurrentPiece) {
-        const auto move = new Move(this, field->Up->Up);
-        move->en_passant_field = field->Up;
+        && field->up->up
+        && !field->up->up->current_piece
+        && !field->up->current_piece) {
+        const auto move = new Move(this, field->up->up);
+        move->en_passant_field = field->up;
         move->is_en_passant = true;
         result.push_back(move);
       }
-      if (field->Up->Right
-        && field->Up->Right->CurrentPiece
-        && field->Up->Right->CurrentPiece->IsWhite() != IsWhite()) {
-        result.push_back(new Hit(this, field->Up->Right->CurrentPiece));
+      if (field->up->right
+        && field->up->right->current_piece
+        && field->up->right->current_piece->IsWhite() != IsWhite()) {
+        result.push_back(new Hit(this, field->up->right->current_piece));
       }
-      if (field->Up->Left && field->Up->Left->CurrentPiece
-        && field->Up->Left->CurrentPiece->IsWhite() != IsWhite()) {
-        result.push_back(new Hit(this, field->Up->Left->CurrentPiece));
+      if (field->up->left && field->up->left->current_piece
+        && field->up->left->current_piece->IsWhite() != IsWhite()) {
+        result.push_back(new Hit(this, field->up->left->current_piece));
       }
       if (lastMove
         && lastMove->is_en_passant
         && lastMove->en_passant_field
         && lastMove->main_piece
         && lastMove->main_piece->IsWhite() != IsWhite()
-        && field->Up->Right
-        && !field->Up->Right->CurrentPiece
-        && lastMove->en_passant_field == field->Up->Right) {
+        && field->up->right
+        && !field->up->right->current_piece
+        && lastMove->en_passant_field == field->up->right) {
         result.push_back(new Hit(this, lastMove->main_piece, lastMove->en_passant_field));
       }
       if (lastMove
@@ -53,45 +53,45 @@ std::vector<MoveBase*> Pawn::GetMoves() {
         && lastMove->en_passant_field
         && lastMove->main_piece
         && lastMove->main_piece->IsWhite() != IsWhite()
-        && field->Up->Left
-        && !field->Up->Left->CurrentPiece
-        && lastMove->en_passant_field == field->Up->Left) {
+        && field->up->left
+        && !field->up->left->current_piece
+        && lastMove->en_passant_field == field->up->left) {
         result.push_back(new Hit(this, lastMove->main_piece, lastMove->en_passant_field));
       }
     }
   }
   else {
-    if (field->Down) {
-      if (!field->Down->CurrentPiece) {
-        result.push_back(new Move(this, field->Down));
+    if (field->down) {
+      if (!field->down->current_piece) {
+        result.push_back(new Move(this, field->down));
       }
       if (!UsedDoubleMove()
-        && field->Down->Down
-        && !field->Down->Down->CurrentPiece
-        && !field->Down->CurrentPiece) {
-        const auto move = new Move(this, field->Down->Down);
-        move->en_passant_field = field->Down;
+        && field->down->down
+        && !field->down->down->current_piece
+        && !field->down->current_piece) {
+        const auto move = new Move(this, field->down->down);
+        move->en_passant_field = field->down;
         move->is_en_passant = true;
         result.push_back(move);
       }
-      if (field->Down->Right
-        && field->Down->Right->CurrentPiece
-        && field->Down->Right->CurrentPiece->IsWhite() != IsWhite()) {
-        result.push_back(new Hit(this, field->Down->Right->CurrentPiece));
+      if (field->down->right
+        && field->down->right->current_piece
+        && field->down->right->current_piece->IsWhite() != IsWhite()) {
+        result.push_back(new Hit(this, field->down->right->current_piece));
       }
-      if (field->Down->Left
-        && field->Down->Left->CurrentPiece
-        && field->Down->Left->CurrentPiece->IsWhite() != IsWhite()) {
-        result.push_back(new Hit(this, field->Down->Left->CurrentPiece));
+      if (field->down->left
+        && field->down->left->current_piece
+        && field->down->left->current_piece->IsWhite() != IsWhite()) {
+        result.push_back(new Hit(this, field->down->left->current_piece));
       }
       if (lastMove
         && lastMove->is_en_passant
         && lastMove->en_passant_field
         && lastMove->main_piece
         && lastMove->main_piece->IsWhite() != IsWhite()
-        && field->Down->Right
-        && !field->Down->Right->CurrentPiece
-        && lastMove->en_passant_field == field->Down->Right) {
+        && field->down->right
+        && !field->down->right->current_piece
+        && lastMove->en_passant_field == field->down->right) {
         result.push_back(new Hit(this, lastMove->main_piece, lastMove->en_passant_field));
       }
       if (lastMove
@@ -99,9 +99,9 @@ std::vector<MoveBase*> Pawn::GetMoves() {
         && lastMove->en_passant_field
         && lastMove->main_piece
         && lastMove->main_piece->IsWhite() != IsWhite()
-        && field->Down->Left
-        && !field->Down->Left->CurrentPiece
-        && lastMove->en_passant_field == field->Down->Left) {
+        && field->down->left
+        && !field->down->left->current_piece
+        && lastMove->en_passant_field == field->down->left) {
         result.push_back(new Hit(this, lastMove->main_piece, lastMove->en_passant_field));
       }
     }

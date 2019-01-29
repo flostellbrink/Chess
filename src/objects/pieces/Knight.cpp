@@ -20,28 +20,28 @@ void Knight::Init() {
 std::vector<MoveBase*> Knight::GetMoves() {
   std::vector<MoveBase*> result;
 
-  if (field->Up && field->Up->Up) {
-    const auto current = field->Up->Up;
-    AddHitOrMove(current->Left, result);
-    AddHitOrMove(current->Right, result);
+  if (field->up && field->up->up) {
+    const auto current = field->up->up;
+    AddHitOrMove(current->left, result);
+    AddHitOrMove(current->right, result);
   }
 
-  if (field->Down && field->Down->Down) {
-    auto const current = field->Down->Down;
-    AddHitOrMove(current->Left, result);
-    AddHitOrMove(current->Right, result);
+  if (field->down && field->down->down) {
+    auto const current = field->down->down;
+    AddHitOrMove(current->left, result);
+    AddHitOrMove(current->right, result);
   }
 
-  if (field->Left && field->Left->Left) {
-    auto const current = field->Left->Left;
-    AddHitOrMove(current->Up, result);
-    AddHitOrMove(current->Down, result);
+  if (field->left && field->left->left) {
+    auto const current = field->left->left;
+    AddHitOrMove(current->up, result);
+    AddHitOrMove(current->down, result);
   }
 
-  if (field->Right && field->Right->Right) {
-    auto const current = field->Right->Right;
-    AddHitOrMove(current->Up, result);
-    AddHitOrMove(current->Down, result);
+  if (field->right && field->right->right) {
+    auto const current = field->right->right;
+    AddHitOrMove(current->up, result);
+    AddHitOrMove(current->down, result);
   }
 
   return result;

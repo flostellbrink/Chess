@@ -1,5 +1,5 @@
-#ifndef CATMULLROMCURVE_H
-#define CATMULLROMCURVE_H
+#ifndef CATMULL_ROM_CURVE_H
+#define CATMULL_ROM_CURVE_H
 
 #include "Curve.h"
 #include "src/geometry/ControlPoints.h"
@@ -13,12 +13,12 @@ public:
   glm::vec2 InterpolatedTangent(float value) override;
 
 protected:
-  ControlPoints controlPoints_;
-  int objectID_, curveID_;
+  ControlPoints control_points_;
+  int object_id_, curve_id_;
 
 private:
-  int lastResolution_{};
+  int last_resolution_{};
 };
 
 
-#endif // CATMULLROMCURVE_H
+#endif // CATMULL_ROM_CURVE_H

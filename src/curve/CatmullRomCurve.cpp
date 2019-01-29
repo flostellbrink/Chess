@@ -2,13 +2,13 @@
 #include "CatmullRomCurve.h"
 
 CatmullRomCurve::CatmullRomCurve(const ControlPoints controlPoints, const int curveId, const int objectId) {
-  controlPoints_ = controlPoints;
-  curveID_ = curveId;
-  objectID_ = objectId;
+  control_points_ = controlPoints;
+  curve_id_ = curveId;
+  object_id_ = objectId;
 }
 
 std::vector<glm::vec2> CatmullRomCurve::InterpolatedPoints(const int resolution) {
-  lastResolution_ = resolution;
+  last_resolution_ = resolution;
   std::vector<glm::vec2> result(resolution);
   const auto stepSize = 1.0f / static_cast<float>(resolution - 1);
   for (auto i = 0; i < resolution; ++i) {
@@ -19,7 +19,7 @@ std::vector<glm::vec2> CatmullRomCurve::InterpolatedPoints(const int resolution)
 }
 
 glm::vec2 CatmullRomCurve::InterpolatedPoint(float value) {
-  auto controlPoints = controlPoints_.GetControlPoints2D(objectID_)[curveID_];
+  auto controlPoints = control_points_.GetControlPoints2D(object_id_)[curve_id_];
 
   // Figure out what segment we are in
   const auto segments = static_cast<int>(controlPoints.size()) / 3 - 1;
@@ -44,9 +44,9 @@ glm::vec2 CatmullRomCurve::InterpolatedPoint(float value) {
 }
 
 std::vector<glm::vec2> CatmullRomCurve::InterpolatedTangents() {
-  std::vector<glm::vec2> result(lastResolution_);
-  const auto stepSize = 1.0f / static_cast<float>(lastResolution_ - 1);
-  for (auto i = 0; i < lastResolution_; ++i) {
+  std::vector<glm::vec2> result(last_resolution_);
+  const auto stepSize = 1.0f / static_cast<float>(last_resolution_ - 1);
+  for (auto i = 0; i < last_resolution_; ++i) {
     result.push_back(InterpolatedTangent(i * stepSize));
   }
 
@@ -54,7 +54,7 @@ std::vector<glm::vec2> CatmullRomCurve::InterpolatedTangents() {
 }
 
 glm::vec2 CatmullRomCurve::InterpolatedTangent(float value) {
-  auto controlPoints = controlPoints_.GetControlPoints2D(objectID_)[curveID_];
+  auto controlPoints = control_points_.GetControlPoints2D(object_id_)[curve_id_];
 
   // Figure out what segment we are in
   const auto segments = static_cast<int>(controlPoints.size()) / 3 - 1;

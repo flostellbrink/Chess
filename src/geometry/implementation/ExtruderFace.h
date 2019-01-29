@@ -1,5 +1,5 @@
-#ifndef EXTRUDERFACE_H
-#define EXTRUDERFACE_H
+#ifndef EXTRUDER_FACE_H
+#define EXTRUDER_FACE_H
 
 #include "src/geometry/Geometry.h"
 
@@ -20,4 +20,4 @@ private:
 };
 
 
-#endif // EXTRUDERFACE_H
+#endif // EXTRUDER_FACE_H

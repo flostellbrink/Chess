@@ -25,8 +25,8 @@ void FullScreenQuad::Init() {
   geometry_ = ObjectManager::geometry.GetGeometryCached(object_id_);
 }
 
-void FullScreenQuad::Draw(glm::mat4 projection_matrix) {
-  (void)projection_matrix;
+void FullScreenQuad::Draw(glm::mat4 projectionMatrix) {
+  (void)projectionMatrix;
 
   if (program_ == nullptr) {
     Logger::Error("program not loaded");
@@ -65,8 +65,8 @@ void FullScreenQuad::Draw(glm::mat4 projection_matrix) {
   geometry_->Draw();
 }
 
-void FullScreenQuad::DrawShadow(glm::mat4 projection_matrix) {
-  (void)projection_matrix;
+void FullScreenQuad::DrawShadow(glm::mat4 projectionMatrix) {
+  (void)projectionMatrix;
 }
 
 void FullScreenQuad::Update(float elapsedTimeMs) {

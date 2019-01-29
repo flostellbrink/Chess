@@ -4,7 +4,7 @@
 #include "src/objects/Field.h"
 
 
-Bishop::Bishop(Board* board, const int objectID, Field *field) : Piece(board, objectID, field) {
+Bishop::Bishop(Board* board, const int objectId, Field *field) : Piece(board, objectId, field) {
 
 }
 
@@ -13,10 +13,10 @@ std::vector<MoveBase*> Bishop::GetMoves() {
 
   {
     auto currentField = field;
-    while (currentField->Up && currentField->Up->Right) {
-      currentField = currentField->Up->Right;
+    while (currentField->up && currentField->up->right) {
+      currentField = currentField->up->right;
       AddHitOrMove(currentField, result);
-      if (currentField->CurrentPiece) {
+      if (currentField->current_piece) {
         break;
       }
     }
@@ -24,10 +24,10 @@ std::vector<MoveBase*> Bishop::GetMoves() {
 
   {
     auto currentField = field;
-    while (currentField->Down && currentField->Down->Right) {
-      currentField = currentField->Down->Right;
+    while (currentField->down && currentField->down->right) {
+      currentField = currentField->down->right;
       AddHitOrMove(currentField, result);
-      if (currentField->CurrentPiece) {
+      if (currentField->current_piece) {
         break;
       }
     }
@@ -35,10 +35,10 @@ std::vector<MoveBase*> Bishop::GetMoves() {
 
   {
     auto currentField = field;
-    while (currentField->Up && currentField->Up->Left) {
-      currentField = currentField->Up->Left;
+    while (currentField->up && currentField->up->left) {
+      currentField = currentField->up->left;
       AddHitOrMove(currentField, result);
-      if (currentField->CurrentPiece) {
+      if (currentField->current_piece) {
         break;
       }
     }
@@ -46,10 +46,10 @@ std::vector<MoveBase*> Bishop::GetMoves() {
 
   {
     auto currentField = field;
-    while (currentField->Down && currentField->Down->Left) {
-      currentField = currentField->Down->Left;
+    while (currentField->down && currentField->down->left) {
+      currentField = currentField->down->left;
       AddHitOrMove(currentField, result);
-      if (currentField->CurrentPiece) {
+      if (currentField->current_piece) {
         break;
       }
     }

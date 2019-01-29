@@ -1,5 +1,5 @@
-#ifndef BACKLOOPINGANIMATION_H
-#define BACKLOOPINGANIMATION_H
+#ifndef BACK_LOOPING_ANIMATION_H
+#define BACK_LOOPING_ANIMATION_H
 
 // Like looping, but also runs animation in reverse
 
@@ -34,13 +34,13 @@ T BackLoopingAnimation<T>::ValueAt(float value) {
 
 template<class T>
 float BackLoopingAnimation<T>::Value() {
-  const float result = this->elapsedTotal_ / this->duration_;
+  const float result = this->elapsed_total_ / this->duration_;
   if (result > 1) {
-    this->elapsedTotal_ = 0;
+    this->elapsed_total_ = 0;
     forward_ = !forward_;
     return 0;
   }
   return result;
 }
 
-#endif // BACKLOOPINGANIMATION_H
+#endif // BACK_LOOPING_ANIMATION_H

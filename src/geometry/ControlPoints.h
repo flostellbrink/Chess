@@ -1,6 +1,6 @@
 // Loads geometry for all objects
-#ifndef CONTROLPOINTS_H
-#define CONTROLPOINTS_H
+#ifndef CONTROL_POINTS_H
+#define CONTROL_POINTS_H
 
 #include <vector>
 #include <glm/glm.hpp>
@@ -8,11 +8,11 @@
 class ControlPoints {
 public:
   ControlPoints();
-  void SetTheme(int themeID);
+  void SetTheme(int themeId);
   std::vector<std::vector<glm::vec2>> GetControlPoints2D(int objectsId) const;
 
 protected:
   int theme_id_;
 };
 
-#endif // CONTROLPOINTS_H
+#endif // CONTROL_POINTS_H

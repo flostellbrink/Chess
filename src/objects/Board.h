@@ -39,11 +39,11 @@ public:
 
 protected:
   const int
-    Fresh = 0,
-    Running = 1,
-    WhiteWon = 2,
-    BlackWon = 3,
-    Draw = 4;
+    fresh_ = 0,
+    running_ = 1,
+    white_won_ = 2,
+    black_won_ = 3,
+    draw_ = 4;
   int state_ = 0;
 
   void ClearOverlays();
@@ -57,10 +57,10 @@ protected:
 
 private:
   std::vector<std::vector<Field*>> fields_;
-  std::vector<std::vector<Field*>> sideFields_;
-  std::vector<MoveBase*> currentMoves_, currentInvalidMoves_;
+  std::vector<std::vector<Field*>> side_fields_;
+  std::vector<MoveBase*> current_moves_, current_invalid_moves_;
   std::vector<Piece*> pieces_;
-  std::stack<MoveBase*> allMoves_;
+  std::stack<MoveBase*> all_moves_;
   bool white_turn_ = false;
   bool locked_ = false;
   bool use_ai_ = false;
@@ -70,7 +70,7 @@ private:
   Collision* bounding_box_;
   void ApplyAndPushMove(MoveBase* move);
 
-  std::default_random_engine generator;
+  std::default_random_engine generator_;
 };
 
 

@@ -1,5 +1,5 @@
-#ifndef LINECURVE_H
-#define LINECURVE_H
+#ifndef LINE_CURVE_H
+#define LINE_CURVE_H
 
 #include "Curve.h"
 
@@ -15,4 +15,4 @@ protected:
   float radius_;
 };
 
-#endif // LINECURVE_H
+#endif // LINE_CURVE_H

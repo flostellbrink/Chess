@@ -10,7 +10,7 @@
 #include "src/animation/FadeAnimation.h"
 #include "src/animation/DelayAnimation.h"
 
-const float camSpeed = 0.01f, camZoom = 10;
+const float cam_speed = 0.01f, cam_zoom = 10;
 
 Camera::Camera()
   : zoom_factor_(3.0f),
@@ -25,14 +25,14 @@ glm::vec3 Camera::Position() const
 {
   const auto y = smooth_camera_rotation_.y + auto_rotation_.y;
   const auto x = smooth_camera_rotation_.x + auto_rotation_.x;
-  return camZoom * glm::vec3(sin(y) * cos(x), cos(y), sin(x) * sin(y));
+  return cam_zoom * glm::vec3(sin(y) * cos(x), cos(y), sin(x) * sin(y));
 }
 
 glm::vec3 Camera::Up() const
 {
   const auto y = smooth_camera_rotation_.y + auto_rotation_.y;
   const auto x = smooth_camera_rotation_.x + auto_rotation_.x;
-  return camZoom * glm::vec3(sin(y + 0.1f) * cos(x), cos(y + 0.1f), sin(x) * sin(y + 0.1f)) - Position();
+  return cam_zoom * glm::vec3(sin(y + 0.1f) * cos(x), cos(y + 0.1f), sin(x) * sin(y + 0.1f)) - Position();
 }
 
 glm::mat4 Camera::ViewMat() const
@@ -94,7 +94,7 @@ void Camera::MouseUp() {
 
 void Camera::MouseMove(glm::vec2 mousePos) {
   if (mouse_moving_) {
-    camera_rotation_ += (mousePos - old_mouse) * camSpeed;
+    camera_rotation_ += (mousePos - old_mouse) * cam_speed;
   }
   old_mouse = mousePos;
 

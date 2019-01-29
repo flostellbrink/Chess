@@ -1,5 +1,5 @@
-#ifndef LOOPINGANIMATION_H
-#define LOOPINGANIMATION_H
+#ifndef LOOPING_ANIMATION_H
+#define LOOPING_ANIMATION_H
 
 #include "Animation.h"
 
@@ -33,12 +33,12 @@ T LoopingAnimation<T>::ValueAt(float value) {
 
 template<class T>
 float LoopingAnimation<T>::Value() {
-  const float result = this->elapsedTotal_ / this->duration_;
+  const float result = this->elapsed_total_ / this->duration_;
   if (result > 1) {
-    this->elapsedTotal_ = 0;
+    this->elapsed_total_ = 0;
     return 1;
   }
   return result;
 }
 
-#endif // LOOPINGANIMATION_H
+#endif // LOOPING_ANIMATION_H

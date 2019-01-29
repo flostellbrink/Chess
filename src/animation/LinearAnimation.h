@@ -1,5 +1,5 @@
-#ifndef LINEARANIMATION_H
-#define LINEARANIMATION_H
+#ifndef LINEAR_ANIMATION_H
+#define LINEAR_ANIMATION_H
 
 #include "Animation.h"
 
@@ -26,4 +26,4 @@ T LinearAnimation<T>::ValueAt(float value) {
   return (1 - value) * from_ + value * to_;
 }
 
-#endif // LINEARANIMATION_H
+#endif // LINEAR_ANIMATION_H
