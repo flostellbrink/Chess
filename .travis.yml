@@ -90,13 +90,7 @@ install:
   - userbaseconan=$(python -c "import site; print(site.USER_BASE)")
   - $userbaseconan/bin/conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan True
 
-  ############################################################################
-  # Install conan packages. This might take a while, retry if necessary
-  ############################################################################
-  - cd "${TRAVIS_BUILD_DIR}"
-  - travis_retry travis_wait 60 $userbaseconan/bin/conan install ./ --build
-
 script:
   - cd "${TRAVIS_BUILD_DIR}"
-  - cmake ./
-  - cmake --build ./ --target Chess
+  - $userbaseconan/bin/conan install . --build --profile=emscripten_profile
+  - $userbaseconan/bin/conan build .

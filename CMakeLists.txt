@@ -1,5 +1,5 @@
 # CMake entry point
-cmake_minimum_required(VERSION 3.9)
+cmake_minimum_required(VERSION 3.5)
 set (CMAKE_CXX_STANDARD 14)
 set(PROJECT_NAME "Chess")
 project(${PROJECT_NAME})
@@ -79,10 +79,24 @@ add_executable(${PROJECT_NAME}
         src/texture/Shader.h src/texture/Shader.cpp
         )
 
+# Enable emscripten debug mode for source maps
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g4")
+
 target_link_libraries(${PROJECT_NAME}
         ${CONAN_LIBS}
         ${OPENGL_LIBRARY}
         lodepng
+        # Emscripten options, inclding g4 for source maps
+        "-g4"
+        "-s USE_WEBGL2=1"
+        "-s FULL_ES3=1"
+        "-s USE_GLFW=3"
+        "-s WASM=1"
+        "-s DEMANGLE_SUPPORT=1"
+        "-s ALLOW_MEMORY_GROWTH=1"
+        "-s DISABLE_EXCEPTION_CATCHING=0"
+        "-o ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/index.html"
+        "--preload-file res"
         )
 
 # Copy shaders to build directory
