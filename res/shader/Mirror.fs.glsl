@@ -19,7 +19,6 @@ uniform sampler2D texShadow;
 
 uniform vec2 texSize;
 
-uniform vec3 lightPos;
 uniform vec3 Ld;
 uniform vec3 kd;
 uniform float shininess;
@@ -31,7 +30,7 @@ void main(void)
 {
     // reflectivity of the mirror
     float mirrority = .2;
-    vec3 Id = max(dot(normalize(lightDir), normal),0) * kd * Ld;
+    vec3 Id = max(dot(normalize(lightDir), normal), 0.0) * kd * Ld;
 
     // Specular light
     vec3 halfDir    = normalize(lightDir + camDir);
@@ -47,23 +46,23 @@ void main(void)
     }
 
     // Texture colors and overlayOpacity
-    vec4 color = texture(tex, (model_Position.xz + vec2(8.5,8.5))/17),
+    vec4 color = texture(tex, (model_Position.xz + vec2(8.5, 8.5)) / 17.0),
          colorOverlay = texture(texOverlay, texCoord);
     float opacity = overlayOpacity * colorOverlay.a;
 
     // Combine overlay and texture color
-    if(opacity < .01){
+    if(opacity < 0.01){
         color = color;
     } else {
-        color = (1 - opacity) * color
+        color = (1.0 - opacity) * color
               + opacity       * colorOverlay;
     }
 
     // Apply light
     color *= vec4(visibility * vcolor + Id, 1);
-    color += vec4(vec3(visibility * reflectivity * Is),0);
+    color += vec4(vec3(visibility * reflectivity * Is), 0);
 
     // Combine color and reflection
-    fcolor = (1- mirrority) * color
-           + mirrority      * texture(texReflection, gl_FragCoord.xy / texSize);
+    fcolor = (1.0 - mirrority) * color
+           + mirrority * texture(texReflection, gl_FragCoord.xy / texSize);
 }

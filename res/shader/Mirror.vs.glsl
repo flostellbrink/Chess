@@ -11,7 +11,6 @@ uniform vec3 La;
 uniform vec3 ka;
 
 uniform int textureAnimated;
-uniform float overlayOpacity;
 uniform mat2 texTransform;
 
 layout(location = 0) in vec3 Pos;

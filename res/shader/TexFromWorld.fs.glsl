@@ -15,7 +15,6 @@ layout(location = 0) out vec4 fcolor;
 uniform sampler2D tex;
 uniform sampler2D texShadow;
 
-uniform vec3 lightPos;
 uniform vec3 Ld;
 uniform vec3 kd;
 uniform float shininess;
@@ -23,7 +22,7 @@ uniform float reflectivity;
 
 void main(void)
 {
-    vec3 Id = max(dot(normalize(lightDir), normal),0) * kd * Ld;
+    vec3 Id = max(dot(normalize(lightDir), normal), 0.0) * kd * Ld;
 
     vec3 halfDir = normalize(lightDir + camDir);
     float specAngle = max(dot(halfDir, normal), 0.0);
@@ -39,6 +38,6 @@ void main(void)
 
     fcolor = vec4(vcolor + visibility * Id, 1)
             //Map area from -8.5 to 8.5 on x and z axis to 0 to 1 for texture
-            * texture(tex, (model_Position.xz + vec2(8.5,8.5))/17)
-            + vec4(vec3(visibility * reflectivity * Is),0);
+            * texture(tex, (model_Position.xz + vec2(8.5, 8.5)) / 17.0)
+            + vec4(vec3(visibility * reflectivity * Is), 0);
 }

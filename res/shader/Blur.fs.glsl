@@ -31,7 +31,7 @@ void main(void)
         blurColor += texture(tex, blurCoords[11])  * 0.0215963866053;
         blurColor += texture(tex, blurCoords[12])  * 0.00895781211794;
         blurColor += texture(tex, blurCoords[13])  * 0.0044299121055113265;
-        fcolor = blurColor * overlayOpacity + texture(tex, texCoord) * (1 - overlayOpacity);
+        fcolor = blurColor * overlayOpacity + texture(tex, texCoord) * (1.0 - overlayOpacity);
     }
 
 }
