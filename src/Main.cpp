@@ -9,42 +9,6 @@
 #include "Window.h"
 
 /**
- * OpenGL callback for warnings and errors.
- */
-#if !(defined(_WIN32) || defined(WIN32))
-#define __stdcall
-#endif
-void __stdcall message_callback(GLenum source,
-                                GLenum type,
-                                GLuint id,
-                                const GLenum severity,
-                                GLsizei length,
-                                const GLchar* message,
-                                const void* userParam)
-{
-  (void)source;
-  (void)type;
-  (void)id;
-  (void)length;
-  (void)userParam;
-
-  // OpenGL debug callback - great location for a breakpoint ;)
-  switch (severity)
-  {
-  case GL_DEBUG_SEVERITY_HIGH:
-    Logger::Error(message);
-    break;
-  case GL_DEBUG_SEVERITY_NOTIFICATION:
-    // Do not log info messages
-    // Logger::info(message);
-    break;
-  default:
-    Logger::Warn(message);
-    break;
-  }
-}
-
-/**
  * Toggle a boolean value based on a key code.
  * @param value Property to toggle.
  * @param name Name of property to output to console.
@@ -203,11 +167,6 @@ int main(int argc, char* argv[])
   try
   {
     Window window;
-
-    // Setup window and debug callback
-    glEnable(GL_DEBUG_OUTPUT);
-    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-    glDebugMessageCallback(static_cast<GLDEBUGPROC>(message_callback), nullptr);
 
     // Setup input callback
     glfwSetKeyCallback(window.handle, key_callback);
