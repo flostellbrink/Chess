@@ -5,7 +5,7 @@
 #include "src/objects/ObjectManager.h"
 #include "src/texture/Shader.h"
 
-glm::vec3 Drawable::light_pos = glm::vec3(0, 20, -5);
+glm::vec3 Drawable::light_pos = glm::vec3(0, 20, -20);
 glm::vec3 Drawable::cam_pos = glm::vec3();
 GLuint Drawable::reflection_texture;
 GLuint Drawable::post_texture;
