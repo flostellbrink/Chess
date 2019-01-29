@@ -254,7 +254,7 @@ void ObjectManager::Draw()
 
   for (auto i = 0; i < static_cast<int>(post_processors_.size()) - 1; ++i)
   {
-    post_processors_[i]->Draw(glm::mat4());
+    post_processors_[i]->Draw(glm::mat4(1.0f));
     renderToPost = !renderToPost;
     glBindFramebuffer(GL_FRAMEBUFFER, renderToPost ? post_frame_buffer_ : mirror_frame_buffer_);
     Drawable::post_texture = renderToPost ? mirror_texture_ : post_texture_;
@@ -262,7 +262,7 @@ void ObjectManager::Draw()
 
   // Render final pass to screen
   glBindFramebuffer(GL_FRAMEBUFFER, default_framebuffer);
-  post_processors_[post_processors_.size() - 1]->Draw(glm::mat4());
+  post_processors_[post_processors_.size() - 1]->Draw(glm::mat4(1.0f));
   glEnable(GL_DEPTH_TEST);
 
   /* Blits shadow map when uncommented

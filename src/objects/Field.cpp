@@ -32,7 +32,7 @@ void Field::Init()
   Drawable::Init();
   geometry_ = ObjectManager::geometry.GetGeometryCached(object_id_);
 
-  model_view_matrix_ = scale(glm::mat4(), glm::vec3(1, 0.5f, 1));
+  model_view_matrix_ = scale(glm::mat4(1.0f), glm::vec3(1, 0.5f, 1));
   model_view_matrix_ = translate(model_view_matrix_, CenterPosition());
 }
 

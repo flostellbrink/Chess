@@ -175,7 +175,7 @@ void Piece::Update(float elapsedTimeMs)
 {
   (void)elapsedTimeMs;
 
-  model_view_matrix_ = translate(glm::mat4(), Position());
+  model_view_matrix_ = translate(glm::mat4(1.0f), Position());
   model_view_matrix_ = rotate(model_view_matrix_, y_rotation_, glm::vec3(0, 1, 0));
 }
 
