@@ -11,7 +11,7 @@ CatmullRomCurve::CatmullRomCurve(const ControlPoints controlPoints, const int cu
 std::vector<glm::vec2> CatmullRomCurve::InterpolatedPoints(const int resolution)
 {
   last_resolution_ = resolution;
-  std::vector<glm::vec2> result(resolution);
+  std::vector<glm::vec2> result;
   const auto stepSize = 1.0f / static_cast<float>(resolution - 1);
   for (auto i = 0; i < resolution; ++i)
   {
@@ -50,7 +50,7 @@ glm::vec2 CatmullRomCurve::InterpolatedPoint(float value)
 
 std::vector<glm::vec2> CatmullRomCurve::InterpolatedTangents()
 {
-  std::vector<glm::vec2> result(last_resolution_);
+  std::vector<glm::vec2> result;
   const auto stepSize = 1.0f / static_cast<float>(last_resolution_ - 1);
   for (auto i = 0; i < last_resolution_; ++i)
   {
