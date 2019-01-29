@@ -1,6 +1,6 @@
 [requires]
 glew/2.1.0@bincrafters/stable
-glm/0.9.8.5@bincrafters/stable
+glm/0.9.9.1@g-truc/stable
 glfw/3.2.1@bincrafters/stable
 
 [generators]

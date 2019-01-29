@@ -1,7 +1,7 @@
 #include <GL/glew.h>
 #include <string>
 #include <glm/glm.hpp>
-#include <glm/gtc/constants.inl>
+#include <glm/ext/scalar_constants.inl>
 
 #include "Clock.h"
 #include "src/Objects.h"

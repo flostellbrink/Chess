@@ -1,5 +1,5 @@
 #include <glm/glm.hpp>
-#include <glm/gtc/constants.inl>
+#include <glm/ext/scalar_constants.inl>
 
 #include "Knight.h"
 #include "src/objects/ObjectManager.h"

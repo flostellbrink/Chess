@@ -1,5 +1,5 @@
 #include <glm/glm.hpp>
-#include <glm/gtc/constants.inl>
+#include <glm/ext/scalar_constants.inl>
 #include <cmath>
 
 #include "LineCurve.h"
