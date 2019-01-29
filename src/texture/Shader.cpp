@@ -10,89 +10,19 @@
 #include <src/Logger.h>
 #include "Shader.h"
 
-/**
- * Find errors that occurred during shader compilation.
- * @param handle Handle of the shader to check.
- * @param filePath Path of the shader file for debugging.
- */
-void check_shader_error(const GLuint handle, const std::string& filePath)
+Shader* Shader::GetShaderCached(const std::string& vertexFilePath, const std::string& fragmentFilePath)
 {
-  auto result = GL_FALSE;
-  int infoLength;
+  const auto key = vertexFilePath + fragmentFilePath;
 
-  glGetShaderiv(handle, GL_COMPILE_STATUS, &result);
-  glGetShaderiv(handle, GL_INFO_LOG_LENGTH, &infoLength);
-  if (infoLength > 1)
+  const auto iterator = shaders_.find(key);
+  if (iterator != shaders_.end())
   {
-    auto errorMessage = std::make_unique<char[]>(infoLength + 1);
-    glGetShaderInfoLog(handle, infoLength, nullptr, errorMessage.get());
-    std::stringstream message;
-    message << "Shader error in " << filePath << ": " << errorMessage.get();
-    Logger::Error(message.str());
+    return iterator->second;
   }
-}
 
-/**
- * Find errors that occurred during program linking.
- * @param handle Handle of the program to check.
- * @param vertexPath Path of the loaded vertex shader for debugging.
- * @param fragmentPath Path of the loaded fragment shader for debugging.
- */
-void check_program_error(const GLuint handle, const std::string& vertexPath, const std::string& fragmentPath)
-{
-  int infoLength;
-
-  glGetProgramiv(handle, GL_INFO_LOG_LENGTH, &infoLength);
-  if (infoLength > 1)
-  {
-    auto errorMessage = std::make_unique<char[]>(infoLength + 1);
-    glGetProgramInfoLog(handle, infoLength, nullptr, errorMessage.get());
-    std::stringstream message;
-    message << "Error while linking " << vertexPath << " and " << fragmentPath << ": " << errorMessage.get();
-    Logger::Error(message.str());
-  }
-}
-
-/**
- * Load a shader program from files.
- * @param vertexFilePath Path of vertex program to load.
- * @param fragmentFilePath Path of fragment program to load.
- */
-Shader::Shader(const std::string& vertexFilePath, const std::string& fragmentFilePath)
-{
-  std::ifstream vertexStream(vertexFilePath);
-  std::stringstream vertexBuffer;
-  vertexBuffer << vertexStream.rdbuf();
-  auto vertexString = vertexBuffer.str();
-  auto vertexSource = vertexString.c_str();
-
-  const auto vertexHandle = glCreateShader(GL_VERTEX_SHADER);
-  glShaderSource(vertexHandle, 1, &vertexSource, nullptr);
-  glCompileShader(vertexHandle);
-  check_shader_error(vertexHandle, std::string(vertexFilePath));
-
-  std::ifstream fragmentStream(fragmentFilePath);
-  std::stringstream fragmentBuffer;
-  fragmentBuffer << fragmentStream.rdbuf();
-  auto fragmentString = fragmentBuffer.str();
-  auto fragmentSource = fragmentString.c_str();
-
-  const auto fragmentHandle = glCreateShader(GL_FRAGMENT_SHADER);
-  glShaderSource(fragmentHandle, 1, &fragmentSource, nullptr);
-  glCompileShader(fragmentHandle);
-  check_shader_error(fragmentHandle, std::string(fragmentFilePath));
-
-  handle = glCreateProgram();
-  glAttachShader(handle, vertexHandle);
-  glAttachShader(handle, fragmentHandle);
-  glLinkProgram(handle);
-  check_program_error(handle, std::string(vertexFilePath), std::string(fragmentFilePath));
-
-  glDetachShader(handle, vertexHandle);
-  glDetachShader(handle, fragmentHandle);
-
-  glDeleteShader(vertexHandle);
-  glDeleteShader(fragmentHandle);
+  const auto shader = new Shader(vertexFilePath, fragmentFilePath);
+  shaders_[key] = shader;
+  return shader;
 }
 
 /**
@@ -202,3 +132,90 @@ void Shader::Bind(std::vector<int>& vector, const std::string& uniformName) cons
 {
   glUniform1iv(GetUniform(uniformName), static_cast<GLsizei>(vector.size()), vector.data());
 }
+
+/**
+ * Find errors that occurred during shader compilation.
+ * @param handle Handle of the shader to check.
+ * @param filePath Path of the shader file for debugging.
+ */
+void check_shader_error(const GLuint handle, const std::string& filePath)
+{
+  auto result = GL_FALSE;
+  int infoLength;
+
+  glGetShaderiv(handle, GL_COMPILE_STATUS, &result);
+  glGetShaderiv(handle, GL_INFO_LOG_LENGTH, &infoLength);
+  if (infoLength > 1)
+  {
+    auto errorMessage = std::make_unique<char[]>(infoLength + 1);
+    glGetShaderInfoLog(handle, infoLength, nullptr, errorMessage.get());
+    std::stringstream message;
+    message << "Shader error in " << filePath << ": " << errorMessage.get();
+    Logger::Error(message.str());
+  }
+}
+
+/**
+ * Find errors that occurred during program linking.
+ * @param handle Handle of the program to check.
+ * @param vertexPath Path of the loaded vertex shader for debugging.
+ * @param fragmentPath Path of the loaded fragment shader for debugging.
+ */
+void check_program_error(const GLuint handle, const std::string& vertexPath, const std::string& fragmentPath)
+{
+  int infoLength;
+
+  glGetProgramiv(handle, GL_INFO_LOG_LENGTH, &infoLength);
+  if (infoLength > 1)
+  {
+    auto errorMessage = std::make_unique<char[]>(infoLength + 1);
+    glGetProgramInfoLog(handle, infoLength, nullptr, errorMessage.get());
+    std::stringstream message;
+    message << "Error while linking " << vertexPath << " and " << fragmentPath << ": " << errorMessage.get();
+    Logger::Error(message.str());
+  }
+}
+
+/**
+ * Load a shader program from files.
+ * @param vertexFilePath Path of vertex program to load.
+ * @param fragmentFilePath Path of fragment program to load.
+ */
+Shader::Shader(const std::string& vertexFilePath, const std::string& fragmentFilePath)
+{
+  std::ifstream vertexStream(vertexFilePath);
+  std::stringstream vertexBuffer;
+  vertexBuffer << vertexStream.rdbuf();
+  auto vertexString = vertexBuffer.str();
+  auto vertexSource = vertexString.c_str();
+
+  const auto vertexHandle = glCreateShader(GL_VERTEX_SHADER);
+  glShaderSource(vertexHandle, 1, &vertexSource, nullptr);
+  glCompileShader(vertexHandle);
+  check_shader_error(vertexHandle, std::string(vertexFilePath));
+
+  std::ifstream fragmentStream(fragmentFilePath);
+  std::stringstream fragmentBuffer;
+  fragmentBuffer << fragmentStream.rdbuf();
+  auto fragmentString = fragmentBuffer.str();
+  auto fragmentSource = fragmentString.c_str();
+
+  const auto fragmentHandle = glCreateShader(GL_FRAGMENT_SHADER);
+  glShaderSource(fragmentHandle, 1, &fragmentSource, nullptr);
+  glCompileShader(fragmentHandle);
+  check_shader_error(fragmentHandle, std::string(fragmentFilePath));
+
+  handle = glCreateProgram();
+  glAttachShader(handle, vertexHandle);
+  glAttachShader(handle, fragmentHandle);
+  glLinkProgram(handle);
+  check_program_error(handle, std::string(vertexFilePath), std::string(fragmentFilePath));
+
+  glDetachShader(handle, vertexHandle);
+  glDetachShader(handle, fragmentHandle);
+
+  glDeleteShader(vertexHandle);
+  glDeleteShader(fragmentHandle);
+}
+
+std::unordered_map<std::string, Shader*> Shader::shaders_;

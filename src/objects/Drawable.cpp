@@ -27,8 +27,8 @@ void Drawable::Init()
 
 void Drawable::InitShader()
 {
-  program_ = new Shader(GetVertexShader(), GetFragmentShader());
-  program_shadow_ = new Shader("res/shader/Shadow.vs.glsl", "res/shader/Shadow.fs.glsl");
+  program_ = Shader::GetShaderCached(GetVertexShader(), GetFragmentShader());
+  program_shadow_ = Shader::GetShaderCached("res/shader/Shadow.vs.glsl", "res/shader/Shadow.fs.glsl");
 }
 
 void Drawable::DrawOpaque(const glm::mat4 projectionMatrix)
