@@ -1,4 +1,5 @@
-#version 400
+#version 300 es
+precision mediump float;
 
 // get color from vertex shader
 in vec2 texCoord;

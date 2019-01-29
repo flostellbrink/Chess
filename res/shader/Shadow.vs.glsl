@@ -1,4 +1,4 @@
-#version 400
+#version 300 es
 
 uniform mat4 view_projection_shadow;
 layout(location = 0) in vec3 Pos;

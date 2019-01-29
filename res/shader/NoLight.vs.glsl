@@ -1,4 +1,4 @@
-#version 400
+#version 300 es
 
 uniform mat4 view_projection_matrix;
 uniform mat4 model_matrix;

@@ -1,4 +1,5 @@
-#version 400
+#version 300 es
+precision mediump float;
 
 //layout(location = 0) out float fragmentdepth;
 // Used for debugging
