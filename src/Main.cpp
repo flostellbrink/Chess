@@ -7,6 +7,7 @@
 #include "Config.h"
 #include "Logger.h"
 #include "Window.h"
+#include "emscripten/emscripten.h"
 
 /**
  * Toggle a boolean value based on a key code.
@@ -153,6 +154,24 @@ void scroll_callback(GLFWwindow* window, const double xOffset, const double yOff
   ObjectManager::instance.MouseWheel(xOffset, yOffset);
 }
 
+double lastFrameTime;
+Window window;
+
+void game_loop()
+{
+const auto currentFrame = glfwGetTime();
+  const auto deltaTime = static_cast<float>(currentFrame - lastFrameTime);
+  lastFrameTime = currentFrame;
+
+  // Update and render game
+  window.Update();
+  ObjectManager::instance.Update(deltaTime * 1000);
+  ObjectManager::instance.Draw();
+
+  glfwSwapBuffers(window.handle);
+  glfwPollEvents();
+}
+
 /**
  * Entry point for engine.
  * @param argc Number of arguments.
@@ -166,8 +185,6 @@ int main(int argc, char* argv[])
 
   try
   {
-    Window window;
-
     // Setup input callback
     glfwSetKeyCallback(window.handle, key_callback);
     glfwSetCursorPosCallback(window.handle, cursor_pos_callback);
@@ -177,25 +194,8 @@ int main(int argc, char* argv[])
     // Create game and renderer
     ObjectManager::instance.NewGame();
 
-    auto lastFrameTime = glfwGetTime();
-    do
-    {
-      const auto currentFrame = glfwGetTime();
-      const auto deltaTime = static_cast<float>(currentFrame - lastFrameTime);
-      lastFrameTime = currentFrame;
-
-      // Update and render game
-      window.Update();
-      ObjectManager::instance.Update(deltaTime * 1000);
-      ObjectManager::instance.Draw();
-
-      glfwSwapBuffers(window.handle);
-      glfwPollEvents();
-    }
-    while (glfwWindowShouldClose(window.handle) == GLFW_FALSE);
-
-    glfwTerminate();
-    return 0;
+    lastFrameTime = glfwGetTime();
+    emscripten_set_main_loop(game_loop, 0, 1);
   }
   catch (std::exception& exception)
   {
