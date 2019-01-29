@@ -3,7 +3,8 @@
 
 #include <glm/glm.hpp>
 
-class Camera {
+class Camera
+{
 public:
   Camera();
   void Update();
@@ -26,7 +27,6 @@ private:
   float zoom_factor_;
   glm::vec2 camera_rotation_, smooth_camera_rotation_, auto_rotation_;
   bool mouse_moving_, white_side_;
-
 };
 
 #endif // CAMERA_H

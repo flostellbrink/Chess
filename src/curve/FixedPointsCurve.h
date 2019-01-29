@@ -4,7 +4,8 @@
 #include "Curve.h"
 #include "src/geometry/ControlPoints.h"
 
-class FixedPointsCurve : public Curve {
+class FixedPointsCurve : public Curve
+{
 public:
   FixedPointsCurve(ControlPoints controlPoints, int curveId, int objectId);
   std::vector<glm::vec2> InterpolatedPoints(int resolution) override;

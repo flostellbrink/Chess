@@ -3,11 +3,12 @@
 
 #include "MoveBase.h"
 
-class Transform : public MoveBase {
+class Transform : public MoveBase
+{
 public:
-  Transform(Piece *piece, Piece *transformInto);
-  void Apply(Board* board, bool sim) override;
-  void Undo(Board* board, bool sim) override;
+  Transform(Piece* piece, Piece* transformInto);
+  void Apply(Board* board, bool simulate) override;
+  void Undo(Board* board, bool simulate) override;
   bool ChangeTurn() override;
 
 private:

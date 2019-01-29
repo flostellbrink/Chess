@@ -6,7 +6,6 @@
 
 #include "Camera.h"
 #include "ObjectManager.h"
-#include "src/animation/LinearAnimation.h"
 #include "src/animation/FadeAnimation.h"
 #include "src/animation/DelayAnimation.h"
 
@@ -59,14 +58,17 @@ glm::mat4 Camera::Projection()
   return glm::perspective(1.0f, Config::viewport_width / static_cast<float>(Config::viewport_height), 0.1f, 100.0f);
 }
 
-void Camera::Update() {
+void Camera::Update()
+{
   smooth_camera_rotation_ += (camera_rotation_ - smooth_camera_rotation_) * 0.1f;
 }
 
-void Camera::SetBoardSide(bool whiteSide) {
+void Camera::SetBoardSide(const bool whiteSide)
+{
   ObjectManager::animation.PlayLast(new DelayAnimation<float>(500));
 
-  if (whiteSide == white_side_) {
+  if (whiteSide == white_side_)
+  {
     return;
   }
   white_side_ = whiteSide;
@@ -84,16 +86,20 @@ void Camera::SetBoardSide(bool whiteSide) {
     new FadeAnimation<glm::vec2>(1500, auto_rotation_, auto_rotation_, glm::vec2(whiteSide ? 0 : glm::pi<float>(), 0)));
 }
 
-void Camera::MouseDown() {
+void Camera::MouseDown()
+{
   mouse_moving_ = true;
 }
 
-void Camera::MouseUp() {
+void Camera::MouseUp()
+{
   mouse_moving_ = false;
 }
 
-void Camera::MouseMove(glm::vec2 mousePos) {
-  if (mouse_moving_) {
+void Camera::MouseMove(const glm::vec2 mousePos)
+{
+  if (mouse_moving_)
+  {
     camera_rotation_ += (mousePos - old_mouse) * cam_speed;
   }
   old_mouse = mousePos;
@@ -109,7 +115,8 @@ void Camera::MouseMove(glm::vec2 mousePos) {
     camera_rotation_.y = -quarterRot;
 }
 
-void Camera::MouseWheel(const float wheelDelta) {
+void Camera::MouseWheel(const float wheelDelta)
+{
   zoom_factor_ *= std::pow(1.1f, wheelDelta);
   zoom_factor_ = glm::clamp(zoom_factor_, 1.0f, 5.0f);
 }

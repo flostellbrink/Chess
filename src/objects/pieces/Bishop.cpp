@@ -4,19 +4,22 @@
 #include "src/objects/Field.h"
 
 
-Bishop::Bishop(Board* board, const int objectId, Field *field) : Piece(board, objectId, field) {
-
+Bishop::Bishop(Board* board, const int objectId, Field* field) : Piece(board, objectId, field)
+{
 }
 
-std::vector<MoveBase*> Bishop::GetMoves() {
+std::vector<MoveBase*> Bishop::GetMoves()
+{
   std::vector<MoveBase*> result;
 
   {
     auto currentField = field;
-    while (currentField->up && currentField->up->right) {
+    while (currentField->up && currentField->up->right)
+    {
       currentField = currentField->up->right;
       AddHitOrMove(currentField, result);
-      if (currentField->current_piece) {
+      if (currentField->current_piece)
+      {
         break;
       }
     }
@@ -24,10 +27,12 @@ std::vector<MoveBase*> Bishop::GetMoves() {
 
   {
     auto currentField = field;
-    while (currentField->down && currentField->down->right) {
+    while (currentField->down && currentField->down->right)
+    {
       currentField = currentField->down->right;
       AddHitOrMove(currentField, result);
-      if (currentField->current_piece) {
+      if (currentField->current_piece)
+      {
         break;
       }
     }
@@ -35,10 +40,12 @@ std::vector<MoveBase*> Bishop::GetMoves() {
 
   {
     auto currentField = field;
-    while (currentField->up && currentField->up->left) {
+    while (currentField->up && currentField->up->left)
+    {
       currentField = currentField->up->left;
       AddHitOrMove(currentField, result);
-      if (currentField->current_piece) {
+      if (currentField->current_piece)
+      {
         break;
       }
     }
@@ -46,10 +53,12 @@ std::vector<MoveBase*> Bishop::GetMoves() {
 
   {
     auto currentField = field;
-    while (currentField->down && currentField->down->left) {
+    while (currentField->down && currentField->down->left)
+    {
       currentField = currentField->down->left;
       AddHitOrMove(currentField, result);
-      if (currentField->current_piece) {
+      if (currentField->current_piece)
+      {
         break;
       }
     }

@@ -19,7 +19,7 @@ public:
    * @brief Image constructor
    * @param path The path of the image
    */
-  Image(const std::string& path);
+  explicit Image(const std::string& path);
 
   /**
    * @brief getWidth Getter for the image width
@@ -39,7 +39,7 @@ public:
    *
    * You can pass this data directly to the shader
    */
-  void *GetData();
+  void* GetData();
 
 private:
   /**

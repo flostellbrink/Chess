@@ -19,20 +19,23 @@
 #include "src/texture/Texture.h"
 
 
-Piece::Piece(Board* board, int objectID, Field* field)
-  : Drawable(objectID), field(field), position_(field->TopPosition()), y_rotation_(0) {
+Piece::Piece(Board* board, const int objectId, Field* field)
+  : Drawable(objectId), field(field), position_(field->TopPosition()), y_rotation_(0)
+{
   field->current_piece = this;
   board_ = board;
   bounding_box = CollisionManager::GetAabb(glm::vec3(), glm::vec3());
   Piece::UpdateBb(Position());
 }
 
-void Piece::Init() {
+void Piece::Init()
+{
   Drawable::Init();
   geometry_ = ObjectManager::geometry.GetGeometryCached(object_id_);
 }
 
-void Piece::UpdateBb(glm::vec3 position) {
+void Piece::UpdateBb(const glm::vec3 position)
+{
   const auto size = glm::vec3(1.5f, 5, 1.5f);
   bounding_box->min = position - size * 0.5f;
   bounding_box->max = position + size * 0.5f;
@@ -48,17 +51,21 @@ Field* Piece::GetField() const
   return field;
 }
 
-void Piece::SetField(Field* field, const bool sim) {
-  if (field == Piece::field) {
+void Piece::SetField(Field* field, const bool sim)
+{
+  if (field == Piece::field)
+  {
     field->current_piece = this;
     return;
   }
 
-  if (Piece::field->current_piece == this) {
+  if (Piece::field->current_piece == this)
+  {
     Piece::field->current_piece = nullptr;
   }
 
-  if (!sim) {
+  if (!sim)
+  {
     const auto from = Piece::field->TopPosition();
     const auto to = field->TopPosition();
     const auto direction = to - from;
@@ -67,16 +74,20 @@ void Piece::SetField(Field* field, const bool sim) {
     UpdateBb(to);
 
     const auto directLine = CollisionManager::GetRay(from + up * 0.1f, to + up * 0.1f);
-    if (!board_->IntersectsGame(directLine, this)) {
+    if (!board_->IntersectsGame(directLine, this))
+    {
       const auto animation = new FadeAnimation<glm::vec3>(static_cast<int>(duration), position_, from, to);
       ObjectManager::animation.PlayLast(animation);
     }
-    else {
+    else
+    {
       const auto maxY = std::max(from.y, to.y);
       auto p1 = from + direction * 0.1f;
       auto p2 = to - direction * 0.1f;
       p1.y = p2.y = maxY + 3;
-      const auto animation = new CatmullRomAnimation<glm::vec3>(static_cast<int>(duration), position_, std::vector<glm::vec3>{from, p1, p2, to});
+      const auto animation = new CatmullRomAnimation<glm::vec3>(static_cast<int>(duration),
+                                                                position_,
+                                                                std::vector<glm::vec3>{from, p1, p2, to});
       ObjectManager::animation.PlayLast(animation);
     }
   }
@@ -85,30 +96,37 @@ void Piece::SetField(Field* field, const bool sim) {
   Piece::field->current_piece = this;
 }
 
-bool Piece::IsWhite() {
+bool Piece::IsWhite()
+{
   return !(object_id_ % 2);
 }
 
-bool Piece::IsTransformable() {
+bool Piece::IsTransformable()
+{
   return false;
 }
 
-bool Piece::IsCopyable() {
+bool Piece::IsCopyable()
+{
   return true;
 }
 
-int Piece::GetIdWithoutColor() {
+int Piece::GetIdWithoutColor()
+{
   return object_id_ - 1 + IsWhite();
 }
 
-void Piece::Draw(glm::mat4 projectionMatrix) {
-  if (program_ == nullptr) {
+void Piece::Draw(glm::mat4 projectionMatrix)
+{
+  if (program_ == nullptr)
+  {
     Logger::Error("program not loaded");
   }
   program_->Use();
 
   auto textures = ObjectManager::texture.GetTexture(object_id_);
-  if (!textures.empty()) {
+  if (!textures.empty())
+  {
     textures[0]->Bind();
   }
 
@@ -128,10 +146,10 @@ void Piece::Draw(glm::mat4 projectionMatrix) {
   program_->Bind(light_pos, "lightPos");
   program_->Bind(cam_pos, "camPos");
 
-  glm::vec3 la = glm::vec3(0.5f, 0.5f, 0.5f);
-  glm::vec3 ka = glm::vec3(0.5f, 0.5f, 0.5f);
-  glm::vec3 ld = glm::vec3(0.5f, 0.5f, 0.5f);
-  glm::vec3 kd = glm::vec3(1, 1, 1);
+  auto la = glm::vec3(0.5f, 0.5f, 0.5f);
+  auto ka = glm::vec3(0.5f, 0.5f, 0.5f);
+  auto ld = glm::vec3(0.5f, 0.5f, 0.5f);
+  auto kd = glm::vec3(1, 1, 1);
   program_->Bind(la, "La");
   program_->Bind(ka, "ka");
   program_->Bind(ld, "Ld");
@@ -143,33 +161,39 @@ void Piece::Draw(glm::mat4 projectionMatrix) {
   geometry_->Draw();
 }
 
-void Piece::DrawShadow(glm::mat4 projection_matrix) {
+void Piece::DrawShadow(const glm::mat4 projectionMatrix)
+{
   program_shadow_->Use();
 
-  auto viewProjectionShadow = projection_matrix * model_view_matrix_;
+  auto viewProjectionShadow = projectionMatrix * model_view_matrix_;
   program_shadow_->Bind(viewProjectionShadow, "view_projection_shadow");
 
   geometry_->Draw();
 }
 
-void Piece::Update(float elapsedTimeMs) {
+void Piece::Update(float elapsedTimeMs)
+{
   (void)elapsedTimeMs;
 
   model_view_matrix_ = translate(glm::mat4(), Position());
   model_view_matrix_ = rotate(model_view_matrix_, y_rotation_, glm::vec3(0, 1, 0));
 }
 
-void Piece::MouseClick(glm::vec3 position) {
+void Piece::MouseClick(glm::vec3 position)
+{
   // handled by field
   (void)position;
 }
 
-void Piece::AddHitOrMove(Field *field, std::vector<MoveBase *> &moves) {
+void Piece::AddHitOrMove(Field* field, std::vector<MoveBase *>& moves)
+{
   if (!field) return;
-  if (!field->current_piece) {
+  if (!field->current_piece)
+  {
     moves.push_back(new Move(this, field));
   }
-  else if (field->current_piece->IsWhite() != IsWhite()) {
+  else if (field->current_piece->IsWhite() != IsWhite())
+  {
     moves.push_back(new Hit(this, field->current_piece));
   }
 }
@@ -184,6 +208,7 @@ std::string Piece::GetFragmentShader()
   return "res/shader/Basic.fs.glsl";
 }
 
-glm::vec3 Piece::Position3D() {
+glm::vec3 Piece::Position3D()
+{
   return Position();
 }

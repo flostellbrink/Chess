@@ -3,7 +3,8 @@
 
 #include "src/geometry/Geometry.h"
 
-class BoardBorderBottom : public Geometry {
+class BoardBorderBottom : public Geometry
+{
 public:
   BoardBorderBottom();
 

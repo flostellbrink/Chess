@@ -19,10 +19,18 @@ void __stdcall message_callback(GLenum source,
                                 GLuint id,
                                 const GLenum severity,
                                 GLsizei length,
-                                const GLchar *message,
-                                const void *userParam) {
+                                const GLchar* message,
+                                const void* userParam)
+{
+  (void)source;
+  (void)type;
+  (void)id;
+  (void)length;
+  (void)userParam;
+
   // OpenGL debug callback - great location for a breakpoint ;)
-  switch (severity) {
+  switch (severity)
+  {
   case GL_DEBUG_SEVERITY_HIGH:
     Logger::Error(message);
     break;
@@ -43,8 +51,10 @@ void __stdcall message_callback(GLenum source,
  * @param key Current key code.
  * @param toggleKey Key code for toggling property.
  */
-void toggle(bool &value, const std::string &name, const int key, const int toggleKey) {
-  if (key == toggleKey) {
+void toggle(bool& value, const std::string& name, const int key, const int toggleKey)
+{
+  if (key == toggleKey)
+  {
     value ^= 1;
     std::stringstream message;
     message << "Toggled " << name << " to " << (value ? "on" : "off") << ".";
@@ -59,8 +69,10 @@ void toggle(bool &value, const std::string &name, const int key, const int toggl
  * @param key Current key code.
  * @param signalKey Key code for signaling property.
  */
-void signal(bool &value, const std::string &name, const int key, const int signalKey) {
-  if (key == signalKey) {
+void signal(bool& value, const std::string& name, const int key, const int signalKey)
+{
+  if (key == signalKey)
+  {
     value = true;
     std::stringstream message;
     message << "Signaled " << name << ".";
@@ -82,7 +94,7 @@ void signal(bool &value, const std::string &name, const int key, const int signa
  */
 template <typename Numeric>
 void modify(Numeric& value,
-            const std::string &name,
+            const std::string& name,
             const int key,
             const int increaseKey,
             const int decreaseKey,
@@ -91,12 +103,14 @@ void modify(Numeric& value,
             Numeric step)
 {
   std::stringstream message;
-  if (key == increaseKey && value < max) {
+  if (key == increaseKey && value < max)
+  {
     value += step;
     message << "Increased " << name << " to " << value << ".";
     Logger::Info(message.str());
   }
-  else if (key == decreaseKey && value > min) {
+  else if (key == decreaseKey && value > min)
+  {
     value -= step;
     message << "Decreased " << name << " to " << value << ".";
     Logger::Info(message.str());
@@ -111,8 +125,13 @@ void modify(Numeric& value,
  * @param action Registered key action.
  * @param mods Key modifiers.
  */
-void key_callback(GLFWwindow *handle, const int key, int scanCode, const int action, int mods) {
-  if (action != GLFW_PRESS) {
+void key_callback(GLFWwindow* handle, const int key, int scanCode, const int action, int mods)
+{
+  (void)scanCode;
+  (void)mods;
+
+  if (action != GLFW_PRESS)
+  {
     return;
   }
 
@@ -128,11 +147,13 @@ void key_callback(GLFWwindow *handle, const int key, int scanCode, const int act
   signal(Config::geo_changed, "geometry changed", key, GLFW_KEY_I);
   signal(Config::geo_changed, "geometry changed", key, GLFW_KEY_K);
 
-  if (key == GLFW_KEY_F) {
+  if (key == GLFW_KEY_F)
+  {
     toggle(Config::full_screen, "full screen", key, GLFW_KEY_F);
   }
 
-  if (key == GLFW_KEY_ESCAPE || key == GLFW_KEY_Q) {
+  if (key == GLFW_KEY_ESCAPE || key == GLFW_KEY_Q)
+  {
     glfwSetWindowShouldClose(handle, 1);
   }
 }
@@ -142,6 +163,8 @@ void key_callback(GLFWwindow *handle, const int key, int scanCode, const int act
  */
 static void cursor_pos_callback(GLFWwindow* window, const double xPos, const double yPos)
 {
+  (void)window;
+
   ObjectManager::instance.MouseMove(xPos, yPos);
 }
 
@@ -150,6 +173,9 @@ static void cursor_pos_callback(GLFWwindow* window, const double xPos, const dou
  */
 void mouse_button_callback(GLFWwindow* window, const int button, const int action, int mods)
 {
+  (void)window;
+  (void)mods;
+
   ObjectManager::instance.MouseButton(button, action);
 }
 
@@ -158,6 +184,8 @@ void mouse_button_callback(GLFWwindow* window, const int button, const int actio
  */
 void scroll_callback(GLFWwindow* window, const double xOffset, const double yOffset)
 {
+  (void)window;
+
   ObjectManager::instance.MouseWheel(xOffset, yOffset);
 }
 
@@ -167,8 +195,13 @@ void scroll_callback(GLFWwindow* window, const double xOffset, const double yOff
  * @param argv Arguments pointer.
  * @return Exit code.
  */
-int main(int argc, char *argv[]) {
-  try {
+int main(int argc, char* argv[])
+{
+  (void)argc;
+  (void)argv;
+
+  try
+  {
     Window window;
 
     // Setup window and debug callback
@@ -186,7 +219,8 @@ int main(int argc, char *argv[]) {
     ObjectManager::instance.NewGame();
 
     auto lastFrameTime = glfwGetTime();
-    do {
+    do
+    {
       const auto currentFrame = glfwGetTime();
       const auto deltaTime = static_cast<float>(currentFrame - lastFrameTime);
       lastFrameTime = currentFrame;
@@ -198,12 +232,14 @@ int main(int argc, char *argv[]) {
 
       glfwSwapBuffers(window.handle);
       glfwPollEvents();
-    } while (glfwWindowShouldClose(window.handle) == GLFW_FALSE);
+    }
+    while (glfwWindowShouldClose(window.handle) == GLFW_FALSE);
 
     glfwTerminate();
     return 0;
   }
-  catch (std::exception &exception) {
+  catch (std::exception& exception)
+  {
     Logger::Warn("Fatal: " + std::string(exception.what()));
     return 1;
   }

@@ -3,10 +3,11 @@
 
 #include "MoveBase.h"
 
-class Hit : public MoveBase {
+class Hit : public MoveBase
+{
 public:
   Hit(Piece* aggressor, Piece* victim);
-  Hit(Piece *aggressor, Piece *victim, Field *toField);
+  Hit(Piece* aggressor, Piece* victim, Field* toField);
   void Apply(Board* board, bool sim) override;
   void Undo(Board* board, bool sim) override;
 

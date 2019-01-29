@@ -4,7 +4,8 @@
 Quad::Quad()
 = default;
 
-void Quad::Create() {
+void Quad::Create()
+{
   // Positions
   AddPosition(+1, +1, +0);
   AddPosition(+1, -1, +0);

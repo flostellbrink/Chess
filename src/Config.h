@@ -1,7 +1,8 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-class Config {
+class Config
+{
 public:
 
   static int geo_resolution1, geo_resolution2, shadow_resolution;
@@ -22,4 +23,3 @@ public:
 };
 
 #endif // CONFIG_H
-

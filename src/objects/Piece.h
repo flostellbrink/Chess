@@ -11,7 +11,8 @@ class Collision;
 class MoveBase;
 class Geometry;
 
-class Piece : public Drawable {
+class Piece : public Drawable
+{
 public:
   Piece(Board* board, int objectId, Field* field);
   void Init() override;
@@ -36,14 +37,14 @@ protected:
   virtual void UpdateBb(glm::vec3 position);
   std::string GetVertexShader() override;
   std::string GetFragmentShader() override;
-  void AddHitOrMove(Field* field, std::vector<MoveBase*> &moves);
+  void AddHitOrMove(Field* field, std::vector<MoveBase*>& moves);
 
   glm::vec3 position_;
   float y_rotation_;
   Board* board_;
 
 private:
-  Geometry* geometry_ = 0;
+  Geometry* geometry_ = nullptr;
 };
 
 

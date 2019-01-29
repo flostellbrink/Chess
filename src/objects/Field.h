@@ -9,7 +9,8 @@ class Piece;
 class Collision;
 class Geometry;
 
-class Field : public Drawable {
+class Field : public Drawable
+{
 public:
   Field(Board* board, int boardX, int boardY, bool inactive);
   void Init() override;
@@ -27,8 +28,8 @@ public:
   glm::vec3 CenterPosition() const;
   int Row() const;
   int Column() const;
-  Field *up = 0, *down = 0, *left = 0, *right = 0;
-  Piece* current_piece = 0;
+  Field *up = nullptr, *down = nullptr, *left = nullptr, *right = nullptr;
+  Piece* current_piece = nullptr;
 
 protected:
   std::string GetVertexShader() override;

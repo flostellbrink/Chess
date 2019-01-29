@@ -4,7 +4,8 @@
 #include <vector>
 #include <glm/glm.hpp>
 
-class Curve {
+class Curve
+{
 public:
   virtual ~Curve() = default;
   Curve();

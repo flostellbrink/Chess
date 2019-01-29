@@ -3,7 +3,8 @@
 
 #include "Curve.h"
 
-class LineCurve : public Curve {
+class LineCurve : public Curve
+{
 public:
   explicit LineCurve(float radius = .2f);
   std::vector<glm::vec2> InterpolatedPoints(int resolution) override;

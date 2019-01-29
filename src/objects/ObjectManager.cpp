@@ -23,7 +23,8 @@ const GLuint default_framebuffer = 0;
 
 ObjectManager::ObjectManager() = default;
 
-void ObjectManager::NewGame() {
+void ObjectManager::NewGame()
+{
   objects_.clear();
   post_processors_.clear();
   delete game_board;
@@ -39,12 +40,17 @@ void ObjectManager::NewGame() {
   AddPost(new FullScreenQuad("res/shader/Overlay.vs.glsl", "res/shader/Overlay.fs.glsl"));
 }
 
-void ObjectManager::UpdateFramebuffer(GLuint &framebuffer, GLuint &texture, GLuint &depth, int width, int height) const
+void ObjectManager::UpdateFramebuffer(GLuint& framebuffer,
+                                      GLuint& texture,
+                                      GLuint& depth,
+                                      const int width,
+                                      const int height)
 {
   // Get rid of old objects
   if (framebuffer)
     glDeleteFramebuffers(1, &framebuffer);
-  if (texture) {
+  if (texture)
+  {
     glDeleteTextures(1, &texture);
   }
   if (depth)
@@ -77,44 +83,54 @@ void ObjectManager::UpdateFramebuffer(GLuint &framebuffer, GLuint &texture, GLui
   assert(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);
 }
 
-void ObjectManager::Update(float elapsedTime) {
-  if (Config::geo_changed) {
+void ObjectManager::Update(float elapsedTime)
+{
+  if (Config::geo_changed)
+  {
     Config::geo_changed = false;
     geometry.Regenerate();
   }
-  if (Config::change_theme) {
+  if (Config::change_theme)
+  {
     Config::change_theme = false;
-    SetTheme((theme_ == themes::wood) ? themes::glass : themes::wood);
+    SetTheme(theme_ == themes::wood ? themes::glass : themes::wood);
   }
-  if (Config::undo_turn) {
+  if (Config::undo_turn)
+  {
     Config::undo_turn = false;
     game_board->UndoMove(false);
   }
-  if (Config::ai != game_board->GetAi()) {
+  if (Config::ai != game_board->GetAi())
+  {
     game_board->EnableAi(Config::ai);
   }
-  if (Config::new_game) {
+  if (Config::new_game)
+  {
     std::cerr << "Resetting game" << std::endl;
     Config::new_game = false;
     Board::ResetGame();
     //NewGame();
   }
-  if (Config::demo) {
+  if (Config::demo)
+  {
     Config::demo = false;
     game_board->RunDemo();
   }
 
-  if (clock->Timeout()) {
+  if (clock->Timeout())
+  {
     game_board->SetState(clock->Timeout());
   }
 
-  if (elapsedTime > 200) {
+  if (elapsedTime > 200)
+  {
     std::cerr << "ChessWarn: Too much time passed since last update: " << elapsedTime << "ms" << std::endl;
     //This prevents skipping of animations
     elapsedTime = 20;
   }
 
-  for (Drawable *obj : objects_) {
+  for (auto obj : objects_)
+  {
     obj->Update(elapsedTime);
   }
   game_board->Update(elapsedTime);
@@ -127,41 +143,46 @@ void ObjectManager::Update(float elapsedTime) {
 /**
  * @brief The DepthSort struct compares objects depth, using a given projection
  */
-struct DepthSort {
-  explicit DepthSort(glm::mat4 projection) { this->projection = projection; }
-  bool operator()(Drawable *obj1, Drawable *obj2) const
+struct DepthSort
+{
+  explicit DepthSort(const glm::mat4 projection) { this->projection = projection; }
+
+  bool operator()(Drawable* obj1, Drawable* obj2) const
   {
-    glm::vec4 projected1 = projection * glm::vec4(obj1->Position3D(), 1),
-      projected2 = projection * glm::vec4(obj2->Position3D(), 1);
+    const auto projected1 = projection * glm::vec4(obj1->Position3D(), 1);
+    const auto projected2 = projection * glm::vec4(obj2->Position3D(), 1);
     return projected1.z > projected2.z;
   }
 
   glm::mat4 projection;
 };
 
-void ObjectManager::Draw() {
+void ObjectManager::Draw()
+{
   // Setup frame buffer
   if (!mirror_frame_buffer_ || !post_frame_buffer_ || !shadow_frame_buffer_ ||
-    Config::viewport_width != res_width_ || Config::viewport_height != res_height_) {
+    Config::viewport_width != res_width_ || Config::viewport_height != res_height_)
+  {
     res_width_ = Config::viewport_width;
     res_height_ = Config::viewport_height;
     UpdateFramebuffer(post_frame_buffer_, post_texture_, post_depth_, res_width_, res_height_);
     UpdateFramebuffer(mirror_frame_buffer_, mirror_texture_, mirror_depth_, res_width_, res_height_);
     Drawable::reflection_texture = mirror_texture_;
   }
-  if (!shadow_frame_buffer_ || shadow_res_ != Config::shadow_resolution) {
+  if (!shadow_frame_buffer_ || shadow_res_ != Config::shadow_resolution)
+  {
     shadow_res_ = Config::shadow_resolution;
     UpdateFramebuffer(shadow_frame_buffer_, shadow_texture_, shadow_depth_, shadow_res_, shadow_res_);
     Drawable::shadow_texture = shadow_texture_;
   }
   // Get Projection Matrices
   Drawable::cam_pos = camera_.Position();
-  glm::mat4 viewProjection = Camera::Projection() * camera_.ViewMat(),
-    viewProjectionSkybox = Camera::Projection() * camera_.ViewMatAtCamera(),
-    mirror = MirrorMat(glm::vec3(0, 1, 0), 0),
-    viewProjectionMirrored = viewProjection * mirror,
-    viewProjectionSkyboxMirrored = viewProjectionSkybox * mirror,
-    viewProjectionShadow = camera_.ViewProjectionShadow();
+  const auto viewProjection = Camera::Projection() * camera_.ViewMat();
+  const auto viewProjectionSkybox = Camera::Projection() * camera_.ViewMatAtCamera();
+  const auto mirror = MirrorMat(glm::vec3(0, 1, 0), 0);
+  const auto viewProjectionMirrored = viewProjection * mirror;
+  const auto viewProjectionSkyboxMirrored = viewProjectionSkybox * mirror;
+  const auto viewProjectionShadow = camera_.ViewProjectionShadow();
   Drawable::shadow_view_projection = viewProjectionShadow;
 
   // Sort objects by depth
@@ -172,7 +193,8 @@ void ObjectManager::Draw() {
   glViewport(0, 0, shadow_res_, shadow_res_);
   glEnable(GL_DEPTH_TEST);
   glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-  for (Drawable *obj : objects_) {
+  for (auto obj : objects_)
+  {
     obj->DrawShadow(viewProjectionShadow);
   }
 
@@ -183,7 +205,8 @@ void ObjectManager::Draw() {
   glBindFramebuffer(GL_FRAMEBUFFER, mirror_frame_buffer_);
   glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
   skybox_.DrawSkybox(viewProjectionSkyboxMirrored);
-  for (Drawable *obj : objects_) {
+  for (auto obj : objects_)
+  {
     obj->DrawReflection(viewProjectionMirrored);
   }
 
@@ -193,10 +216,12 @@ void ObjectManager::Draw() {
   skybox_.DrawSkybox(viewProjectionSkybox);
 
   // Render Main Scene
-  for (Drawable *obj : objects_) {
+  for (auto obj : objects_)
+  {
     obj->DrawOpaque(viewProjection);
   }
-  for (Drawable *obj : objects_) {
+  for (auto obj : objects_)
+  {
     // Draw depth
     glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
     obj->DrawTranslucent(viewProjection);
@@ -210,10 +235,12 @@ void ObjectManager::Draw() {
     glDepthFunc(GL_LESS);
   }
 
-  if (click_happened_) {
+  if (click_happened_)
+  {
     click_happened_ = false;
-    glm::vec3 mousePos = CheckDepth(last_mouse_, Camera::Projection() * camera_.ViewMat());
-    for (Drawable *obj : objects_) {
+    const auto mousePos = CheckDepth(last_mouse_, Camera::Projection() * camera_.ViewMat());
+    for (auto obj : objects_)
+    {
       obj->MouseClick(mousePos);
     }
   }
@@ -221,11 +248,12 @@ void ObjectManager::Draw() {
   // Do Post and render to screen
   if (post_processors_.empty()) { return; }
   glDisable(GL_DEPTH_TEST);
-  bool renderToPost = false;
+  auto renderToPost = false;
   glBindFramebuffer(GL_FRAMEBUFFER, mirror_frame_buffer_);
   Drawable::post_texture = post_texture_;
 
-  for (int i = 0; i < static_cast<int>(post_processors_.size()) - 1; ++i) {
+  for (auto i = 0; i < static_cast<int>(post_processors_.size()) - 1; ++i)
+  {
     post_processors_[i]->Draw(glm::mat4());
     renderToPost = !renderToPost;
     glBindFramebuffer(GL_FRAMEBUFFER, renderToPost ? post_frame_buffer_ : mirror_frame_buffer_);
@@ -238,53 +266,67 @@ void ObjectManager::Draw() {
   glEnable(GL_DEPTH_TEST);
 
   /* Blits shadow map when uncommented
-  glBindFramebuffer(GL_READ_FRAMEBUFFER, _shadowFrameBuffer);
-  glBindFramebuffer(GL_DRAW_FRAMEBUFFER, defaultFramebuffer);
-  glBlitFramebuffer(0, 0, _shadowRes, _shadowRes, 0, 0, Config::viewportWidth, Config::viewportHeight, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+  glBindFramebuffer(GL_READ_FRAMEBUFFER, shadow_frame_buffer_);
+  glBindFramebuffer(GL_DRAW_FRAMEBUFFER, default_framebuffer);
+  glBlitFramebuffer(0, 0, shadow_res_, shadow_res_, 0, 0, Config::viewport_width, Config::viewport_height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
   // */
 }
 
-void ObjectManager::AddObject(Drawable *object) {
+void ObjectManager::AddObject(Drawable* object)
+{
   objects_.push_back(object);
   object->Init();
 }
 
-void ObjectManager::AddPost(Drawable *object) {
+void ObjectManager::AddPost(Drawable* object)
+{
   post_processors_.push_back(object);
   object->Init();
 }
 
-void ObjectManager::SetTheme(int theme) {
+void ObjectManager::SetTheme(const int theme)
+{
   theme_ = theme;
   geometry.SetTheme(theme);
   texture.SetTheme(theme);
 }
 
-void ObjectManager::MouseButton(int button, int action) {
-  if (action == GLFW_PRESS) {
-    if (button == GLFW_MOUSE_BUTTON_LEFT) {
+void ObjectManager::MouseButton(const int button, const int action)
+{
+  if (action == GLFW_PRESS)
+  {
+    if (button == GLFW_MOUSE_BUTTON_LEFT)
+    {
       click_happened_ = true;
     }
-    else {
+    else
+    {
       camera_.MouseDown();
     }
   }
-  else {
-    if (button == GLFW_MOUSE_BUTTON_LEFT) {
+  else
+  {
+    if (button == GLFW_MOUSE_BUTTON_LEFT)
+    {
       // Ignored
     }
-    else {
+    else
+    {
       camera_.MouseUp();
     }
   }
 }
 
-void ObjectManager::MouseMove(double xPos, double yPos) {
+void ObjectManager::MouseMove(const double xPos, const double yPos)
+{
   last_mouse_ = glm::vec2(xPos, yPos);
   camera_.MouseMove(last_mouse_);
 }
 
-void ObjectManager::MouseWheel(double xOffset, double yOffset) {
+void ObjectManager::MouseWheel(double xOffset, const double yOffset)
+{
+  (void)xOffset;
+
   camera_.MouseWheel(static_cast<float>(yOffset));
 }
 
@@ -294,38 +336,41 @@ void ObjectManager::MouseWheel(double xOffset, double yOffset) {
  * @param viewProjection The world to window projection
  * @return The mouse position in world coordinates
  */
-glm::vec3 ObjectManager::CheckDepth(glm::vec2 mousePos, glm::mat4 viewProjection) const
+glm::vec3 ObjectManager::CheckDepth(glm::vec2 mousePos, const glm::mat4 viewProjection) const
 {
-  int width = Config::viewport_width, height = Config::viewport_height;
-  if (mousePos.x < 0 || mousePos.x >= width || mousePos.y < 0 || mousePos.y >= height) {
+  const auto width = Config::viewport_width;
+  const auto height = Config::viewport_height;
+  if (mousePos.x < 0 || mousePos.x >= width || mousePos.y < 0 || mousePos.y >= height)
+  {
     return glm::vec3();
   }
   mousePos.y = height - mousePos.y;
   float pixel;
   glReadPixels(static_cast<GLint>(mousePos.x),
-    static_cast<GLint>(mousePos.y),
-    1,
-    1,
-    GL_DEPTH_COMPONENT,
-    GL_FLOAT,
-    &pixel);
+               static_cast<GLint>(mousePos.y),
+               1,
+               1,
+               GL_DEPTH_COMPONENT,
+               GL_FLOAT,
+               &pixel);
 
-  glm::vec4 windowCoordinates(mousePos.x / static_cast<float>(width) * 2.f - 1.f,
-    mousePos.y / static_cast<float>(height) * 2.f - 1.f,
-    pixel * 2.f - 1.f,
-    1);
-  glm::vec4 result = inverse(viewProjection) * windowCoordinates;
-  if (result.w == 0) {
+  const glm::vec4 windowCoordinates(mousePos.x / static_cast<float>(width) * 2.f - 1.f,
+                                    mousePos.y / static_cast<float>(height) * 2.f - 1.f,
+                                    pixel * 2.f - 1.f,
+                                    1);
+  auto result = inverse(viewProjection) * windowCoordinates;
+  if (result.w == 0)
+  {
     return glm::vec3();
   }
   result /= result.w;
   return glm::vec3(result);
 }
 
-glm::mat4 ObjectManager::MirrorMat(glm::vec3 normal, float distance) const
+glm::mat4 ObjectManager::MirrorMat(const glm::vec3 normal, const float distance)
 {
   return glm::mat4(glm::vec4(1 - 2 * normal.x, -2 * normal.x * normal.y, -2 * normal.x * normal.z, 0),
-    glm::vec4(-2 * normal.x * normal.y, 1 - 2 * normal.y, -2 * normal.y * normal.z, 0),
-    glm::vec4(-2 * normal.x * normal.z, -2 * normal.y * normal.z, 1 - 2 * normal.z, 0),
-    glm::vec4(-2 * normal.x * distance, -2 * normal.y * distance, -2 * normal.z * distance, 1));
+                   glm::vec4(-2 * normal.x * normal.y, 1 - 2 * normal.y, -2 * normal.y * normal.z, 0),
+                   glm::vec4(-2 * normal.x * normal.z, -2 * normal.y * normal.z, 1 - 2 * normal.z, 0),
+                   glm::vec4(-2 * normal.x * distance, -2 * normal.y * distance, -2 * normal.z * distance, 1));
 }

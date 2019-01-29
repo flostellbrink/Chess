@@ -8,9 +8,13 @@
 class Geometry;
 class Field;
 
-class BasicObject : public Drawable {
+class BasicObject : public Drawable
+{
 public:
-  explicit BasicObject(int objectId, glm::vec3 position = glm::vec3(), float yRotation = 0, std::string shader = "basic");
+  explicit BasicObject(int objectId,
+                       glm::vec3 position = glm::vec3(),
+                       float yRotation = 0,
+                       std::string shader = "basic");
   void Init() override;
   void Draw(glm::mat4 projectionMatrix) override;
   void DrawShadow(glm::mat4 projectionMatrix) override;
@@ -20,9 +24,9 @@ public:
   glm::vec3 Position() const;
   void Position(glm::vec3 position);
   glm::vec3 Position3D() override;
-  void SetRotationX(float val);
-  void SetRotationY(float val);
-  void SetRotationZ(float val);
+  void SetRotationX(float value);
+  void SetRotationY(float value);
+  void SetRotationZ(float value);
 
 protected:
   std::string GetVertexShader() override;
@@ -33,7 +37,7 @@ protected:
   float z_rotation_ = 0.f;
   std::string shader_;
 
-  Geometry* geometry_ = 0;
+  Geometry* geometry_ = nullptr;
   Field* field_;
 };
 

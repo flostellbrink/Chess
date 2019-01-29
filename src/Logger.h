@@ -6,7 +6,8 @@
 /**
  * Persist or output log messages
  */
-class Logger {
+class Logger
+{
 public:
   static void Info(const std::string& message);
   static void Warn(const std::string& message);

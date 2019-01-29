@@ -3,7 +3,8 @@
 
 #include "src/geometry/Geometry.h"
 
-class Quad : public Geometry {
+class Quad : public Geometry
+{
 public:
   Quad();
 

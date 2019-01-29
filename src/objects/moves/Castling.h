@@ -3,7 +3,8 @@
 
 #include "MoveBase.h"
 
-class Castling : public MoveBase {
+class Castling : public MoveBase
+{
 public:
   Castling(Piece* king, Piece* rook, Field* toKing, Field* toRook);
   void Apply(Board* board, bool) override;

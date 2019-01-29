@@ -7,7 +7,8 @@
 
 class Texture;
 
-class TextureManager {
+class TextureManager
+{
 public:
   TextureManager();
   /**
@@ -35,11 +36,15 @@ protected:
    * @return Textures
    */
   std::vector<Texture*> LoadTexture(int object);
-  std::vector<Texture*> StoreTexture(int object, std::string filePath, GLenum target = GL_TEXTURE_2D, GLenum textureRepeat = GL_REPEAT);
+  std::vector<Texture*> StoreTexture(int object,
+                                     const std::string& filePath,
+                                     GLenum target = GL_TEXTURE_2D,
+                                     GLenum textureRepeat = GL_REPEAT);
   /**
    * @brief Texture Get a Texture for a path
    * @param path The textures filepath
    * @param target Render target (for sky box)
+   * @param textureRepeat Repeat mode of texture
    * @return Texture
    */
   Texture* GetTexture(const std::string& path, GLenum target = GL_TEXTURE_2D, GLenum textureRepeat = GL_REPEAT);
@@ -47,6 +52,7 @@ protected:
    * @brief loadTexture Loads a texture from file
    * @param path The filepath to load from
    * @param target Render target (for sky box)
+   * @param textureRepeat Repeat mode of texture
    * @return Texture
    */
   Texture* LoadTexture(const std::string& path, GLenum target = GL_TEXTURE_2D, GLenum textureRepeat = GL_REPEAT);

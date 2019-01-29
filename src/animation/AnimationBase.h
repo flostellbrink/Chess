@@ -2,7 +2,8 @@
 #define ANIMATION_BASE_H
 
 // Provides an interface for animations
-class AnimationBase {
+class AnimationBase
+{
 public:
   virtual ~AnimationBase() = default;
   virtual void Update(float elapsedTime) = 0;

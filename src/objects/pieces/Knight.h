@@ -4,7 +4,8 @@
 #include <vector>
 #include "src/objects/Piece.h"
 
-class Knight : public Piece {
+class Knight : public Piece
+{
 public:
   Knight(Board* board, int objectId, Field* field);
   void Init() override;

@@ -3,7 +3,8 @@
 
 #include "src/geometry/Geometry.h"
 
-class Square : public Geometry {
+class Square : public Geometry
+{
 public:
   Square();
 

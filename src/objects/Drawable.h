@@ -7,7 +7,8 @@
 
 class Shader;
 
-class Drawable {
+class Drawable
+{
 public:
   virtual ~Drawable() = default;
   explicit Drawable(int objectId = 0);

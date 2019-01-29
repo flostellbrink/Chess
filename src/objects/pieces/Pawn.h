@@ -4,7 +4,8 @@
 #include "src/objects/Piece.h"
 #include <vector>
 
-class Pawn : public Piece {
+class Pawn : public Piece
+{
 public:
   Pawn(Board* board, int objectId, Field* field);
   std::vector<MoveBase*> GetMoves() override;

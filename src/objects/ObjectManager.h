@@ -14,7 +14,8 @@ class Board;
 class Clock;
 class Drawable;
 
-class ObjectManager {
+class ObjectManager
+{
 public:
   ObjectManager();
   void NewGame();
@@ -28,7 +29,7 @@ public:
   void MouseWheel(double xOffset, double yOffset);
 
   // Stores the state of the game. represents current game
-  Board* game_board = 0;
+  Board* game_board = nullptr;
   Clock* clock{};
 
   void SetTheme(int theme);
@@ -40,7 +41,7 @@ public:
   static CollisionManager collision;
 
 protected:
-  void UpdateFramebuffer(GLuint& framebuffer, GLuint& texture, GLuint& depth, int width, int height) const;
+  static void UpdateFramebuffer(GLuint& framebuffer, GLuint& texture, GLuint& depth, int width, int height);
   std::vector<Drawable*> objects_;
   std::vector<Drawable*> post_processors_;
   Camera camera_;
@@ -51,7 +52,7 @@ protected:
 
 private:
   glm::vec3 CheckDepth(glm::vec2 mousePos, glm::mat4 viewProjection) const;
-  glm::mat4 MirrorMat(glm::vec3 normal, float distance) const;
+  static glm::mat4 MirrorMat(glm::vec3 normal, float distance);
   GLuint mirror_frame_buffer_ = 0;
   GLuint mirror_texture_ = 0;
   GLuint mirror_depth_ = 0;

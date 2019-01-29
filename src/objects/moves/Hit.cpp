@@ -3,7 +3,8 @@
 #include "src/objects/Board.h"
 
 
-Hit::Hit(Piece *aggressor, Piece *victim) {
+Hit::Hit(Piece* aggressor, Piece* victim)
+{
   main_piece = aggressor;
   aggressor_ = aggressor;
   victim_ = victim;
@@ -12,7 +13,8 @@ Hit::Hit(Piece *aggressor, Piece *victim) {
   field_overlay = 2;
 }
 
-Hit::Hit(Piece *aggressor, Piece *victim, Field *toField) {
+Hit::Hit(Piece* aggressor, Piece* victim, Field* toField)
+{
   main_piece = aggressor;
   aggressor_ = aggressor;
   victim_ = victim;
@@ -21,7 +23,8 @@ Hit::Hit(Piece *aggressor, Piece *victim, Field *toField) {
   field_overlay = 2;
 }
 
-void Hit::Apply(Board* board, const bool sim) {
+void Hit::Apply(Board* board, const bool sim)
+{
   from_field_ = aggressor_->GetField();
   victim_from_ = victim_->GetField();
   victim_moved_ = victim_->is_moved;
@@ -33,7 +36,8 @@ void Hit::Apply(Board* board, const bool sim) {
   aggressor_->is_moved = true;
 }
 
-void Hit::Undo(Board* board, const bool sim) {
+void Hit::Undo(Board* board, const bool sim)
+{
   (void)board;
 
   aggressor_->SetField(from_field_, sim);

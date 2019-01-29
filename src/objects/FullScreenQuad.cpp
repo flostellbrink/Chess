@@ -14,21 +14,24 @@
 
 
 FullScreenQuad::FullScreenQuad(std::string vertexShader, std::string fragmentShader)
-  :Drawable(objects::fullscreen_quad)
+  : Drawable(objects::fullscreen_quad)
 {
   vertex_shader_ = std::move(vertexShader);
   fragment_shader_ = std::move(fragmentShader);
 }
 
-void FullScreenQuad::Init() {
+void FullScreenQuad::Init()
+{
   Drawable::Init();
   geometry_ = ObjectManager::geometry.GetGeometryCached(object_id_);
 }
 
-void FullScreenQuad::Draw(glm::mat4 projectionMatrix) {
+void FullScreenQuad::Draw(glm::mat4 projectionMatrix)
+{
   (void)projectionMatrix;
 
-  if (program_ == nullptr) {
+  if (program_ == nullptr)
+  {
     Logger::Error("program not loaded");
   }
   program_->Use();
@@ -41,23 +44,27 @@ void FullScreenQuad::Draw(glm::mat4 projectionMatrix) {
   const glm::vec2 overlaySize(2.f, 1.f);
   const auto overlayRatio = overlaySize.x / overlaySize.y;
   const auto viewPortRatio = static_cast<float>(Config::viewport_width) / static_cast<float>(Config::viewport_height);
-  glm::vec2 fac = viewPortRatio < overlayRatio
-    ? glm::vec2(1.f, overlayRatio / viewPortRatio)
-    : glm::vec2(viewPortRatio / overlayRatio, 1.f);
+  auto fac = viewPortRatio < overlayRatio
+               ? glm::vec2(1.f, overlayRatio / viewPortRatio)
+               : glm::vec2(viewPortRatio / overlayRatio, 1.f);
   fac *= 1.5f;
-  if (program_->HasUniform("overlayFac")) {
+  if (program_->HasUniform("overlayFac"))
+  {
     program_->Bind(fac, "overlayFac");
   }
 
   // Make sure textures are loaded before needed, popping and frame drop are not nice!
   ObjectManager::texture.GetTexture(object_id_);
-  if (program_->HasUniform("texOverlay")) {
-    if (overlay_opacity > 0 && overlay_state >= 0) {
+  if (program_->HasUniform("texOverlay"))
+  {
+    if (overlay_opacity > 0 && overlay_state >= 0)
+    {
       ObjectManager::texture.GetTexture(object_id_)[overlay_state]->Bind(GL_TEXTURE_2D, 1);
       program_->Bind(1, "texOverlay");
       program_->Bind(1, "texOverlayEnabled");
     }
-    else {
+    else
+    {
       program_->Bind(0, "texOverlayEnabled");
     }
   }
@@ -65,15 +72,18 @@ void FullScreenQuad::Draw(glm::mat4 projectionMatrix) {
   geometry_->Draw();
 }
 
-void FullScreenQuad::DrawShadow(glm::mat4 projectionMatrix) {
+void FullScreenQuad::DrawShadow(glm::mat4 projectionMatrix)
+{
   (void)projectionMatrix;
 }
 
-void FullScreenQuad::Update(float elapsedTimeMs) {
+void FullScreenQuad::Update(float elapsedTimeMs)
+{
   (void)elapsedTimeMs;
 }
 
-void FullScreenQuad::MouseClick(glm::vec3 position) {
+void FullScreenQuad::MouseClick(glm::vec3 position)
+{
   (void)position;
 }
 
@@ -87,6 +97,7 @@ std::string FullScreenQuad::GetFragmentShader()
   return fragment_shader_;
 }
 
-glm::vec3 FullScreenQuad::Position3D() {
+glm::vec3 FullScreenQuad::Position3D()
+{
   return glm::vec3();
 }

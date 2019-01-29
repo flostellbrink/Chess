@@ -3,14 +3,15 @@
 
 #include "MoveBase.h"
 
-class Move : public MoveBase {
+class Move : public MoveBase
+{
 public:
   Move(Piece* piece, Field* toField);
   void Apply(Board* board, bool sim) override;
   void Undo(Board* board, bool sim) override;
 
 private:
-  Piece *piece_;
+  Piece* piece_;
   Field *from_field_{}, *to_field_;
 };
 

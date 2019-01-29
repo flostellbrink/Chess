@@ -5,7 +5,8 @@
 
 class AnimationBase;
 
-class AnimationManager {
+class AnimationManager
+{
 public:
   AnimationManager();
   void Update(float elapsedTime);

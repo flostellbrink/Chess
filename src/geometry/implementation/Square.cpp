@@ -3,7 +3,8 @@
 Square::Square()
 = default;
 
-void Square::Create() {
+void Square::Create()
+{
   AddPosition(-1, 0, -1);
   AddPosition(1, 0, -1);
   AddPosition(-1, 0, 1);

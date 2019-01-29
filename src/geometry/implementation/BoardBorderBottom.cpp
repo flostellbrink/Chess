@@ -4,7 +4,8 @@
 BoardBorderBottom::BoardBorderBottom()
 = default;
 
-void BoardBorderBottom::Create() {
+void BoardBorderBottom::Create()
+{
   // Positions
   AddPosition(-8.5f, 0, -8.5f);
   AddPosition(-8.5f, -0.1f, -8.5f);
@@ -38,7 +39,8 @@ void BoardBorderBottom::Create() {
   AddNormal(0, 0, -1);
 
   // Texture Coordinates, If these are not defined windows 7 breaks down.
-  for (auto i = 0; i < 4 * 3; ++i) {
+  for (auto i = 0; i < 4 * 3; ++i)
+  {
     AddTextureCoordinate(0.0f, 0.0f);
   }
 

@@ -9,7 +9,8 @@ class Piece;
  * This represents one move on the chess board.
  * It is created from a field, validated by the board and called by a field when it's clicked on
  */
-class MoveBase {
+class MoveBase
+{
 public:
   virtual ~MoveBase() = default;
   MoveBase();

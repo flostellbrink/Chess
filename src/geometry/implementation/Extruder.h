@@ -5,7 +5,8 @@
 
 class Curve;
 
-class Extruder : public Geometry {
+class Extruder : public Geometry
+{
 public:
   Extruder(Curve* profileCurve, Curve* widthCurve, float scale = .1f);
 

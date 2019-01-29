@@ -10,12 +10,13 @@
 #include "src/geometry/Geometry.h"
 
 
-BasicObject::BasicObject(int objectID, glm::vec3 position, float yRotation, std::string shader)
-  : Drawable(objectID), position_(position), y_rotation_(yRotation), shader_(std::move(shader)), field_(nullptr)
+BasicObject::BasicObject(const int objectId, const glm::vec3 position, const float yRotation, std::string shader)
+  : Drawable(objectId), position_(position), y_rotation_(yRotation), shader_(std::move(shader)), field_(nullptr)
 {
 }
 
-void BasicObject::Init() {
+void BasicObject::Init()
+{
   Drawable::Init();
   geometry_ = ObjectManager::geometry.GetGeometryCached(object_id_);
 }
@@ -25,12 +26,15 @@ glm::vec3 BasicObject::Position() const
   return position_;
 }
 
-void BasicObject::Position(glm::vec3 position) {
+void BasicObject::Position(const glm::vec3 position)
+{
   ObjectManager::animation.PlayIndependent(new FadeAnimation<glm::vec3>(500, position_, position_, position));
 }
 
-void BasicObject::Draw(glm::mat4 projectionMatrix) {
-  if (program_ == nullptr) {
+void BasicObject::Draw(glm::mat4 projectionMatrix)
+{
+  if (program_ == nullptr)
+  {
     Logger::Error("program not loaded");
   }
   program_->Use();
@@ -43,66 +47,79 @@ void BasicObject::Draw(glm::mat4 projectionMatrix) {
   glBindTexture(GL_TEXTURE_2D, shadow_texture);
 
   program_->Bind(0, "tex");
-  if (program_->HasUniform("texShadow")) {
+  if (program_->HasUniform("texShadow"))
+  {
     program_->Bind(3, "texShadow");
   }
 
   program_->Bind(projectionMatrix, "view_projection_matrix");
-  if (program_->HasUniform("view_projection_shadow")) {
+  if (program_->HasUniform("view_projection_shadow"))
+  {
     auto viewProjectionShadow = shadow_view_projection * model_view_matrix_;
     program_->Bind(viewProjectionShadow, "view_projection_shadow");
   }
 
   program_->Bind(model_view_matrix_, "model_matrix");
-  if (program_->HasUniform("tra_inv_model_matrix")) {
+  if (program_->HasUniform("tra_inv_model_matrix"))
+  {
     auto traInvModelMatrix = transpose(inverse(model_view_matrix_));
     program_->Bind(traInvModelMatrix, "tra_inv_model_matrix");
   }
 
-  if (program_->HasUniform("lightPos")) {
+  if (program_->HasUniform("lightPos"))
+  {
     program_->Bind(light_pos, "lightPos");
   }
-  if (program_->HasUniform("camPos")) {
+  if (program_->HasUniform("camPos"))
+  {
     program_->Bind(cam_pos, "camPos");
   }
 
-  if (program_->HasUniform("La")) {
+  if (program_->HasUniform("La"))
+  {
     auto la = glm::vec3(0.5f, 0.5f, 0.5f);
     program_->Bind(la, "La");
   }
-  if (program_->HasUniform("ka")) {
+  if (program_->HasUniform("ka"))
+  {
     auto ka = glm::vec3(0.5f, 0.5f, 0.5f);
     program_->Bind(ka, "ka");
   }
-  if (program_->HasUniform("Ld")) {
+  if (program_->HasUniform("Ld"))
+  {
     auto ld = glm::vec3(0.5f, 0.5f, 0.5f);
     program_->Bind(ld, "Ld");
   }
-  if (program_->HasUniform("kd")) {
+  if (program_->HasUniform("kd"))
+  {
     auto kd = glm::vec3(1, 1, 1);
     program_->Bind(kd, "kd");
   }
 
-  if (program_->HasUniform("reflectivity")) {
+  if (program_->HasUniform("reflectivity"))
+  {
     program_->Bind(ObjectManager::texture.Reflectivity(object_id_), "reflectivity");
   }
-  if (program_->HasUniform("shininess")) {
+  if (program_->HasUniform("shininess"))
+  {
     program_->Bind(ObjectManager::texture.Shininess(object_id_), "shininess");
   }
 
   geometry_->Draw();
 }
 
-void BasicObject::DrawShadow(glm::mat4 projection_matrix) {
+void BasicObject::DrawShadow(const glm::mat4 projectionMatrix)
+{
   program_shadow_->Use();
 
-  auto viewProjectionShadow = projection_matrix * model_view_matrix_;
+  auto viewProjectionShadow = projectionMatrix * model_view_matrix_;
   program_shadow_->Bind(viewProjectionShadow, "view_projection_shadow");
 
   geometry_->Draw();
 }
 
-void BasicObject::Update(float elapsedTimeMs) {
+void BasicObject::Update(float elapsedTimeMs)
+{
   (void)elapsedTimeMs;
 
   model_view_matrix_ = translate(glm::mat4(), Position());
@@ -111,7 +128,8 @@ void BasicObject::Update(float elapsedTimeMs) {
   model_view_matrix_ = rotate(model_view_matrix_, z_rotation_, glm::vec3(0, 0, 1));
 }
 
-void BasicObject::MouseClick(glm::vec3 position) {
+void BasicObject::MouseClick(glm::vec3 position)
+{
   (void)position;
 }
 
@@ -125,18 +143,22 @@ std::string BasicObject::GetFragmentShader()
   return "res/shader/" + shader_ + ".fs.glsl";
 }
 
-glm::vec3 BasicObject::Position3D() {
+glm::vec3 BasicObject::Position3D()
+{
   return Position();
 }
 
-void BasicObject::SetRotationX(float val) {
-  x_rotation_ = val;
+void BasicObject::SetRotationX(const float value)
+{
+  x_rotation_ = value;
 }
 
-void BasicObject::SetRotationY(float val) {
-  y_rotation_ = val;
+void BasicObject::SetRotationY(const float value)
+{
+  y_rotation_ = value;
 }
 
-void BasicObject::SetRotationZ(float val) {
-  z_rotation_ = val;
+void BasicObject::SetRotationZ(const float value)
+{
+  z_rotation_ = value;
 }

@@ -5,9 +5,11 @@
 #include "src/objects/ObjectManager.h"
 #include "Collision.h"
 
-Collision::Collision(int type, glm::vec3 vecA, glm::vec3 vecB) {
+Collision::Collision(const int type, const glm::vec3 vecA, const glm::vec3 vecB)
+{
   Collision::type = type;
-  switch (type) {
+  switch (type)
+  {
   case aabb:
     min = vecA;
     max = vecB;
@@ -24,20 +26,23 @@ Collision::Collision(int type, glm::vec3 vecA, glm::vec3 vecB) {
   }
 }
 
-bool aabb_coll_aabb(Collision* a, Collision *b) {
-  return (a->max.x >= b->min.x && b->max.x >= a->min.x
-    &&  a->max.y >= b->min.y && b->max.y >= a->min.y
-    &&  a->max.z >= b->min.z && b->max.z >= a->min.z);
+bool aabb_coll_aabb(Collision* a, Collision* b)
+{
+  return a->max.x >= b->min.x && b->max.x >= a->min.x
+    && a->max.y >= b->min.y && b->max.y >= a->min.y
+    && a->max.z >= b->min.z && b->max.z >= a->min.z;
 }
 
-bool ray_coll_ray(Collision* a, Collision* b) {
+bool ray_coll_ray(Collision* a, Collision* b)
+{
   (void)a;
   (void)b;
   Logger::Error("ChessWarn: Ray Ray collision not handled");
   return false;
 }
 
-bool aabb_coll_ray(Collision* a, Collision* b, float minLength, float maxLength) {
+bool aabb_coll_ray(Collision* a, Collision* b, const float minLength, const float maxLength)
+{
   const auto t1 = (a->min.x - b->origin.x) / b->dir.x;
   const auto t2 = (a->max.x - b->origin.x) / b->dir.x;
   const auto t3 = (a->min.y - b->origin.y) / b->dir.y;
@@ -51,20 +56,25 @@ bool aabb_coll_ray(Collision* a, Collision* b, float minLength, float maxLength)
   return tMax >= tMin && tMax >= minLength && tMin <= maxLength;
 }
 
-bool Collision::Intersects(Collision* other) {
-  if (type == aabb && other->type == aabb) {
+bool Collision::Intersects(Collision* other)
+{
+  if (type == aabb && other->type == aabb)
+  {
     return aabb_coll_aabb(this, other);
   }
 
-  if (type == ray && other->type == ray) {
+  if (type == ray && other->type == ray)
+  {
     return ray_coll_ray(this, other);
   }
 
-  if (type == aabb && other->type == ray) {
+  if (type == aabb && other->type == ray)
+  {
     return aabb_coll_ray(this, other, other->min_length, other->max_length);
   }
 
-  if (type == ray && other->type == aabb) {
+  if (type == ray && other->type == aabb)
+  {
     return aabb_coll_ray(other, this, min_length, max_length);
   }
 
@@ -72,9 +82,10 @@ bool Collision::Intersects(Collision* other) {
   return false;
 }
 
-bool Collision::Contains(glm::vec3 point) const
+bool Collision::Contains(const glm::vec3 point) const
 {
-  switch (type) {
+  switch (type)
+  {
   case aabb:
     return point.x <= max.x && point.x >= min.x
       && point.y <= max.y && point.y >= min.y
@@ -83,7 +94,7 @@ bool Collision::Contains(glm::vec3 point) const
     // Should not be used, won't work. Not practical due to precision
     Logger::Error("ChessWarn: Point Ray collision not handled");
     return false;
-  default:break;
+  default: break;
   }
 
   Logger::Error("ChessWarn: Unknown containment");

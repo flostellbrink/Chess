@@ -25,12 +25,12 @@
 #include "src/animation/LinearAnimation.h"
 #include "src/animation/LoopingAnimation.h"
 #include "src/animation/BackLoopingAnimation.h"
-#include "src/animation/DelayAnimation.h"
 #include "src/Config.h"
 
 const int board_size = 8;
 
-Board::Board(Camera* camera) {
+Board::Board(Camera* camera)
+{
   camera_ = camera;
   auto manager = &ObjectManager::instance;
   const auto center = glm::vec3(0, -1, 0);
@@ -38,10 +38,12 @@ Board::Board(Camera* camera) {
   bounding_box_ = CollisionManager::GetAabb(center - size, center + size);
 
   // Create fields
-  for (auto i = 0; i < board_size; ++i) {
+  for (auto i = 0; i < board_size; ++i)
+  {
     std::vector<Field*> row;
-    for (auto j = 0; j < board_size; ++j) {
-      auto * field = new Field(this, i, j, false);
+    for (auto j = 0; j < board_size; ++j)
+    {
+      auto* field = new Field(this, i, j, false);
       row.push_back(field);
       manager->AddObject(field);
     }
@@ -49,31 +51,42 @@ Board::Board(Camera* camera) {
   }
 
   // Set the fields neighboring fields, so we don't have to mess with indices later
-  for (auto i = 0; i < board_size; ++i) {
-    for (auto j = 0; j < board_size; ++j) {
-      if (i > 0) {
+  for (auto i = 0; i < board_size; ++i)
+  {
+    for (auto j = 0; j < board_size; ++j)
+    {
+      if (i > 0)
+      {
         fields_[i][j]->down = fields_[i - 1][j];
       }
 
-      if (i < board_size - 1) {
+      if (i < board_size - 1)
+      {
         fields_[i][j]->up = fields_[i + 1][j];
       }
 
-      if (j > 0) {
+      if (j > 0)
+      {
         fields_[i][j]->left = fields_[i][j - 1];
       }
 
-      if (j < board_size - 1) {
+      if (j < board_size - 1)
+      {
         fields_[i][j]->right = fields_[i][j + 1];
       }
     }
   }
 
   // Create side Fields for captured pieces
-  for (auto i = 0; i < 2; ++i) {
+  for (auto i = 0; i < 2; ++i)
+  {
     std::vector<Field*> row;
-    for (auto j = 0; j < board_size * 3; ++j) {
-      auto * field = new Field(this, i ? (j % board_size) : board_size - 1 - (j % board_size), i ? board_size - 1 + 2 + (j / board_size) : -2 - (j / board_size), true);
+    for (auto j = 0; j < board_size * 3; ++j)
+    {
+      auto* field = new Field(this,
+                              i ? j % board_size : board_size - 1 - j % board_size,
+                              i ? board_size - 1 + 2 + j / board_size : -2 - j / board_size,
+                              true);
       row.push_back(field);
       manager->AddObject(field);
     }
@@ -81,7 +94,8 @@ Board::Board(Camera* camera) {
   }
 
   // Create Pieces
-  for (auto color = 0; color < 2; ++color) {
+  for (auto color = 0; color < 2; ++color)
+  {
     const auto row1 = color ? board_size - 1 : 0, row2 = color ? board_size - 2 : 1;
     AddPiece(objects::white_rook + color, fields_[row1][0]);
     AddPiece(objects::white_knight + color, fields_[row1][1]);
@@ -92,27 +106,39 @@ Board::Board(Camera* camera) {
     AddPiece(objects::white_knight + color, fields_[row1][6]);
     AddPiece(objects::white_rook + color, fields_[row1][7]);
 
-    for (auto i = 0; i < board_size; ++i) {
+    for (auto i = 0; i < board_size; ++i)
+    {
       AddPiece(objects::white_pawn + color, fields_[row2][i]);
     }
   }
 
   // Add them to the manager
-  for (auto piece : pieces_) {
+  for (auto piece : pieces_)
+  {
     manager->AddObject(piece);
   }
 
   // Create boards border
-  for (auto i = 0; i < 4; ++i) {
-    manager->AddObject(new BasicObject(objects::board_border_top, glm::vec3(), glm::pi<float>() / 2.f * static_cast<float>(i), "mirror"));
-    manager->AddObject(new BasicObject(objects::board_border_bottom, glm::vec3(), glm::pi<float>() / 2.f * static_cast<float>(i), "texFromWorld"));
+  for (auto i = 0; i < 4; ++i)
+  {
+    manager->AddObject(new BasicObject(objects::board_border_top,
+                                       glm::vec3(),
+                                       glm::pi<float>() / 2.f * static_cast<float>(i),
+                                       "mirror"));
+    manager->AddObject(new BasicObject(objects::board_border_bottom,
+                                       glm::vec3(),
+                                       glm::pi<float>() / 2.f * static_cast<float>(i),
+                                       "texFromWorld"));
   }
 
   // Start animations
   Drawable::overlay_state = -1;
-  ObjectManager::animation.PlayIndependent(new FadeAnimation<float>(5000, Drawable::overlay_opacity, Drawable::overlay_opacity, 0.f));
-  ObjectManager::animation.PlayIndependent(new BackLoopingAnimation<float>(new FadeAnimation<float>(500, overlay_scale, 1, 1.2f)));
-  ObjectManager::animation.PlayIndependent(new LoopingAnimation<float>(new LinearAnimation<float>(5000, overlay_rotation, 0, 2 * glm::pi<float>())));
+  ObjectManager::animation.PlayIndependent(
+    new FadeAnimation<float>(5000, Drawable::overlay_opacity, Drawable::overlay_opacity, 0.f));
+  ObjectManager::animation.PlayIndependent(
+    new BackLoopingAnimation<float>(new FadeAnimation<float>(500, overlay_scale, 1, 1.2f)));
+  ObjectManager::animation.PlayIndependent(
+    new LoopingAnimation<float>(new LinearAnimation<float>(5000, overlay_rotation, 0, 2 * glm::pi<float>())));
 
   NewTurn();
 }
@@ -124,9 +150,11 @@ void Board::ResetGame()
   ObjectManager::instance.NewGame();
 }
 
-void Board::AddPiece(int objectId, Field *field) {
+void Board::AddPiece(const int objectId, Field* field)
+{
   Piece* piece = nullptr;
-  switch (objectId) {
+  switch (objectId)
+  {
   case objects::white_rook:
   case objects::black_rook:
     piece = new Rook(this, objectId, field);
@@ -151,35 +179,42 @@ void Board::AddPiece(int objectId, Field *field) {
   case objects::black_pawn:
     piece = new Pawn(this, objectId, field);
     break;
-  default:break;
+  default: break;
   }
-  if (piece) {
+  if (piece)
+  {
     pieces_.push_back(piece);
     ObjectManager::instance.AddObject(piece);
   }
 }
 
-void Board::NewTurn() {
+void Board::NewTurn()
+{
   white_turn_ = !white_turn_;
-  if (!ExistsValidMove()) {
+  if (!ExistsValidMove())
+  {
     if (IsKingInMate())
       SetState(white_won_ + white_turn_);
     else
       SetState(draw_);
   }
-  else {
+  else
+  {
     white_turn_ = !white_turn_;
     ChangeTurn();
     DoAi();
   }
 }
 
-void Board::SetState(int state) {
+void Board::SetState(const int state)
+{
   if (state == state_) return;
   state_ = state;
   Drawable::overlay_state = state_ - 2;
-  ObjectManager::animation.PlayIndependent(new FadeAnimation<float>(1000, Drawable::overlay_opacity, Drawable::overlay_opacity, state > 1));
-  switch (state) {
+  ObjectManager::animation.PlayIndependent(
+    new FadeAnimation<float>(1000, Drawable::overlay_opacity, Drawable::overlay_opacity, state > 1));
+  switch (state)
+  {
   case 0:
     std::cout << "ChessInfo: State: Fresh" << std::endl;
     break;
@@ -195,18 +230,21 @@ void Board::SetState(int state) {
   case 4:
     std::cout << "ChessInfo: State: Draw" << std::endl;
     break;
-  default:break;
+  default: break;
   }
 }
 
-void Board::Update(const float elapsedTime) {
-  if (ai_overdue_) {
+void Board::Update(const float elapsedTime)
+{
+  if (ai_overdue_)
+  {
     ai_timer_ += elapsedTime;
     DoAi();
   }
 }
 
-void Board::ChangeTurn() {
+void Board::ChangeTurn()
+{
   white_turn_ = !white_turn_;
   camera_->SetBoardSide(use_ai_ ? true : white_turn_);
   std::cout << "ChessInfo: " << (white_turn_ ? "Whites" : "Blacks") << " turn" << std::endl;
@@ -217,25 +255,30 @@ bool Board::IsWhitesTurn() const
   return white_turn_;
 }
 
-void Board::DoAi() {
+void Board::DoAi()
+{
   if (state_ != running_) return;
-  if (white_turn_ || !use_ai_ || ObjectManager::animation.IsBusy()) {
+  if (white_turn_ || !use_ai_ || ObjectManager::animation.IsBusy())
+  {
     ai_overdue_ = true;
     ai_timer_ = 0.0f;
     return;
   }
 
   // Check that enough time has passed to click a piece
-  if(ai_timer_ < Config::ai_click_delay)
+  if (ai_timer_ < Config::ai_click_delay)
   {
     return;
   }
 
   // Click a piece if none is selected
-  if (current_moves_.empty()) {
+  if (current_moves_.empty())
+  {
     std::vector<Piece*> validPieces;
-    for (auto piece : pieces_) {
-      if (piece->IsWhite() == white_turn_ && !GetValid(piece->GetMoves()).empty()) {
+    for (auto piece : pieces_)
+    {
+      if (piece->IsWhite() == white_turn_ && !GetValid(piece->GetMoves()).empty())
+      {
         validPieces.push_back(piece);
       }
     }
@@ -251,8 +294,10 @@ void Board::DoAi() {
   }
 
   // Make a move until no moves are left (promotions)
-  while (!current_moves_.empty()) {
-    const auto moveIndex = std::uniform_int_distribution<int>(0, static_cast<int>(current_moves_.size()) - 1)(generator_);
+  while (!current_moves_.empty())
+  {
+    const auto moveIndex = std::uniform_int_distribution<int
+    >(0, static_cast<int>(current_moves_.size()) - 1)(generator_);
     FieldClick(current_moves_[moveIndex]->click_field);
   }
 
@@ -261,10 +306,13 @@ void Board::DoAi() {
   ai_timer_ = 0.0f;
 }
 
-Field* Board::GetSideField(bool whiteSide) {
+Field* Board::GetSideField(const bool whiteSide)
+{
   auto row = side_fields_[whiteSide];
-  for (auto field : row) {
-    if (!field->current_piece) {
+  for (auto field : row)
+  {
+    if (!field->current_piece)
+    {
       return field;
     }
   }
@@ -272,61 +320,75 @@ Field* Board::GetSideField(bool whiteSide) {
   return nullptr;
 }
 
-MoveBase* Board::GetLastMove() {
-  if (all_moves_.empty()) {
+MoveBase* Board::GetLastMove()
+{
+  if (all_moves_.empty())
+  {
     return nullptr;
   }
   return all_moves_.top();
 }
 
-void Board::UndoMove(const bool sim) {
+void Board::UndoMove(const bool sim)
+{
   if (all_moves_.empty() || ObjectManager::animation.IsBusy()) return;
   SetState(running_);
   auto move = all_moves_.top();
   move->Undo(this, sim);
   all_moves_.pop();
   ClearOverlays();
-  if (!move->ChangeTurn()) {
+  if (!move->ChangeTurn())
+  {
     all_moves_.top()->Undo(this, sim);
     all_moves_.pop();
   }
 
-  if (!sim) {
+  if (!sim)
+  {
     ChangeTurn();
   }
 
-  if (all_moves_.empty()) {
+  if (all_moves_.empty())
+  {
     SetState(fresh_);
   }
 }
 
-void Board::PieceClick(Piece *piece) {
-  if (state_ > running_) {
+void Board::PieceClick(Piece* piece)
+{
+  if (state_ > running_)
+  {
     return;
   }
 
-  if (ObjectManager::animation.IsBusy()) {
+  if (ObjectManager::animation.IsBusy())
+  {
     return;
   }
 
-  if (!locked_ && piece->IsWhite() == white_turn_) {
+  if (!locked_ && piece->IsWhite() == white_turn_)
+  {
     ClearOverlays();
     auto moves = GetValidAndInvalid(piece->GetMoves());
     current_moves_ = std::get<0>(moves);
     current_invalid_moves_ = std::get<1>(moves);
     SetOverlays();
   }
-  else {
+  else
+  {
     FieldClick(piece->field);
   }
 }
 
-void Board::EnableAi(const bool enabled) {
+void Board::EnableAi(const bool enabled)
+{
   use_ai_ = enabled;
-  if (enabled) {
+  if (enabled)
+  {
     DoAi();
   }
-  else {
+  else
+  {
     ai_overdue_ = false;
   }
 }
@@ -336,21 +398,27 @@ bool Board::GetAi() const
   return use_ai_;
 }
 
-void Board::FieldClick(Field *field) {
+void Board::FieldClick(Field* field)
+{
   if (state_ > running_) return;
   for (auto move : current_moves_)
-    if (move->click_field == field) {
+    if (move->click_field == field)
+    {
       SetState(running_);
       locked_ = false;
       all_moves_.push(move);
       move->Apply(this, false);
       ClearOverlays();
       current_moves_.clear();
-      if (field->current_piece && field->current_piece->IsTransformable() && field->Row() == (field->current_piece->IsWhite() ? 7 : 0)) {
+      if (field->current_piece && field->current_piece->IsTransformable() && field->Row() == (
+        field->current_piece->IsWhite() ? 7 : 0))
+      {
         std::cout << "ChessInfo: Pawn is being promoted" << std::endl;
         locked_ = true;
-        for (auto piece : pieces_) {
-          if (piece->IsCopyable()) {
+        for (auto piece : pieces_)
+        {
+          if (piece->IsCopyable())
+          {
             current_moves_.push_back(new Transform(field->current_piece, piece));
           }
         }
@@ -362,34 +430,43 @@ void Board::FieldClick(Field *field) {
     }
 }
 
-void Board::SetOverlays() {
-  for (auto move : current_moves_) {
+void Board::SetOverlays()
+{
+  for (auto move : current_moves_)
+  {
     move->click_field->SetOverlayNumber(move->field_overlay);
     move->click_field->EnableOverlay();
   }
 
-  for (auto move : current_invalid_moves_) {
+  for (auto move : current_invalid_moves_)
+  {
     move->click_field->SetOverlayNumber(white_turn_ ? 3 : 4);
     move->click_field->EnableOverlay();
   }
 }
 
-void Board::ClearOverlays() {
-  for (auto move : current_moves_) {
+void Board::ClearOverlays()
+{
+  for (auto move : current_moves_)
+  {
     move->click_field->EnableOverlay(false);
   }
 
   current_moves_.clear();
-  for (auto move : current_invalid_moves_) {
+  for (auto move : current_invalid_moves_)
+  {
     move->click_field->EnableOverlay(false);
   }
 
   current_invalid_moves_.clear();
 }
 
-bool Board::ExistsValidMove() {
-  for (auto piece : pieces_) {
-    if (piece->IsWhite() == white_turn_ && !GetValid(piece->GetMoves()).empty()) {
+bool Board::ExistsValidMove()
+{
+  for (auto piece : pieces_)
+  {
+    if (piece->IsWhite() == white_turn_ && !GetValid(piece->GetMoves()).empty())
+    {
       return true;
     }
   }
@@ -397,12 +474,15 @@ bool Board::ExistsValidMove() {
   return false;
 }
 
-std::vector<MoveBase*> Board::GetValid(std::vector<MoveBase*> moves) {
+std::vector<MoveBase*> Board::GetValid(std::vector<MoveBase*> moves)
+{
   std::vector<MoveBase*> result;
-  for (auto move : moves) {
+  for (auto move : moves)
+  {
     all_moves_.push(move);
     move->Apply(this, true);
-    if (!IsKingInMate()) {
+    if (!IsKingInMate())
+    {
       result.push_back(move);
     }
 
@@ -413,14 +493,17 @@ std::vector<MoveBase*> Board::GetValid(std::vector<MoveBase*> moves) {
   return result;
 }
 
-std::tuple<std::vector<MoveBase*>, std::vector<MoveBase*>> Board::GetValidAndInvalid(std::vector<MoveBase *> moves) {
+std::tuple<std::vector<MoveBase*>, std::vector<MoveBase*>> Board::GetValidAndInvalid(std::vector<MoveBase *> moves)
+{
   std::vector<MoveBase*> result1, result2;
-  for (auto move : moves) {
+  for (auto move : moves)
+  {
     all_moves_.push(move);
     move->Apply(this, true);
     if (!IsKingInMate())
       result1.push_back(move);
-    else {
+    else
+    {
       result2.push_back(move);
     }
 
@@ -430,34 +513,43 @@ std::tuple<std::vector<MoveBase*>, std::vector<MoveBase*>> Board::GetValidAndInv
   return std::tuple<std::vector<MoveBase*>, std::vector<MoveBase*>>(result1, result2);
 }
 
-Piece* Board::GetKing(const bool isWhite) {
+Piece* Board::GetKing(const bool isWhite)
+{
   auto index = 4;
-  if (!isWhite) {
+  if (!isWhite)
+  {
     index += board_size * 2;
   }
 
   return pieces_[index];
 }
 
-Piece* Board::GetRook(const bool isWhite, const bool isLeft) {
+Piece* Board::GetRook(const bool isWhite, const bool isLeft)
+{
   auto index = isLeft ? 0 : 7;
-  if (!isWhite) {
+  if (!isWhite)
+  {
     index += board_size * 2;
   }
 
   return pieces_[index];
 }
 
-bool Board::IsKingInMate() {
+bool Board::IsKingInMate()
+{
   const auto king = GetKing(white_turn_);
   const auto kingField = king->field;
-  for (auto piece : pieces_) {
-    if (piece->IsWhite() != white_turn_) {
+  for (auto piece : pieces_)
+  {
+    if (piece->IsWhite() != white_turn_)
+    {
       auto moves = piece->GetMoves();
-      for (auto move : moves) {
+      for (auto move : moves)
+      {
         all_moves_.push(move);
         move->Apply(this, true);
-        if (kingField != king->field) {
+        if (kingField != king->field)
+        {
           move->Undo(this, true);
           all_moves_.pop();
           return true;
@@ -471,9 +563,12 @@ bool Board::IsKingInMate() {
   return false;
 }
 
-bool Board::IntersectsGame(Collision* collision, Piece *except) {
-  for (auto piece : pieces_) {
-    if (piece != except && piece->bounding_box->Intersects(collision)) {
+bool Board::IntersectsGame(Collision* collision, Piece* except)
+{
+  for (auto piece : pieces_)
+  {
+    if (piece != except && piece->bounding_box->Intersects(collision))
+    {
       return true;
     }
   }
@@ -481,7 +576,8 @@ bool Board::IntersectsGame(Collision* collision, Piece *except) {
   return collision->Intersects(bounding_box_);
 }
 
-bool Board::IsCastlingPossible(const bool isWhite, const bool isLeft) {
+bool Board::IsCastlingPossible(const bool isWhite, const bool isLeft)
+{
   auto king = GetKing(isWhite);
   auto rook = GetRook(isWhite, isLeft);
 
@@ -502,7 +598,7 @@ bool Board::IsCastlingPossible(const bool isWhite, const bool isLeft) {
   if (!stepField || stepField->current_piece || !success) return false;
   Move step(king, stepField);
   step.Apply(this, true);
-  if (IsKingInMate())  success = false;
+  if (IsKingInMate()) success = false;
   Move rookStep(rook, stepOverField);
   rookStep.Apply(this, true);
   if (IsKingInMate()) success = false;
@@ -515,16 +611,19 @@ bool Board::IsCastlingPossible(const bool isWhite, const bool isLeft) {
   return success;
 }
 
-Field* Board::GetField(int column, int row) {
+Field* Board::GetField(const int column, const int row)
+{
   return fields_[row - 1][column - 1];
 }
 
-void Board::ApplyAndPushMove(MoveBase *move) {
+void Board::ApplyAndPushMove(MoveBase* move)
+{
   move->Apply(this, false);
   all_moves_.push(move);
 }
 
-void Board::RunDemo() {
+void Board::RunDemo()
+{
   if (state_) return;
   SetState(running_);
   NewTurn();

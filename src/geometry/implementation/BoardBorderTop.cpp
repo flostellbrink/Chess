@@ -4,7 +4,8 @@
 BoardBorderTop::BoardBorderTop()
 = default;
 
-void BoardBorderTop::Create() {
+void BoardBorderTop::Create()
+{
   // Positions
   AddPosition(-8, 0, -8);
   AddPosition(-8.5f, 0, -8.5f);
@@ -18,7 +19,8 @@ void BoardBorderTop::Create() {
   AddNormal(0, 1, 0);
 
   // Default texture coordinates
-  for (int i = 0; i < 4 * 1; ++i) {
+  for (auto i = 0; i < 4 * 1; ++i)
+  {
     AddTextureCoordinate(0.0f, 0.0f);
   }
 

@@ -4,14 +4,20 @@
 #include "src/curve/Curve.h"
 
 
-ExtruderFace::ExtruderFace(Curve* profileCurve, Curve* compressedProfile, Curve* widthCurve, float widthPos, float scale) : scale_(scale) {
+ExtruderFace::ExtruderFace(Curve* profileCurve,
+                           Curve* compressedProfile,
+                           Curve* widthCurve,
+                           const float widthPos,
+                           const float scale) : scale_(scale)
+{
   profile_curve_ = profileCurve;
   compressed_profile_ = compressedProfile;
   width_curve_ = widthCurve;
   width_pos_ = widthPos;
 }
 
-void ExtruderFace::Create() {
+void ExtruderFace::Create()
+{
   const auto texScale = 0.1f;
   auto profilePoints = profile_curve_->InterpolatedPoints(Config::geo_resolution2);
   auto compressedPoints = compressed_profile_->InterpolatedPoints(Config::geo_resolution2);
@@ -23,14 +29,16 @@ void ExtruderFace::Create() {
   const auto compressedRes = static_cast<int>(compressedPoints.size());
   assert(profileRes == compressedRes);
 
-  for (auto j = 0; j < profileRes; ++j) {
+  for (auto j = 0; j < profileRes; ++j)
+  {
     const auto profile = profilePoints[j];
     positions_.push_back(scale_ * glm::vec3(profile.x * width.y, profile.y, width.x));
     texture_coordinates_.push_back(texScale * scale_ * profile);
     normals_.push_back(widthTangent);
   }
 
-  for (auto j = 0; j < compressedRes; ++j) {
+  for (auto j = 0; j < compressedRes; ++j)
+  {
     const auto profile = compressedPoints[j];
     positions_.push_back(scale_ * glm::vec3(profile.x * width.y, profile.y, width.x));
     texture_coordinates_.push_back(texScale * scale_ * profile);

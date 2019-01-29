@@ -44,7 +44,8 @@ namespace objects
     fullscreen_quad = 95;
 }
 
-namespace themes {
+namespace themes
+{
   const unsigned int
     wood = 0,
     metal = 1,

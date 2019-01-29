@@ -4,7 +4,8 @@
 #include "Curve.h"
 #include "src/geometry/ControlPoints.h"
 
-class CatmullRomCurve : public Curve {
+class CatmullRomCurve : public Curve
+{
 public:
   CatmullRomCurve(ControlPoints controlPoints, int curveId, int objectId);
   std::vector<glm::vec2> InterpolatedPoints(int resolution) override;

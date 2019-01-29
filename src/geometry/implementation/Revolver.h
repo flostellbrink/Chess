@@ -5,7 +5,8 @@
 
 class Curve;
 
-class Revolver : public Geometry {
+class Revolver : public Geometry
+{
 public:
   Revolver(Curve* baseCurve, Curve* heightCurve, float scale = .1, bool clockTexture = false);
 

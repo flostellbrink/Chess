@@ -9,26 +9,30 @@
 #include "src/objects/Board.h"
 
 
-King::King(Board* board, int objectID, Field *field) : Piece(board, objectID, field) {
-
+King::King(Board* board, const int objectId, Field* field) : Piece(board, objectId, field)
+{
 }
 
-void King::Init() {
+void King::Init()
+{
   Piece::Init();
-  y_rotation_ = glm::pi<float>() / 2.f;
+  y_rotation_ = glm::half_pi<float>();
 }
 
-std::vector<MoveBase*> King::GetMoves() {
+std::vector<MoveBase*> King::GetMoves()
+{
   std::vector<MoveBase*> result;
   AddHitOrMove(field->up, result);
   AddHitOrMove(field->down, result);
   AddHitOrMove(field->left, result);
   AddHitOrMove(field->right, result);
-  if (field->up) {
+  if (field->up)
+  {
     AddHitOrMove(field->up->left, result);
     AddHitOrMove(field->up->right, result);
   }
-  if (field->down) {
+  if (field->down)
+  {
     AddHitOrMove(field->down->left, result);
     AddHitOrMove(field->down->right, result);
   }
@@ -39,6 +43,7 @@ std::vector<MoveBase*> King::GetMoves() {
   return result;
 }
 
-bool King::IsCopyable() {
+bool King::IsCopyable()
+{
   return false;
 }

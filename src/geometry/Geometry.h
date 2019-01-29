@@ -6,7 +6,8 @@
 #include <glm/glm.hpp>
 #include <vector>
 
-class Geometry {
+class Geometry
+{
 public:
   Geometry();
   virtual ~Geometry();

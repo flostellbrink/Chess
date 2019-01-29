@@ -3,10 +3,11 @@
 
 #include "AnimationBase.h"
 
-template<class T>
-class DelayAnimation : public AnimationBase {
+template <class T>
+class DelayAnimation : public AnimationBase
+{
 public:
-  DelayAnimation(float duration);
+  explicit DelayAnimation(float duration);
   void Update(float elapsedTime) override;
   bool Active() override;
 
@@ -15,22 +16,24 @@ private:
   bool active_ = true;
 };
 
-template<class T>
-DelayAnimation<T>::DelayAnimation(float duration) : duration_(duration) {
-
+template <class T>
+DelayAnimation<T>::DelayAnimation(const float duration) : duration_(duration)
+{
 }
 
-template<class T>
-void DelayAnimation<T>::Update(const float elapsedTime) {
+template <class T>
+void DelayAnimation<T>::Update(const float elapsedTime)
+{
   elapsed_total_ += elapsedTime;
-  if(elapsed_total_ >= duration_)
+  if (elapsed_total_ >= duration_)
   {
     active_ = false;
   }
 }
 
-template<class T>
-bool DelayAnimation<T>::Active() {
+template <class T>
+bool DelayAnimation<T>::Active()
+{
   return active_;
 }
 

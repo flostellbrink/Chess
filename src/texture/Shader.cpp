@@ -15,13 +15,15 @@
  * @param handle Handle of the shader to check.
  * @param filePath Path of the shader file for debugging.
  */
-void check_shader_error(const GLuint handle, const std::string &filePath) {
+void check_shader_error(const GLuint handle, const std::string& filePath)
+{
   auto result = GL_FALSE;
   int infoLength;
 
   glGetShaderiv(handle, GL_COMPILE_STATUS, &result);
   glGetShaderiv(handle, GL_INFO_LOG_LENGTH, &infoLength);
-  if (infoLength > 1) {
+  if (infoLength > 1)
+  {
     auto errorMessage = std::make_unique<char[]>(infoLength + 1);
     glGetShaderInfoLog(handle, infoLength, nullptr, errorMessage.get());
     std::stringstream message;
@@ -36,11 +38,13 @@ void check_shader_error(const GLuint handle, const std::string &filePath) {
  * @param vertexPath Path of the loaded vertex shader for debugging.
  * @param fragmentPath Path of the loaded fragment shader for debugging.
  */
-void check_program_error(const GLuint handle, const std::string &vertexPath, const std::string &fragmentPath) {
+void check_program_error(const GLuint handle, const std::string& vertexPath, const std::string& fragmentPath)
+{
   int infoLength;
 
   glGetProgramiv(handle, GL_INFO_LOG_LENGTH, &infoLength);
-  if (infoLength > 1) {
+  if (infoLength > 1)
+  {
     auto errorMessage = std::make_unique<char[]>(infoLength + 1);
     glGetProgramInfoLog(handle, infoLength, nullptr, errorMessage.get());
     std::stringstream message;
@@ -54,7 +58,8 @@ void check_program_error(const GLuint handle, const std::string &vertexPath, con
  * @param vertexFilePath Path of vertex program to load.
  * @param fragmentFilePath Path of fragment program to load.
  */
-Shader::Shader(const std::string &vertexFilePath, const std::string &fragmentFilePath) {
+Shader::Shader(const std::string& vertexFilePath, const std::string& fragmentFilePath)
+{
   std::ifstream vertexStream(vertexFilePath);
   std::stringstream vertexBuffer;
   vertexBuffer << vertexStream.rdbuf();
@@ -103,16 +108,17 @@ void Shader::Use() const
  * @param uniformName Name of variable to get handle for.
  * @return Handle of uniform variable.
  */
-GLint Shader::GetUniform(const std::string &uniformName) const
+GLint Shader::GetUniform(const std::string& uniformName) const
 {
   const auto result = glGetUniformLocation(handle, uniformName.data());
-  if (result < 0) {
+  if (result < 0)
+  {
     Logger::Error("Could not find uniform: " + uniformName);
   }
   return result;
 }
 
-bool Shader::HasUniform(const std::string &uniformName) const
+bool Shader::HasUniform(const std::string& uniformName) const
 {
   return glGetUniformLocation(handle, uniformName.data()) > 0;
 }
@@ -122,7 +128,7 @@ bool Shader::HasUniform(const std::string &uniformName) const
  * @param scalar Value to bind to shader.
  * @param uniformName Name of variable to bind value to.
  */
-void Shader::Bind(const int scalar, const std::string &uniformName) const
+void Shader::Bind(const int scalar, const std::string& uniformName) const
 {
   glUniform1i(GetUniform(uniformName), scalar);
 }
@@ -132,7 +138,7 @@ void Shader::Bind(const int scalar, const std::string &uniformName) const
  * @param scalar Value to bind to shader.
  * @param uniformName Name of variable to bind value to.
  */
-void Shader::Bind(const float scalar, const std::string &uniformName) const
+void Shader::Bind(const float scalar, const std::string& uniformName) const
 {
   glUniform1f(GetUniform(uniformName), scalar);
 }
@@ -142,7 +148,7 @@ void Shader::Bind(const float scalar, const std::string &uniformName) const
  * @param vector Value to bind to shader.
  * @param uniformName Name of variable to bind vector to.
  */
-void Shader::Bind(glm::vec2 &vector, const std::string &uniformName) const
+void Shader::Bind(glm::vec2& vector, const std::string& uniformName) const
 {
   glUniform2f(GetUniform(uniformName), vector.x, vector.y);
 }
@@ -152,7 +158,7 @@ void Shader::Bind(glm::vec2 &vector, const std::string &uniformName) const
  * @param vector Value to bind to shader.
  * @param uniformName Name of variable to bind vector to.
  */
-void Shader::Bind(glm::vec3 &vector, const std::string &uniformName) const
+void Shader::Bind(glm::vec3& vector, const std::string& uniformName) const
 {
   glUniform3f(GetUniform(uniformName), vector.x, vector.y, vector.z);
 }
@@ -162,7 +168,7 @@ void Shader::Bind(glm::vec3 &vector, const std::string &uniformName) const
  * @param vector Value to bind to shader.
  * @param uniformName Name of variable to bind vector to.
  */
-void Shader::Bind(glm::vec4 &vector, const std::string &uniformName) const
+void Shader::Bind(glm::vec4& vector, const std::string& uniformName) const
 {
   glUniform4f(GetUniform(uniformName), vector.x, vector.y, vector.z, vector.w);
 }
@@ -172,7 +178,7 @@ void Shader::Bind(glm::vec4 &vector, const std::string &uniformName) const
  * @param matrix Value to bind to shader.
  * @param uniformName Name of variable to bind matrix to.
  */
-void Shader::Bind(glm::mat4 &matrix, const std::string &uniformName) const
+void Shader::Bind(glm::mat4& matrix, const std::string& uniformName) const
 {
   glUniformMatrix4fv(GetUniform(uniformName), 1, GL_FALSE, &matrix[0][0]);
 }
@@ -182,7 +188,7 @@ void Shader::Bind(glm::mat4 &matrix, const std::string &uniformName) const
  * @param matrix Value to bind to shader.
  * @param uniformName Name of variable to bind matrix to.
  */
-void Shader::Bind(glm::mat2 &matrix, const std::string &uniformName) const
+void Shader::Bind(glm::mat2& matrix, const std::string& uniformName) const
 {
   glUniformMatrix2fv(GetUniform(uniformName), 1, GL_FALSE, &matrix[0][0]);
 }
@@ -192,7 +198,7 @@ void Shader::Bind(glm::mat2 &matrix, const std::string &uniformName) const
  * @param vector Value to bind to shader.
  * @param uniformName Name of variable to bind vector to.
  */
-void Shader::Bind(std::vector<int> &vector, const std::string &uniformName) const
+void Shader::Bind(std::vector<int>& vector, const std::string& uniformName) const
 {
   glUniform1iv(GetUniform(uniformName), static_cast<GLsizei>(vector.size()), vector.data());
 }

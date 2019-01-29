@@ -5,11 +5,12 @@
 #include <vector>
 #include <glm/glm.hpp>
 
-class ControlPoints {
+class ControlPoints
+{
 public:
   ControlPoints();
   void SetTheme(int themeId);
-  std::vector<std::vector<glm::vec2>> GetControlPoints2D(int objectsId) const;
+  std::vector<std::vector<glm::vec2>> GetControlPoints2D(int objectId) const;
 
 protected:
   int theme_id_;

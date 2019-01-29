@@ -19,30 +19,36 @@
 #include "src/curve/CatmullRomCurve.h"
 #include "src/curve/LineCurve.h"
 
-GeometryManager::GeometryManager() : theme_id_() {
-
+GeometryManager::GeometryManager() : theme_id_()
+{
 }
 
-void GeometryManager::SetTheme(int themeID) {
-  theme_id_ = themeID;
-  control_points_.SetTheme(themeID);
+void GeometryManager::SetTheme(const int themeId)
+{
+  theme_id_ = themeId;
+  control_points_.SetTheme(themeId);
   Regenerate();
 }
 
-void GeometryManager::Regenerate() {
-  for (auto& pair : geometries_) {
+void GeometryManager::Regenerate()
+{
+  for (auto& pair : geometries_)
+  {
     pair.second->Recreate();
   }
 }
 
-Geometry* GeometryManager::GetGeometryCached(int objectId) {
+Geometry* GeometryManager::GetGeometryCached(int objectId)
+{
   // Use a single identifier for all fields
-  if(objectId >= objects::field00 && objectId <= objects::field77) {
+  if (objectId >= objects::field00 && objectId <= objects::field77)
+  {
     objectId = objects::field00;
   }
 
-  auto iterator = geometries_.find(objectId);
-  if (iterator != geometries_.end()) {
+  const auto iterator = geometries_.find(objectId);
+  if (iterator != geometries_.end())
+  {
     return iterator->second;
   }
 
@@ -52,43 +58,54 @@ Geometry* GeometryManager::GetGeometryCached(int objectId) {
   return geo;
 }
 
-Geometry* GeometryManager::GetRevolver(int objectID) {
-  return new Revolver(new CircleCurve(), new CatmullRomCurve(control_points_, 0, objectID));
+Geometry* GeometryManager::GetRevolver(const int objectId) const
+{
+  return new Revolver(new CircleCurve(), new CatmullRomCurve(control_points_, 0, objectId));
 }
 
-Geometry* GeometryManager::GetRevolver(int objectID, float scale) {
-  return new Revolver(new CircleCurve(), new CatmullRomCurve(control_points_, 0, objectID), scale);
+Geometry* GeometryManager::GetRevolver(const int objectId, const float scale) const
+{
+  return new Revolver(new CircleCurve(), new CatmullRomCurve(control_points_, 0, objectId), scale);
 }
 
-Geometry* GeometryManager::GetInterlacedRevolver(int objectID, float length1, float length2) {
-  return new InterlacedRevolver(new CircleCurve(), new CatmullRomCurve(control_points_, 0, objectID), new CatmullRomCurve(control_points_, 1, objectID), length1, length2);
+Geometry* GeometryManager::GetInterlacedRevolver(const int objectId, const float length1, const float length2) const
+{
+  return new InterlacedRevolver(new CircleCurve(),
+                                new CatmullRomCurve(control_points_, 0, objectId),
+                                new CatmullRomCurve(control_points_, 1, objectId),
+                                length1,
+                                length2);
 }
 
-Geometry* GeometryManager::GetRevolverAndExtruded(int objectID, float scale, float radius) {
-  Curve *extruded = new CatmullRomCurve(control_points_, 1, objectID),
-    *extrudedCompressed = new CatmullRomCurve(control_points_, 2, objectID),
-    *extrudeAlong = new LineCurve(radius);
-  return new CompositeGeometry(std::vector<Geometry*> {
-    GetRevolver(objectID),
-      new Extruder(extruded, extrudeAlong, scale),
-      new ExtruderFace(extruded, extrudedCompressed, extrudeAlong, 0, scale),
-      new ExtruderFace(extruded, extrudedCompressed, extrudeAlong, 1, scale)
-  });
-}
-
-Geometry* GeometryManager::GetExtruded(int objectID, float scale, float radius) {
-  Curve *extruded = new CatmullRomCurve(control_points_, 0, objectID),
-    *extrudedCompressed = new CatmullRomCurve(control_points_, 1, objectID),
-    *extrudeAlong = new LineCurve(radius);
-  return new CompositeGeometry(std::vector<Geometry*> {
+Geometry* GeometryManager::GetRevolverAndExtruded(const int objectId, const float scale, const float radius) const
+{
+  Curve *extruded = new CatmullRomCurve(control_points_, 1, objectId),
+        *extrudedCompressed = new CatmullRomCurve(control_points_, 2, objectId),
+        *extrudeAlong = new LineCurve(radius);
+  return new CompositeGeometry(std::vector<Geometry*>{
+    GetRevolver(objectId),
     new Extruder(extruded, extrudeAlong, scale),
-      new ExtruderFace(extruded, extrudedCompressed, extrudeAlong, 0, scale),
-      new ExtruderFace(extruded, extrudedCompressed, extrudeAlong, 1, scale)
+    new ExtruderFace(extruded, extrudedCompressed, extrudeAlong, 0, scale),
+    new ExtruderFace(extruded, extrudedCompressed, extrudeAlong, 1, scale)
   });
 }
 
-Geometry* GeometryManager::GetGeometry(int objectId) {
-  switch (objectId) {
+Geometry* GeometryManager::GetExtruded(const int objectId, const float scale, const float radius) const
+{
+  Curve *extruded = new CatmullRomCurve(control_points_, 0, objectId),
+        *extrudedCompressed = new CatmullRomCurve(control_points_, 1, objectId),
+        *extrudeAlong = new LineCurve(radius);
+  return new CompositeGeometry(std::vector<Geometry*>{
+    new Extruder(extruded, extrudeAlong, scale),
+    new ExtruderFace(extruded, extrudedCompressed, extrudeAlong, 0, scale),
+    new ExtruderFace(extruded, extrudedCompressed, extrudeAlong, 1, scale)
+  });
+}
+
+Geometry* GeometryManager::GetGeometry(const int objectId) const
+{
+  switch (objectId)
+  {
   case objects::skybox:
   case objects::field00:
     return new Cube;
@@ -133,26 +150,29 @@ Geometry* GeometryManager::GetGeometry(int objectId) {
   case objects::clock_time_cap:
   case objects::clock_marks:
     return GetRevolver(objectId, 0.15f);
-  default:break;
+  default: break;
   }
-  switch (theme_id_) {
+  switch (theme_id_)
+  {
   case themes::wood:
-    switch (objectId) {
+    switch (objectId)
+    {
     case objects::white_king:
     case objects::black_king:
       return GetInterlacedRevolver(objectId, 0.075f, 0.05f);
 
-    default:break;
+    default: break;
     }
     break;
   case themes::glass:
-    switch (objectId) {
+    switch (objectId)
+    {
     case objects::white_king:
     case objects::black_king:
       return GetRevolverAndExtruded(objectId);
-    default:break;
+    default: break;
     }
-  default:break;
+  default: break;
   }
   Logger::Error("ChessWarn: Using default geometry for objectID: " + std::to_string(objectId));
   return new Cube;

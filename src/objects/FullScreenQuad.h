@@ -5,7 +5,8 @@
 
 class Geometry;
 
-class FullScreenQuad : public Drawable {
+class FullScreenQuad : public Drawable
+{
 public:
   FullScreenQuad(std::string vertexShader, std::string fragmentShader);
   void Init() override;

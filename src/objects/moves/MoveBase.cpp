@@ -2,6 +2,7 @@
 
 MoveBase::MoveBase() = default;
 
-bool MoveBase::ChangeTurn() {
+bool MoveBase::ChangeTurn()
+{
   return true;
 }

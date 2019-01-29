@@ -5,7 +5,8 @@
 
 class Collision;
 
-class CollisionManager {
+class CollisionManager
+{
 public:
   CollisionManager();
   static Collision* GetAabb(glm::vec3 min, glm::vec3 max);

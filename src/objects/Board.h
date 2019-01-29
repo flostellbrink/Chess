@@ -12,7 +12,8 @@ class Field;
 class Camera;
 class MoveBase;
 
-class Board {
+class Board
+{
 public:
   explicit Board(Camera* camera);
   static void ResetGame();
@@ -30,7 +31,7 @@ public:
   Piece* GetKing(bool isWhite);
   Piece* GetRook(bool isWhite, bool isLeft);
   Field* GetField(int column, int row);
-  bool IntersectsGame(Collision* collision, Piece* except = 0);
+  bool IntersectsGame(Collision* collision, Piece* except = nullptr);
   void RunDemo();
   bool IsWhitesTurn() const;
   void SetState(int state);

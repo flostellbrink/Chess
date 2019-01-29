@@ -8,8 +8,10 @@
 /**
  * Initialize a new window.
  */
-Window::Window() : width(), height(), is_full_screen_(Config::full_screen) {
-  if (!glfwInit()) {
+Window::Window() : width(), height(), is_full_screen_(Config::full_screen)
+{
+  if (!glfwInit())
+  {
     Logger::Error("Failed to initialize GLFW.");
   }
 
@@ -20,7 +22,8 @@ Window::Window() : width(), height(), is_full_screen_(Config::full_screen) {
 
   const auto monitor = glfwGetPrimaryMonitor();
   const auto mode = glfwGetVideoMode(monitor);
-  if (is_full_screen_) {
+  if (is_full_screen_)
+  {
     handle = glfwCreateWindow(
       mode->width,
       mode->height,
@@ -28,7 +31,8 @@ Window::Window() : width(), height(), is_full_screen_(Config::full_screen) {
       monitor,
       nullptr);
   }
-  else {
+  else
+  {
     handle = glfwCreateWindow(
       Config::windowed_width,
       Config::windowed_height,
@@ -37,11 +41,12 @@ Window::Window() : width(), height(), is_full_screen_(Config::full_screen) {
       nullptr);
 
     glfwSetWindowPos(handle,
-      (mode->width - Config::windowed_width) / 2,
-      (mode->height - Config::windowed_height) / 2);
+                     (mode->width - Config::windowed_width) / 2,
+                     (mode->height - Config::windowed_height) / 2);
   }
 
-  if (handle == nullptr) {
+  if (handle == nullptr)
+  {
     Logger::Error("Failed to open GLFW window.");
   }
 
@@ -53,7 +58,8 @@ Window::Window() : width(), height(), is_full_screen_(Config::full_screen) {
   glfwSetCursorPos(handle, width / 2.0, height / 2.0);
 
   glewExperimental = static_cast<GLboolean>(true);
-  if (glewInit() != GLEW_OK) {
+  if (glewInit() != GLEW_OK)
+  {
     Logger::Error("Failed to initialize GLEW.");
   }
 }
@@ -69,11 +75,13 @@ void Window::Update()
 /**
  * Set full screen mode
  */
-void Window::SetFullScreen() {
+void Window::SetFullScreen()
+{
   is_full_screen_ = Config::full_screen;
   const auto monitor = glfwGetPrimaryMonitor();
   const auto mode = glfwGetVideoMode(monitor);
-  if (is_full_screen_) {
+  if (is_full_screen_)
+  {
     glfwSetWindowMonitor(
       handle,
       monitor,
@@ -83,7 +91,8 @@ void Window::SetFullScreen() {
       mode->height,
       0);
   }
-  else {
+  else
+  {
     glfwSetWindowMonitor(
       handle,
       nullptr,

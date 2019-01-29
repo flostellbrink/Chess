@@ -8,7 +8,8 @@
 
 class Geometry;
 
-class GeometryManager {
+class GeometryManager
+{
 public:
   GeometryManager();
   void SetTheme(int themeId);
@@ -16,12 +17,12 @@ public:
   Geometry* GetGeometryCached(int objectId);
 
 protected:
-  Geometry* GetGeometry(int objectId);
-  Geometry* GetRevolver(int objectId);
-  Geometry* GetRevolver(int objectId, float scale);
-  Geometry* GetInterlacedRevolver(int objectId, float length1, float length2);
-  Geometry* GetRevolverAndExtruded(int objectId, float scale = .1f, float radius = .2f);
-  Geometry* GetExtruded(int objectId, float scale = .1f, float radius = .2f);
+  Geometry* GetGeometry(int objectId) const;
+  Geometry* GetRevolver(int objectId) const;
+  Geometry* GetRevolver(int objectId, float scale) const;
+  Geometry* GetInterlacedRevolver(int objectId, float length1, float length2) const;
+  Geometry* GetRevolverAndExtruded(int objectId, float scale = .1f, float radius = .2f) const;
+  Geometry* GetExtruded(int objectId, float scale = .1f, float radius = .2f) const;
 
   int theme_id_;
   std::unordered_map<int, Geometry*> geometries_;

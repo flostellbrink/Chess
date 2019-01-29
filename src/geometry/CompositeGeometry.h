@@ -3,7 +3,8 @@
 
 #include "src/geometry/Geometry.h"
 
-class CompositeGeometry : public Geometry {
+class CompositeGeometry : public Geometry
+{
 public:
   explicit CompositeGeometry(std::vector<Geometry*> geometries);
   CompositeGeometry(Geometry* first, Geometry* second);

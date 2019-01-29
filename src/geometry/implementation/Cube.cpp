@@ -4,7 +4,8 @@
 Cube::Cube()
 = default;
 
-void Cube::Create() {
+void Cube::Create()
+{
   // Positions
   //front
   AddPosition(-1, +1, +1);

@@ -16,7 +16,8 @@
 
 
 Field::Field(Board* board, const int boardX, const int boardY, const bool inactive)
-  : Drawable(inactive ? objects::field00 : objects::field00 + boardX * 8 + boardY) {
+  : Drawable(inactive ? objects::field00 : objects::field00 + boardX * 8 + boardY)
+{
   inactive_ = inactive;
   board_ = board;
   board_x_ = boardX;
@@ -26,7 +27,8 @@ Field::Field(Board* board, const int boardX, const int boardY, const bool inacti
   bounding_box_ = CollisionManager::GetAabb(CenterPosition() - size * 0.5f, CenterPosition() + size * 0.5f);
 }
 
-void Field::Init() {
+void Field::Init()
+{
   Drawable::Init();
   geometry_ = ObjectManager::geometry.GetGeometryCached(object_id_);
 
@@ -34,22 +36,29 @@ void Field::Init() {
   model_view_matrix_ = translate(model_view_matrix_, CenterPosition());
 }
 
-void Field::Draw(glm::mat4 projectionMatrix) {
+void Field::Draw(glm::mat4 projectionMatrix)
+{
   if (inactive_) return;
 
-  if (program_ == nullptr) {
+  if (program_ == nullptr)
+  {
     Logger::Error("program not loaded");
   }
   program_->Use();
 
   ObjectManager::texture.GetTexture(object_id_)[0]->Bind();
-  if (overlay_opacity_ > 0) {
+  if (overlay_opacity_ > 0)
+  {
     ObjectManager::texture.GetTexture(object_id_)[overlay_number_]->Bind(GL_TEXTURE_2D, 1);
     const auto animateOverlay = overlay_number_ == 2;
     program_->Bind(animateOverlay, "textureAnimated");
-    if (animateOverlay) {
+    if (animateOverlay)
+    {
       const auto overlayRotation = board_->overlay_rotation;
-      auto rotation = glm::mat2(cos(overlayRotation), sin(overlayRotation), -sin(overlayRotation), cos(overlayRotation));
+      auto rotation = glm::mat2(cos(overlayRotation),
+                                sin(overlayRotation),
+                                -sin(overlayRotation),
+                                cos(overlayRotation));
       rotation *= board_->overlay_scale;
       program_->Bind(rotation, "texTransform");
     }
@@ -95,26 +104,31 @@ void Field::Draw(glm::mat4 projectionMatrix) {
   geometry_->Draw();
 }
 
-void Field::DrawShadow(glm::mat4 projection_matrix) {
+void Field::DrawShadow(const glm::mat4 projectionMatrix)
+{
   if (inactive_) return;
   program_shadow_->Use();
 
-  auto viewProjectionShadow = projection_matrix * model_view_matrix_;
+  auto viewProjectionShadow = projectionMatrix * model_view_matrix_;
   program_shadow_->Bind(viewProjectionShadow, "view_projection_shadow");
 
   geometry_->Draw();
 }
 
-void Field::Update(float elapsedTimeMs) {
+void Field::Update(float elapsedTimeMs)
+{
   (void)elapsedTimeMs;
 }
 
-void Field::MouseClick(glm::vec3 position) {
+void Field::MouseClick(const glm::vec3 position)
+{
   if (!bounding_box_->Contains(position)) return;
-  if (current_piece) {
+  if (current_piece)
+  {
     board_->PieceClick(current_piece);
   }
-  else {
+  else
+  {
     board_->FieldClick(this);
   }
 }
@@ -131,23 +145,29 @@ glm::vec3 Field::CenterPosition() const
   return position_ - glm::vec3(0, 1, 0);
 }
 
-std::string Field::GetVertexShader() {
+std::string Field::GetVertexShader()
+{
   return "res/shader/Mirror.vs.glsl";
 }
 
-std::string Field::GetFragmentShader() {
+std::string Field::GetFragmentShader()
+{
   return "res/shader/Mirror.fs.glsl";
 }
 
-void Field::EnableOverlay(const bool enabled) {
-  if (enabled != overlay_enabled_) {
-    ObjectManager::animation.PlayIndependent(new FadeAnimation<float>(350, overlay_opacity_, overlay_enabled_, enabled));
+void Field::EnableOverlay(const bool enabled)
+{
+  if (enabled != overlay_enabled_)
+  {
+    ObjectManager::animation.
+      PlayIndependent(new FadeAnimation<float>(350, overlay_opacity_, overlay_enabled_, enabled));
   }
 
   overlay_enabled_ = enabled;
 }
 
-void Field::SetOverlayNumber(int overlay) {
+void Field::SetOverlayNumber(const int overlay)
+{
   overlay_number_ = overlay;
 }
 
@@ -161,6 +181,7 @@ int Field::Column() const
   return board_y_;
 }
 
-glm::vec3 Field::Position3D() {
+glm::vec3 Field::Position3D()
+{
   return CenterPosition();
 }

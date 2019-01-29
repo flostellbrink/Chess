@@ -4,15 +4,17 @@
 
 #include "LineCurve.h"
 
-LineCurve::LineCurve(float radius) : radius_(radius) {
-
+LineCurve::LineCurve(const float radius) : radius_(radius)
+{
 }
 
-std::vector<glm::vec2> LineCurve::InterpolatedPoints(int resolution) {
+std::vector<glm::vec2> LineCurve::InterpolatedPoints(const int resolution)
+{
   const auto stepSize = 1.f / (resolution - 1);
   std::vector<glm::vec2> result;
   tangents_.clear();
-  for (auto i = 0; i < resolution; ++i) {
+  for (auto i = 0; i < resolution; ++i)
+  {
     const auto value = i * stepSize;
     result.push_back(InterpolatedPoint(value));
     tangents_.push_back(InterpolatedTangent(value));
@@ -21,17 +23,20 @@ std::vector<glm::vec2> LineCurve::InterpolatedPoints(int resolution) {
   return result;
 }
 
-glm::vec2 LineCurve::InterpolatedPoint(float value) {
+glm::vec2 LineCurve::InterpolatedPoint(float value)
+{
   // Move value into -1 1 range
   value = (value - 0.5f) * 2;
   return glm::vec2(value * 2, cos(value * glm::pi<float>() * radius_));
 }
 
-std::vector<glm::vec2> LineCurve::InterpolatedTangents() {
+std::vector<glm::vec2> LineCurve::InterpolatedTangents()
+{
   return tangents_;
 }
 
-glm::vec2 LineCurve::InterpolatedTangent(float value) {
+glm::vec2 LineCurve::InterpolatedTangent(float value)
+{
   // Move value into -1 1 range
   value = (value - 0.5f) * 2;
   value *= glm::pi<float>() * radius_;

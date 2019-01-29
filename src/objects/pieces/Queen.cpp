@@ -4,56 +4,65 @@
 #include "src/objects/Field.h"
 
 
-Queen::Queen(Board* board, int objectID, Field *field) : Piece(board, objectID, field) {
-
+Queen::Queen(Board* board, const int objectId, Field* field) : Piece(board, objectId, field)
+{
 }
 
-std::vector<MoveBase*> Queen::GetMoves() {
+std::vector<MoveBase*> Queen::GetMoves()
+{
   std::vector<MoveBase*> result;
-  Field *currentField = field;
-  while ((currentField = currentField->up)) {
+  auto currentField = field;
+  while ((currentField = currentField->up))
+  {
     AddHitOrMove(currentField, result);
     if (currentField->current_piece)
       break;
   }
   currentField = field;
-  while ((currentField = currentField->down)) {
+  while ((currentField = currentField->down))
+  {
     AddHitOrMove(currentField, result);
     if (currentField->current_piece)
       break;
   }
   currentField = field;
-  while ((currentField = currentField->left)) {
+  while ((currentField = currentField->left))
+  {
     AddHitOrMove(currentField, result);
     if (currentField->current_piece)
       break;
   }
   currentField = field;
-  while ((currentField = currentField->right)) {
+  while ((currentField = currentField->right))
+  {
     AddHitOrMove(currentField, result);
     if (currentField->current_piece)
       break;
   }
   currentField = field;
-  while (currentField->up && (currentField = currentField->up->right)) {
+  while (currentField->up && ((currentField = currentField->up->right)))
+  {
     AddHitOrMove(currentField, result);
     if (currentField->current_piece)
       break;
   }
   currentField = field;
-  while (currentField->down && (currentField = currentField->down->right)) {
+  while (currentField->down && ((currentField = currentField->down->right)))
+  {
     AddHitOrMove(currentField, result);
     if (currentField->current_piece)
       break;
   }
   currentField = field;
-  while (currentField->up && (currentField = currentField->up->left)) {
+  while (currentField->up && ((currentField = currentField->up->left)))
+  {
     AddHitOrMove(currentField, result);
     if (currentField->current_piece)
       break;
   }
   currentField = field;
-  while (currentField->down && (currentField = currentField->down->left)) {
+  while (currentField->down && ((currentField = currentField->down->left)))
+  {
     AddHitOrMove(currentField, result);
     if (currentField->current_piece)
       break;

@@ -3,14 +3,15 @@
 
 #include <GLFW/glfw3.h>
 
-class Window {
+class Window
+{
 public:
   Window();
 
   void Update();
 
   int width, height;
-  GLFWwindow *handle;
+  GLFWwindow* handle;
 
 private:
   void SetFullScreen();

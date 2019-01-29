@@ -5,7 +5,8 @@
 
 class Curve;
 
-class ExtruderFace : public Geometry {
+class ExtruderFace : public Geometry
+{
 public:
   ExtruderFace(Curve* profileCurve, Curve* compressedProfile, Curve* widthCurve, float widthPos, float scale = .1f);
 

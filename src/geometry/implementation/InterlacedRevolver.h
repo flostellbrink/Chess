@@ -5,7 +5,8 @@
 
 class Curve;
 
-class InterlacedRevolver : public Geometry {
+class InterlacedRevolver : public Geometry
+{
 public:
   /**
    * @brief InterlacedRevolver Used for the knight, toggles between two height profiles at given length values
@@ -14,8 +15,14 @@ public:
    * @param heightCurve2 Second Curve for y axis
    * @param length1 Size of First Curves Segments
    * @param length2 Size of Second Curves Segments
+   * @param scale Size of revolver
    */
-  InterlacedRevolver(Curve* baseCurve, Curve* heightCurve1, Curve* heightCurve2, float length1, float length2, float scale = .1);
+  InterlacedRevolver(Curve* baseCurve,
+                     Curve* heightCurve1,
+                     Curve* heightCurve2,
+                     float length1,
+                     float length2,
+                     float scale = .1);
 
 protected:
   void Create() override;

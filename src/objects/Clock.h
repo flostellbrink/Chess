@@ -3,7 +3,8 @@
 
 class BasicObject;
 
-class Clock {
+class Clock
+{
 public:
   Clock();
   void Update(float elapsedTimeMs, bool whiteTurn);
