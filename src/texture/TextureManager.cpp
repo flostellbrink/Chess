@@ -40,6 +40,8 @@ float TextureManager::Reflectivity(const int object) const
   case objects::clock_glass:
   case objects::clock_glass_border:
   case objects::clock_face:
+  case objects::clock_leg:
+  case objects::clock_pointers:
     return 1;
   default:
     break;
