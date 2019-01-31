@@ -1,9 +1,6 @@
 # CLion
 cmake-build-debug/
-.idea/Chess.iml
-.idea/misc.xml
-.idea/modules.xml
-.idea/workspace.xml
+.idea/
 
 # CMake
 CMakeLists.txt.user
@@ -14,12 +11,19 @@ CMakeLists.txt.user
 
 # Visual Studio
 .vs/
+.vscode/
 
 # Conan
-conanbuildinfo\.cmake
-conanbuildinfo\.txt
-conaninfo\.txt
+conanbuildinfo.cmake
+conanbuildinfo.txt
+conaninfo.txt
 
+# CPack
+CPackSourceConfig.cmake
+CPackConfig.cmake
+
+# Build artifacts
 build/
-
-\.vscode/
+bin/
+*.a
+__pycache__/
