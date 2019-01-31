@@ -19,6 +19,19 @@ InterlacedRevolver::InterlacedRevolver(Curve* baseCurve,
 {
 }
 
+Curve* InterlacedRevolver::SelectCurve(int baseIndex, int baseRes)
+{
+  // Value keeps track of the rotation to switch between curves
+  // Offset to avoid straight edges
+  auto value = static_cast<float>(baseIndex) / static_cast<float>(baseRes) + length1_ / 0.2f;
+  while (value > length1_ + length2_)
+  {
+    value -= length1_ + length2_;
+  }
+
+  return value < length1_ ? height_curve1_ : height_curve2_;
+}
+
 void InterlacedRevolver::Create()
 {
   // Texture needs to seamlessly wrap around
@@ -32,15 +45,7 @@ void InterlacedRevolver::Create()
   {
     const auto base = basePoints[j];
 
-    // Value keeps track of the rotation to switch between curves
-    // Offset to avoid straight edges
-    auto value = static_cast<float>(j) / static_cast<float>(baseRes) + length1_ / 0.2f;
-    while (value > length1_ + length2_)
-    {
-      value -= length1_ + length2_;
-    }
-
-    auto heightCurve = value < length1_ ? height_curve1_ : height_curve2_;
+    auto heightCurve = SelectCurve(j, baseRes);
     auto heightPoints = heightCurve->InterpolatedPoints(Config::geo_resolution2);
     auto heightTangent = heightCurve->InterpolatedTangents();
 
@@ -62,16 +67,26 @@ void InterlacedRevolver::Create()
       positions_.push_back(scale_ * position);
       texture_coordinates_.emplace_back(texture);
       normals_.push_back(normalize(normal));
+    }
+  }
 
-      if (i < heightRes - 1 && j < baseRes - 1)
-      {
-        AddIndex(i + 0 + heightRes * (j + 0));
-        AddIndex(i + 0 + heightRes * (j + 1));
-        AddIndex(i + 1 + heightRes * (j + 0));
-        AddIndex(i + 0 + heightRes * (j + 1));
-        AddIndex(i + 1 + heightRes * (j + 1));
-        AddIndex(i + 1 + heightRes * (j + 0));
-      }
+  for (auto j = 0; j < baseRes - 1; ++j)
+  {
+    auto value = static_cast<float>(j) / static_cast<float>(baseRes) + length1_ / 0.2f;
+    while (value > length1_ + length2_)
+    {
+      value -= length1_ + length2_;
+    }
+
+    const auto heightRes = static_cast<int>(SelectCurve(j, baseRes)->InterpolatedPoints(Config::geo_resolution2).size());
+    for (auto i = 0; i < heightRes - 1; ++i)
+    {
+      AddIndex(i + 0 + heightRes * (j + 0));
+      AddIndex(i + 0 + heightRes * (j + 1));
+      AddIndex(i + 1 + heightRes * (j + 0));
+      AddIndex(i + 0 + heightRes * (j + 1));
+      AddIndex(i + 1 + heightRes * (j + 1));
+      AddIndex(i + 1 + heightRes * (j + 0));
     }
   }
 }

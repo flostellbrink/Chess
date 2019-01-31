@@ -96,6 +96,8 @@ void Geometry::AddNormal(const float x, const float y, const float z)
 
 void Geometry::AddIndex(unsigned index)
 {
+  assert(positions_.size() > index);
+  assert(normals_.size() > index);
   indices_.emplace_back(index);
 }
 

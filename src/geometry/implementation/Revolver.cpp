@@ -43,16 +43,19 @@ void Revolver::Create()
       positions_.push_back(scale_ * position);
       texture_coordinates_.push_back(texture);
       normals_.push_back(normalize(normal));
+    }
+  }
 
-      if (i < heightRes - 1 && j < baseRes - 1)
-      {
-        AddIndex(static_cast<unsigned int &&>((i + 0) * baseRes + (j + 0)));
-        AddIndex(static_cast<unsigned int &&>((i + 0) * baseRes + (j + 1)));
-        AddIndex(static_cast<unsigned int &&>((i + 1) * baseRes + (j + 0)));
-        AddIndex(static_cast<unsigned int &&>((i + 0) * baseRes + (j + 1)));
-        AddIndex(static_cast<unsigned int &&>((i + 1) * baseRes + (j + 1)));
-        AddIndex(static_cast<unsigned int &&>((i + 1) * baseRes + (j + 0)));
-      }
+  for (auto i = 0; i < heightRes - 1; ++i)
+  {
+    for (auto j = 0; j < baseRes - 1; ++j)
+    {
+      AddIndex(static_cast<unsigned int &&>((i + 0) * baseRes + (j + 0)));
+      AddIndex(static_cast<unsigned int &&>((i + 0) * baseRes + (j + 1)));
+      AddIndex(static_cast<unsigned int &&>((i + 1) * baseRes + (j + 0)));
+      AddIndex(static_cast<unsigned int &&>((i + 0) * baseRes + (j + 1)));
+      AddIndex(static_cast<unsigned int &&>((i + 1) * baseRes + (j + 1)));
+      AddIndex(static_cast<unsigned int &&>((i + 1) * baseRes + (j + 0)));
     }
   }
 }

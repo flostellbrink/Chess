@@ -34,16 +34,19 @@ void Extruder::Create()
       positions_.push_back(scale_ * position);
       texture_coordinates_.emplace_back(texture);
       normals_.push_back(normalize(normal));
+    }
+  }
 
-      if (i < widthRes - 1 && j < profileRes - 1)
-      {
-        AddIndex(static_cast<unsigned int &&>((i + 0) * profileRes + (j + 0)));
-        AddIndex(static_cast<unsigned int &&>((i + 0) * profileRes + (j + 1)));
-        AddIndex(static_cast<unsigned int &&>((i + 1) * profileRes + (j + 0)));
-        AddIndex(static_cast<unsigned int &&>((i + 0) * profileRes + (j + 1)));
-        AddIndex(static_cast<unsigned int &&>((i + 1) * profileRes + (j + 1)));
-        AddIndex(static_cast<unsigned int &&>((i + 1) * profileRes + (j + 0)));
-      }
+  for (auto i = 0; i < widthRes - 1; ++i)
+  {
+    for (auto j = 0; j < profileRes - 1; ++j)
+    {
+      AddIndex(static_cast<unsigned int &&>((i + 0) * profileRes + (j + 0)));
+      AddIndex(static_cast<unsigned int &&>((i + 0) * profileRes + (j + 1)));
+      AddIndex(static_cast<unsigned int &&>((i + 1) * profileRes + (j + 0)));
+      AddIndex(static_cast<unsigned int &&>((i + 0) * profileRes + (j + 1)));
+      AddIndex(static_cast<unsigned int &&>((i + 1) * profileRes + (j + 1)));
+      AddIndex(static_cast<unsigned int &&>((i + 1) * profileRes + (j + 0)));
     }
   }
 }

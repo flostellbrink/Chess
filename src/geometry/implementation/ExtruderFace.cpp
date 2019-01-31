@@ -29,26 +29,29 @@ void ExtruderFace::Create()
   const auto compressedRes = static_cast<int>(compressedPoints.size());
   assert(profileRes == compressedRes);
 
-  for (auto j = 0; j < profileRes; ++j)
+  for (auto i = 0; i < profileRes; ++i)
   {
-    const auto profile = profilePoints[j];
+    const auto profile = profilePoints[i];
     positions_.push_back(scale_ * glm::vec3(profile.x * width.y, profile.y, width.x));
     texture_coordinates_.push_back(texScale * scale_ * profile);
     normals_.push_back(widthTangent);
   }
 
-  for (auto j = 0; j < compressedRes; ++j)
+  for (auto i = 0; i < compressedRes; ++i)
   {
-    const auto profile = compressedPoints[j];
+    const auto profile = compressedPoints[i];
     positions_.push_back(scale_ * glm::vec3(profile.x * width.y, profile.y, width.x));
     texture_coordinates_.push_back(texScale * scale_ * profile);
     normals_.push_back(widthTangent);
+  }
 
-    AddIndex(static_cast<unsigned int &&>(j + 0));
-    AddIndex(static_cast<unsigned int &&>(j + 1));
-    AddIndex(static_cast<unsigned int &&>(j + 0 + profileRes));
-    AddIndex(static_cast<unsigned int &&>(j + 1));
-    AddIndex(static_cast<unsigned int &&>(j + 1 + profileRes));
-    AddIndex(static_cast<unsigned int &&>(j + 0 + profileRes));
+  for (auto i = 0; i < compressedRes - 1; ++i)
+  {
+    AddIndex(static_cast<unsigned int &&>(i + 0));
+    AddIndex(static_cast<unsigned int &&>(i + 1));
+    AddIndex(static_cast<unsigned int &&>(i + 0 + profileRes));
+    AddIndex(static_cast<unsigned int &&>(i + 1));
+    AddIndex(static_cast<unsigned int &&>(i + 1 + profileRes));
+    AddIndex(static_cast<unsigned int &&>(i + 0 + profileRes));
   }
 }

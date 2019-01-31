@@ -28,6 +28,7 @@ protected:
   void Create() override;
 
 private:
+  Curve* SelectCurve(int j, int baseRes);
   Curve* base_curve_;
   Curve* height_curve1_;
   Curve* height_curve2_;
