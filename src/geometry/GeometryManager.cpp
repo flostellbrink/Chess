@@ -174,6 +174,6 @@ Geometry* GeometryManager::GetGeometry(const int objectId) const
     }
   default: break;
   }
-  Logger::Error("ChessWarn: Using default geometry for objectID: " + std::to_string(objectId));
+  Logger::Error("Using default geometry for objectID: " + std::to_string(objectId));
   return new Cube;
 }

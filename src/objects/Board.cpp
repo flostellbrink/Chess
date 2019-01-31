@@ -26,6 +26,7 @@
 #include "src/animation/LoopingAnimation.h"
 #include "src/animation/BackLoopingAnimation.h"
 #include "src/Config.h"
+#include "src/Logger.h"
 
 const int board_size = 8;
 
@@ -216,19 +217,19 @@ void Board::SetState(const int state)
   switch (state)
   {
   case 0:
-    std::cout << "ChessInfo: State: Fresh" << std::endl;
+    Logger::Info("State: Fresh");
     break;
   case 1:
-    std::cout << "ChessInfo: State: Running" << std::endl;
+    Logger::Info("State: Running");
     break;
   case 2:
-    std::cout << "ChessInfo: State: White wins" << std::endl;
+    Logger::Info("State: White wins");
     break;
   case 3:
-    std::cout << "ChessInfo: State: Black wins" << std::endl;
+    Logger::Info("State: Black wins");
     break;
   case 4:
-    std::cout << "ChessInfo: State: Draw" << std::endl;
+    Logger::Info("State: Draw");
     break;
   default: break;
   }
@@ -247,7 +248,7 @@ void Board::ChangeTurn()
 {
   white_turn_ = !white_turn_;
   camera_->SetBoardSide(use_ai_ ? true : white_turn_);
-  std::cout << "ChessInfo: " << (white_turn_ ? "Whites" : "Blacks") << " turn" << std::endl;
+  Logger::Info((white_turn_ ? "Whites turn" : "Blacks turn"));
 }
 
 bool Board::IsWhitesTurn() const
@@ -316,7 +317,8 @@ Field* Board::GetSideField(const bool whiteSide)
       return field;
     }
   }
-  std::cerr << "ChessErr: No empty side field found" << std::endl;
+
+  Logger::Error("No empty side field found");
   return nullptr;
 }
 
@@ -413,7 +415,7 @@ void Board::FieldClick(Field* field)
       if (field->current_piece && field->current_piece->IsTransformable() && field->Row() == (
         field->current_piece->IsWhite() ? 7 : 0))
       {
-        std::cout << "ChessInfo: Pawn is being promoted" << std::endl;
+        Logger::Info("Pawn is being promoted");
         locked_ = true;
         for (auto piece : pieces_)
         {

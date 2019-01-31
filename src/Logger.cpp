@@ -6,7 +6,7 @@
  */
 void Logger::Info(const std::string& message)
 {
-  std::cout << message << std::endl;
+  std::cout << "Info: " << message << std::endl;
 }
 
 /**
@@ -14,7 +14,7 @@ void Logger::Info(const std::string& message)
  */
 void Logger::Warn(const std::string& message)
 {
-  std::cerr << message << std::endl;
+  std::cerr << "Warn: " << message << std::endl;
 }
 
 /**
@@ -22,7 +22,7 @@ void Logger::Warn(const std::string& message)
  */
 void Logger::Error(const std::string& message)
 {
-  std::cerr << message << std::endl;
+  std::cerr << "Error: " << message << std::endl;
 #ifndef NODEBUG
   throw std::runtime_error(message);
 #endif

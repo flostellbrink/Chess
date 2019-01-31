@@ -1,6 +1,7 @@
 #include <GL/glew.h>
 #include <vector>
 #include <iostream>
+#include <sstream>
 #include <algorithm>
 #include <GLFW/glfw3.h>
 #include "ObjectManager.h"
@@ -12,6 +13,7 @@
 #include "src/Config.h"
 #include "FullScreenQuad.h"
 #include "Clock.h"
+#include "src/Logger.h"
 
 GeometryManager ObjectManager::geometry;
 TextureManager ObjectManager::texture;
@@ -106,14 +108,15 @@ void ObjectManager::Update(float elapsedTime)
   }
   if (Config::new_game)
   {
-    std::cerr << "Resetting game" << std::endl;
+    Logger::Info("Resetting game");
     Config::new_game = false;
     Board::ResetGame();
-    //NewGame();
   }
   if (Config::demo)
   {
+    Logger::Info("Resetting game and running demo");
     Config::demo = false;
+    Board::ResetGame();
     game_board->RunDemo();
   }
 
@@ -124,7 +127,10 @@ void ObjectManager::Update(float elapsedTime)
 
   if (elapsedTime > 200)
   {
-    std::cerr << "ChessWarn: Too much time passed since last update: " << elapsedTime << "ms" << std::endl;
+    std::stringstream message;
+    message << "Too much time passed since last update: " << elapsedTime << "ms";
+    Logger::Warn(message.str());
+
     //This prevents skipping of animations
     elapsedTime = 20;
   }

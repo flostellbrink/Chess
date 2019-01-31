@@ -1,6 +1,7 @@
 #include <glm/glm.hpp>
 #include <algorithm>
 #include <iostream>
+#include <sstream>
 #include <src/Logger.h>
 #include "src/objects/ObjectManager.h"
 #include "Collision.h"
@@ -21,7 +22,9 @@ Collision::Collision(const int type, const glm::vec3 vecA, const glm::vec3 vecB)
     max_length = length(vecB - vecA);
     break;
   default:
-    std::cerr << "ChessWarn: Unknown collision type: " << type << std::endl;
+    std::stringstream message;
+    message << "Unknown collision type: " << type;
+    Logger::Error(message.str());
     break;
   }
 }
@@ -37,7 +40,7 @@ bool ray_coll_ray(Collision* a, Collision* b)
 {
   (void)a;
   (void)b;
-  Logger::Error("ChessWarn: Ray Ray collision not handled");
+  Logger::Error("Ray Ray collision not handled");
   return false;
 }
 
@@ -78,7 +81,7 @@ bool Collision::Intersects(Collision* other)
     return aabb_coll_ray(other, this, min_length, max_length);
   }
 
-  Logger::Error("ChessWarn: Unknown intersection");
+  Logger::Error("Unknown intersection");
   return false;
 }
 
@@ -92,11 +95,11 @@ bool Collision::Contains(const glm::vec3 point) const
       && point.z <= max.z && point.z >= min.z;
   case ray:
     // Should not be used, won't work. Not practical due to precision
-    Logger::Error("ChessWarn: Point Ray collision not handled");
+    Logger::Error("Point Ray collision not handled");
     return false;
   default: break;
   }
 
-  Logger::Error("ChessWarn: Unknown containment");
+  Logger::Error("Unknown containment");
   return false;
 }

@@ -171,7 +171,7 @@ std::vector<Texture*> TextureManager::LoadTexture(const int object)
     break;
   default: break;
   }
-  Logger::Warn("ChessWarn: Using default texture for objectID: " + std::to_string(object));
+  Logger::Warn("Using default texture for objectID: " + std::to_string(object));
   return StoreTexture(object, "res/images/Melamine-wood-001.png");
 }
 

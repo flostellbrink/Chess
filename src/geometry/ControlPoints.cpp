@@ -1,7 +1,9 @@
 #include <iostream>
+#include <sstream>
 
 #include "ControlPoints.h"
 #include "src/Objects.h"
+#include "src/Logger.h"
 
 ControlPoints::ControlPoints() : theme_id_()
 {
@@ -1784,7 +1786,8 @@ std::vector<std::vector<glm::vec2>> ControlPoints::GetControlPoints2D(const int 
     break;
   default: break;
   }
-  std::cerr << "ChessWarn: No control points found for object id: " << objectId << " in theme: " << theme_id_ << std::
-    endl;
+  std::stringstream message;
+  message << "No control points found for object id: " << objectId << " in theme: " << theme_id_;
+  Logger::Warn(message.str());
   return std::vector<std::vector<glm::vec2>>();
 }
