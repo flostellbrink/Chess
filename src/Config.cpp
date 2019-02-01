@@ -24,4 +24,3 @@ bool Config::change_theme = false;
 bool Config::new_game = false;
 bool Config::undo_turn = false;
 bool Config::demo = false;
-bool Config::full_screen = false;

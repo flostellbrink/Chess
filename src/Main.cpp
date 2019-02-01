@@ -112,11 +112,6 @@ void key_callback(GLFWwindow* handle, const int key, int scanCode, const int act
   signal(Config::geo_changed, "geometry changed", key, GLFW_KEY_I);
   signal(Config::geo_changed, "geometry changed", key, GLFW_KEY_K);
 
-  if (key == GLFW_KEY_F)
-  {
-    toggle(Config::full_screen, "full screen", key, GLFW_KEY_F);
-  }
-
   if (key == GLFW_KEY_ESCAPE || key == GLFW_KEY_Q)
   {
     glfwSetWindowShouldClose(handle, 1);
@@ -164,7 +159,6 @@ const auto currentFrame = glfwGetTime();
   lastFrameTime = currentFrame;
 
   // Update and render game
-  window.Update();
   ObjectManager::instance.Update(deltaTime * 1000);
   ObjectManager::instance.Draw();
 

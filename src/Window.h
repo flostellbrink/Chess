@@ -8,16 +8,11 @@ class Window
 public:
   Window();
 
-  void Update();
-
   int width, height;
   GLFWwindow* handle;
 
 private:
-  void SetFullScreen();
-  void UpdateSize();
-
-  bool is_full_screen_{};
+  static void WindowSizeCallback(GLFWwindow* window, int width, int height);
 };
 
 #endif //WINDOW_H

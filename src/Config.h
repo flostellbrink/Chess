@@ -18,8 +18,6 @@ public:
   static int windowed_width, windowed_height;
 
   static bool change_theme, new_game, undo_turn, demo;
-
-  static bool full_screen;
 };
 
 #endif // CONFIG_H
