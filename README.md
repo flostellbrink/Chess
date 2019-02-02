@@ -1,4 +1,4 @@
-# Chess [![Build Status](https://travis-ci.com/Owlinated/Chess.svg?branch=master)](https://travis-ci.com/Owlinated/Chess)
+# Chess [![Build Status](https://travis-ci.com/Owlinated/Chess.svg?branch=wasm)](https://travis-ci.com/Owlinated/Chess)
 
 Project for the Practical Computer Graphics Course at University of Siegen.
 
@@ -22,7 +22,6 @@ Features:
 | A                | Toggle AI                      |
 | Z                | Undo last move                 |
 | T                | Switch theme                   |
-| F                | Toggle Fullscreen              |
 | N                | New game                       |
 | U/J              | Horizontal geometry resolution |
 | I/K              | Vertical geometry resolution   |
