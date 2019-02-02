@@ -1,9 +1,17 @@
 #include <iostream>
+#include <sstream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "Config.h"
 #include "Window.h"
 #include "Logger.h"
+
+void ErrorCallback(int error, const char* description)
+{
+  std::stringstream message;
+  message << "GLFW (" << error << "): " << description;
+  Logger::Warn(message.str());
+}
 
 /**
  * Initialize a new window.
@@ -14,6 +22,8 @@ Window::Window() : width(), height(), is_full_screen_(Config::full_screen)
   {
     Logger::Error("Failed to initialize GLFW.");
   }
+
+  glfwSetErrorCallback(ErrorCallback);
 
   glfwWindowHint(GLFW_SAMPLES, 0);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
