@@ -15,8 +15,6 @@ public:
 
   static int viewport_width, viewport_height;
 
-  static int windowed_width, windowed_height;
-
   static bool change_theme, new_game, undo_turn, demo;
 };
 

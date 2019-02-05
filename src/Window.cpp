@@ -26,8 +26,8 @@ Window::Window() : width(), height()
   glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
   handle = glfwCreateWindow(
-    Config::windowed_width,
-    Config::windowed_height,
+    Config::viewport_width,
+    Config::viewport_height,
     "Chess",
     nullptr,
     nullptr);
