@@ -13,8 +13,8 @@ int Config::shadow_resolution = 8000;
 int Config::viewport_width = 1;
 int Config::viewport_height = 1;
 
-int Config::windowed_width = 1920;
-int Config::windowed_height = 1080;
+int Config::windowed_width = 64;
+int Config::windowed_height = 64;
 
 bool Config::ai = true;
 float Config::ai_click_delay = 500;
