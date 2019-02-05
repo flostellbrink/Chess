@@ -4,6 +4,7 @@
 #include <string>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
+#include "src/geometry/Geometry.h"
 
 class Shader;
 
@@ -14,6 +15,7 @@ public:
   explicit Drawable(int objectId = 0);
 
   virtual void Init();
+  virtual void DrawId(glm::mat4 projectionMatrix, int id);
   virtual void Draw(glm::mat4 projectionMatrix) = 0;
   virtual void DrawOpaque(glm::mat4 projectionMatrix);
   virtual void DrawShadow(glm::mat4 projectionMatrix) = 0;
@@ -24,7 +26,9 @@ public:
 
   virtual void Update(float elapsedTimeMs) = 0;
 
-  virtual void MouseClick(glm::vec3 position) = 0;
+  virtual void MouseClick() = 0;
+
+  int Id() const { return object_id_; }
 
   static glm::vec3 light_pos;
   static glm::vec3 cam_pos;
@@ -36,7 +40,8 @@ public:
 
 protected:
 
-  Shader *program_{}, *program_shadow_{};
+  Shader *program_{}, *program_shadow_{}, *program_id_{};
+  Geometry* geometry_ = nullptr;
   GLuint vertex_array_object_ = 0;
   glm::mat4 model_view_matrix_;
   int object_id_;

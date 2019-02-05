@@ -82,9 +82,8 @@ void FullScreenQuad::Update(float elapsedTimeMs)
   (void)elapsedTimeMs;
 }
 
-void FullScreenQuad::MouseClick(glm::vec3 position)
+void FullScreenQuad::MouseClick()
 {
-  (void)position;
 }
 
 std::string FullScreenQuad::GetVertexShader()

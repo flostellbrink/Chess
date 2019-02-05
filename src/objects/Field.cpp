@@ -120,9 +120,8 @@ void Field::Update(float elapsedTimeMs)
   (void)elapsedTimeMs;
 }
 
-void Field::MouseClick(const glm::vec3 position)
+void Field::MouseClick()
 {
-  if (!bounding_box_->Contains(position)) return;
   if (current_piece)
   {
     board_->PieceClick(current_piece);

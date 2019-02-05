@@ -53,9 +53,8 @@ void Skybox::Update(float elapsedTimeMs)
   (void)elapsedTimeMs;
 }
 
-void Skybox::MouseClick(glm::vec3 position)
+void Skybox::MouseClick()
 {
-  (void)position;
 }
 
 std::string Skybox::GetVertexShader()

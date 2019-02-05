@@ -14,14 +14,13 @@ public:
   void DrawShadow(glm::mat4 projectionMatrix) override;
 
   void Update(float elapsedTimeMs) override;
-  void MouseClick(glm::vec3 position) override;
+  void MouseClick() override;
   glm::vec3 Position3D() override;
 
 protected:
   std::string GetVertexShader() override;
   std::string GetFragmentShader() override;
 
-  Geometry* geometry_ = nullptr;
   std::string vertex_shader_, fragment_shader_;
 };
 

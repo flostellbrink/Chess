@@ -191,6 +191,16 @@ void ObjectManager::Draw()
   const auto viewProjectionShadow = camera_.ViewProjectionShadow();
   Drawable::shadow_view_projection = viewProjectionShadow;
 
+  if (click_happened_)
+  {
+    click_happened_ = false;
+    auto clicked = GetClickedObject(last_mouse_, Camera::Projection() * camera_.ViewMat());
+    if(clicked != nullptr)
+    {
+      clicked->MouseClick();
+    }
+  }
+
   // Sort objects by depth
   std::sort(objects_.begin(), objects_.end(), DepthSort(viewProjection));
 
@@ -239,16 +249,6 @@ void ObjectManager::Draw()
     obj->DrawTranslucent(viewProjection);
     glDisable(GL_BLEND);
     glDepthFunc(GL_LESS);
-  }
-
-  if (click_happened_)
-  {
-    click_happened_ = false;
-    const auto mousePos = CheckDepth(last_mouse_, Camera::Projection() * camera_.ViewMat());
-    for (auto obj : objects_)
-    {
-      obj->MouseClick(mousePos);
-    }
   }
 
   // Do Post and render to screen
@@ -337,40 +337,44 @@ void ObjectManager::MouseWheel(double xOffset, const double yOffset)
 }
 
 /**
- * @brief ObjectManager::checkDepth Un projects a point from window coordinates to world coordinates
- * @param mousePos The mouse position in window coordinates
- * @param viewProjection The world to window projection
- * @return The mouse position in world coordinates
+ * Finds an object id by rendering all object ids into a texture and reading the pixel at mousePos.
  */
-glm::vec3 ObjectManager::CheckDepth(glm::vec2 mousePos, const glm::mat4 viewProjection) const
+Drawable* ObjectManager::GetClickedObject(glm::vec2 mousePos, const glm::mat4 viewProjection) const
 {
   const auto width = Config::viewport_width;
   const auto height = Config::viewport_height;
   if (mousePos.x < 0 || mousePos.x >= width || mousePos.y < 0 || mousePos.y >= height)
   {
-    return glm::vec3();
+    return nullptr;
   }
   mousePos.y = height - mousePos.y;
-  float pixel;
-  glReadPixels(static_cast<GLint>(mousePos.x),
-               static_cast<GLint>(mousePos.y),
-               1,
-               1,
-               GL_DEPTH_COMPONENT,
-               GL_FLOAT,
-               &pixel);
 
-  const glm::vec4 windowCoordinates(mousePos.x / static_cast<float>(width) * 2.f - 1.f,
-                                    mousePos.y / static_cast<float>(height) * 2.f - 1.f,
-                                    pixel * 2.f - 1.f,
-                                    1);
-  auto result = inverse(viewProjection) * windowCoordinates;
-  if (result.w == 0)
+  glBindFramebuffer(GL_FRAMEBUFFER, post_frame_buffer_);
+  glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
+  assert(objects_.size() <= 256);
+  auto index = 0;
+  for (auto obj : objects_)
   {
-    return glm::vec3();
+    obj->DrawId(viewProjection, index++);
   }
-  result /= result.w;
-  return glm::vec3(result);
+
+  unsigned char pixel[4];
+  glReadPixels(static_cast<GLint>(mousePos.x),
+    static_cast<GLint>(mousePos.y),
+    1,
+    1,
+    GL_RGBA,
+    GL_UNSIGNED_BYTE,
+    &pixel);
+
+  int id = std::round(pixel[0]);
+  if(id < 0 || id >= objects_.size())
+  {
+    return nullptr;
+  }
+
+  return objects_[id];
 }
 
 glm::mat4 ObjectManager::MirrorMat(const glm::vec3 normal, const float distance)

@@ -17,14 +17,11 @@ public:
 
   glm::vec3 Position3D() override;
   void Update(float elapsedTimeMs) override;
-  void MouseClick(glm::vec3 position) override;
+  void MouseClick() override;
 
 protected:
   std::string GetVertexShader() override;
   std::string GetFragmentShader() override;
-
-private:
-  Geometry* geometry_{};
 };
 
 #endif // SKY_BOX_H

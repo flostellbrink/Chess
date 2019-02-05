@@ -1,9 +1,9 @@
 #include <GL/glew.h>
 
 #include "Drawable.h"
-#include "src/texture/Image.h"
 #include "src/objects/ObjectManager.h"
 #include "src/texture/Shader.h"
+#include "src/Logger.h"
 
 glm::vec3 Drawable::light_pos = glm::vec3(0, 20, -20);
 glm::vec3 Drawable::cam_pos = glm::vec3();
@@ -25,10 +25,26 @@ void Drawable::Init()
   InitShader();
 }
 
+void Drawable::DrawId(glm::mat4 projectionMatrix, int id)
+{
+  if (program_id_ == nullptr)
+  {
+    Logger::Error("program not loaded");
+  }
+  program_id_->Use();
+
+  program_id_->Bind(projectionMatrix, "view_projection_matrix");
+  program_id_->Bind(model_view_matrix_, "model_matrix");
+  program_id_->Bind(id, "object_id");
+
+  geometry_->Draw();
+}
+
 void Drawable::InitShader()
 {
   program_ = Shader::GetShaderCached(GetVertexShader(), GetFragmentShader());
   program_shadow_ = Shader::GetShaderCached("res/shader/Shadow.vs.glsl", "res/shader/Shadow.fs.glsl");
+  program_id_ = Shader::GetShaderCached("res/shader/Id.vs.glsl", "res/shader/Id.fs.glsl");
 }
 
 void Drawable::DrawOpaque(const glm::mat4 projectionMatrix)

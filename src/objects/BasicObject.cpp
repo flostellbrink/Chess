@@ -128,9 +128,8 @@ void BasicObject::Update(float elapsedTimeMs)
   model_view_matrix_ = rotate(model_view_matrix_, z_rotation_, glm::vec3(0, 0, 1));
 }
 
-void BasicObject::MouseClick(glm::vec3 position)
+void BasicObject::MouseClick()
 {
-  (void)position;
 }
 
 std::string BasicObject::GetVertexShader()

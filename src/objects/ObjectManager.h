@@ -51,7 +51,7 @@ protected:
   int theme_{};
 
 private:
-  glm::vec3 CheckDepth(glm::vec2 mousePos, glm::mat4 viewProjection) const;
+  Drawable* GetClickedObject(glm::vec2 mousePos, glm::mat4 viewProjection) const;
   static glm::mat4 MirrorMat(glm::vec3 normal, float distance);
   GLuint mirror_frame_buffer_ = 0;
   GLuint mirror_texture_ = 0;

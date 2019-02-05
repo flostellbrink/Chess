@@ -20,7 +20,7 @@ public:
   void DrawShadow(glm::mat4 projectionMatrix) override;
 
   void Update(float elapsedTimeMs) override;
-  void MouseClick(glm::vec3 position) override;
+  void MouseClick() override;
 
   glm::vec3 Position3D() override;
   glm::vec3 Position() const;
@@ -42,9 +42,6 @@ protected:
   glm::vec3 position_;
   float y_rotation_;
   Board* board_;
-
-private:
-  Geometry* geometry_ = nullptr;
 };
 
 

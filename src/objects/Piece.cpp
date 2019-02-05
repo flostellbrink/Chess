@@ -179,10 +179,9 @@ void Piece::Update(float elapsedTimeMs)
   model_view_matrix_ = rotate(model_view_matrix_, y_rotation_, glm::vec3(0, 1, 0));
 }
 
-void Piece::MouseClick(glm::vec3 position)
+void Piece::MouseClick()
 {
-  // handled by field
-  (void)position;
+  board_->PieceClick(this);
 }
 
 void Piece::AddHitOrMove(Field* field, std::vector<MoveBase *>& moves)
