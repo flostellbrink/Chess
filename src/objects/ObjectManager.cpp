@@ -30,7 +30,7 @@ void ObjectManager::NewGame()
   objects_.clear();
   post_processors_.clear();
   delete game_board;
-  AddObject(&skybox_);
+  skybox_.Init();
   AddObject(new BasicObject(objects::table, glm::vec3(0, -1, 0), 0, "basic"));
   // Creates all game related objects itself
   game_board = new Board(&camera_);
