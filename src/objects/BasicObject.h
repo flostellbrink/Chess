@@ -14,7 +14,7 @@ public:
   explicit BasicObject(int objectId,
                        glm::vec3 position = glm::vec3(),
                        float yRotation = 0,
-                       std::string shader = "basic");
+                       std::string shader = "Basic");
   void Init() override;
   void Draw(glm::mat4 projectionMatrix) override;
   void DrawShadow(glm::mat4 projectionMatrix) override;

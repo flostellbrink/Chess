@@ -125,11 +125,11 @@ Board::Board(Camera* camera)
     manager->AddObject(new BasicObject(objects::board_border_top,
                                        glm::vec3(),
                                        glm::pi<float>() / 2.f * static_cast<float>(i),
-                                       "mirror"));
+                                       "Mirror"));
     manager->AddObject(new BasicObject(objects::board_border_bottom,
                                        glm::vec3(),
                                        glm::pi<float>() / 2.f * static_cast<float>(i),
-                                       "texFromWorld"));
+                                       "TexFromWorld"));
   }
 
   // Start animations

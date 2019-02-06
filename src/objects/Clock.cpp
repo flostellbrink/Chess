@@ -34,32 +34,32 @@ Clock::Clock()
 
   // Clock parts for black
   black_clock_button_ = new BasicObject(objects::clock_button, glm::vec3(4, 5.5f, 18));
-  black_minutes_hand_ = new BasicObject(objects::black_minutes_hand, glm::vec3(3.4f, 3, 16.8f), 0, "noLight");
-  black_seconds_hand_ = new BasicObject(objects::black_seconds_hand, glm::vec3(3.4f, 3, 16.8f), 0, "noLight");
+  black_minutes_hand_ = new BasicObject(objects::black_minutes_hand, glm::vec3(3.4f, 3, 16.8f), 0, "NoLight");
+  black_seconds_hand_ = new BasicObject(objects::black_seconds_hand, glm::vec3(3.4f, 3, 16.8f), 0, "NoLight");
   manager->AddObject(black_clock_button_);
   manager->AddObject(black_minutes_hand_);
   manager->AddObject(black_seconds_hand_);
   manager->AddObject(new BasicObject(objects::clock_button_border, glm::vec3(4, 6, 18)));
   manager->AddObject(rotate_x(new BasicObject(objects::clock_glass_border, glm::vec3(3.4f, 3, 17)),
                               glm::pi<float>() / -2.0f));
-  manager->AddObject(rotate_x(new BasicObject(objects::clock_face, glm::vec3(3.4f, 3, 16.9f), 0, "noLight"),
+  manager->AddObject(rotate_x(new BasicObject(objects::clock_face, glm::vec3(3.4f, 3, 16.9f), 0, "NoLight"),
                               glm::pi<float>() / -2.0f));
-  manager->AddObject(rotate_z(new BasicObject(objects::clock_time_cap, glm::vec3(3.4f, 3, 16.8f), 0, "noLight"),
+  manager->AddObject(rotate_z(new BasicObject(objects::clock_time_cap, glm::vec3(3.4f, 3, 16.8f), 0, "NoLight"),
                               2 * glm::pi<float>() * (black_time_ / 3600000)));
 
   /* Clock parts for WHITE */
   white_clock_button_ = new BasicObject(objects::clock_button, glm::vec3(-4, 6, 18));
-  white_minutes_hand_ = new BasicObject(objects::white_minutes_hand, glm::vec3(-3.4f, 3, 16.8f), 0, "noLight");
-  white_seconds_hand_ = new BasicObject(objects::white_seconds_hand, glm::vec3(-3.4f, 3, 16.8f), 0, "noLight");
+  white_minutes_hand_ = new BasicObject(objects::white_minutes_hand, glm::vec3(-3.4f, 3, 16.8f), 0, "NoLight");
+  white_seconds_hand_ = new BasicObject(objects::white_seconds_hand, glm::vec3(-3.4f, 3, 16.8f), 0, "NoLight");
   manager->AddObject(white_clock_button_);
   manager->AddObject(white_minutes_hand_);
   manager->AddObject(white_seconds_hand_);
   manager->AddObject(new BasicObject(objects::clock_button_border, glm::vec3(-4, 6, 18)));
   manager->AddObject(rotate_x(new BasicObject(objects::clock_glass_border, glm::vec3(-3.4f, 3, 17)),
                               glm::pi<float>() / -2.0f));
-  manager->AddObject(rotate_x(new BasicObject(objects::clock_face, glm::vec3(-3.4f, 3, 16.9f), 0, "noLight"),
+  manager->AddObject(rotate_x(new BasicObject(objects::clock_face, glm::vec3(-3.4f, 3, 16.9f), 0, "NoLight"),
                               glm::pi<float>() / -2.0f));
-  manager->AddObject(rotate_z(new BasicObject(objects::clock_time_cap, glm::vec3(-3.4f, 3, 16.8f), 0, "noLight"),
+  manager->AddObject(rotate_z(new BasicObject(objects::clock_time_cap, glm::vec3(-3.4f, 3, 16.8f), 0, "NoLight"),
                               2 * glm::pi<float>() * (white_time_ / 3600000)));
 }
 
