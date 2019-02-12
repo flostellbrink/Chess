@@ -96,6 +96,7 @@ target_link_libraries(${PROJECT_NAME}
         "-s ALLOW_MEMORY_GROWTH=1"
         "-o ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/index.html"
         "--preload-file res"
+        "--bind"
         )
 
 # Copy shaders to build directory
