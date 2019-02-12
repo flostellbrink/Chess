@@ -19,8 +19,8 @@ ExtruderFace::ExtruderFace(Curve* profileCurve,
 void ExtruderFace::Create()
 {
   const auto texScale = 0.1f;
-  auto profilePoints = profile_curve_->InterpolatedPoints(Config::geo_resolution2);
-  auto compressedPoints = compressed_profile_->InterpolatedPoints(Config::geo_resolution2);
+  auto profilePoints = profile_curve_->InterpolatedPoints(Config::geo_resolution_vertical);
+  auto compressedPoints = compressed_profile_->InterpolatedPoints(Config::geo_resolution_vertical);
 
   const auto width = width_curve_->InterpolatedPoint(width_pos_);
   const auto widthTangent = normalize(glm::vec3(0, 0, width_pos_ - 0.5f));
