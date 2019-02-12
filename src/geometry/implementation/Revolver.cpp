@@ -14,8 +14,8 @@ void Revolver::Create()
   // Texture needs to seamlessly wrap around
   const auto texWidth = static_cast<int>(scale_ * 4 + 1);
 
-  auto basePoints = base_curve_->InterpolatedPoints(Config::geo_resolution1);
-  auto heightPoints = height_curve_->InterpolatedPoints(Config::geo_resolution2);
+  auto basePoints = base_curve_->InterpolatedPoints(Config::geo_resolution_horizontal);
+  auto heightPoints = height_curve_->InterpolatedPoints(Config::geo_resolution_vertical);
   auto baseTangent = base_curve_->InterpolatedTangents();
   auto heightTangent = height_curve_->InterpolatedTangents();
 

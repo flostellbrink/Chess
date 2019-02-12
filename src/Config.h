@@ -5,7 +5,7 @@ class Config
 {
 public:
 
-  static int geo_resolution1, geo_resolution2, shadow_resolution;
+  static int geo_resolution_horizontal, geo_resolution_vertical, shadow_resolution;
 
   static bool geo_changed;
 

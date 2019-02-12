@@ -12,7 +12,7 @@ Extruder::Extruder(Curve* profileCurve, Curve* widthCurve, const float scale) : 
 
 void Extruder::Create()
 {
-  auto profilePoints = profile_curve_->InterpolatedPoints(Config::geo_resolution2);
+  auto profilePoints = profile_curve_->InterpolatedPoints(Config::geo_resolution_vertical);
   auto profileTangents = profile_curve_->InterpolatedTangents();
   auto widthPoints = width_curve_->InterpolatedPoints(resolution_);
   auto widthTangents = width_curve_->InterpolatedTangents();

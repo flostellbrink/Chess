@@ -37,7 +37,7 @@ void InterlacedRevolver::Create()
   // Texture needs to seamlessly wrap around
   const auto texWidth = static_cast<int>(scale_ * 4 + 1);
 
-  auto basePoints = base_curve_->InterpolatedPoints(Config::geo_resolution1);
+  auto basePoints = base_curve_->InterpolatedPoints(Config::geo_resolution_horizontal);
   auto baseTangent = base_curve_->InterpolatedTangents();
 
   const auto baseRes = static_cast<int>(basePoints.size());
@@ -46,7 +46,7 @@ void InterlacedRevolver::Create()
     const auto base = basePoints[j];
 
     auto heightCurve = SelectCurve(j, baseRes);
-    auto heightPoints = heightCurve->InterpolatedPoints(Config::geo_resolution2);
+    auto heightPoints = heightCurve->InterpolatedPoints(Config::geo_resolution_vertical);
     auto heightTangent = heightCurve->InterpolatedTangents();
 
     const auto heightRes = static_cast<int>(heightPoints.size());
@@ -78,7 +78,7 @@ void InterlacedRevolver::Create()
       value -= length1_ + length2_;
     }
 
-    const auto heightRes = static_cast<int>(SelectCurve(j, baseRes)->InterpolatedPoints(Config::geo_resolution2).size());
+    const auto heightRes = static_cast<int>(SelectCurve(j, baseRes)->InterpolatedPoints(Config::geo_resolution_vertical).size());
     for (auto i = 0; i < heightRes - 1; ++i)
     {
       AddIndex(i + 0 + heightRes * (j + 0));

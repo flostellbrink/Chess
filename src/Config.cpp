@@ -4,8 +4,8 @@
  *  Default values. Change them as needed.
  */
 
-int Config::geo_resolution1 = 50;
-int Config::geo_resolution2 = 50;
+int Config::geo_resolution_horizontal = 50;
+int Config::geo_resolution_vertical = 50;
 bool Config::geo_changed = false;
 
 int Config::shadow_resolution = 8000;

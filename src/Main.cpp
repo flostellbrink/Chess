@@ -140,8 +140,8 @@ void key_callback(GLFWwindow* handle, const int key, int scanCode, const int act
   signal(Config::undo_turn, "undo turn", key, GLFW_KEY_Z);
   signal(Config::new_game, "new game", key, GLFW_KEY_N);
   signal(Config::change_theme, "change theme", key, GLFW_KEY_T);
-  modify(Config::geo_resolution1, "horizontal resolution", key, GLFW_KEY_U, GLFW_KEY_J, 3, 100, 1);
-  modify(Config::geo_resolution2, "vertical resolution", key, GLFW_KEY_I, GLFW_KEY_K, 3, 100, 1);
+  modify(Config::geo_resolution_horizontal, "horizontal resolution", key, GLFW_KEY_U, GLFW_KEY_J, 3, 100, 1);
+  modify(Config::geo_resolution_vertical, "vertical resolution", key, GLFW_KEY_I, GLFW_KEY_K, 3, 100, 1);
   signal(Config::geo_changed, "geometry changed", key, GLFW_KEY_U);
   signal(Config::geo_changed, "geometry changed", key, GLFW_KEY_J);
   signal(Config::geo_changed, "geometry changed", key, GLFW_KEY_I);
