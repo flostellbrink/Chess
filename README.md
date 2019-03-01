@@ -1,4 +1,4 @@
-# Chess [![Build Status](https://travis-ci.com/Owlinated/Chess.svg?branch=master)](https://travis-ci.com/Owlinated/Chess)
+# Chess [![Build Status](https://travis-ci.com/flostellbrink/Chess.svg?branch=master)](https://travis-ci.com/flostellbrink/Chess)
 
 Project for the Practical Computer Graphics Course at University of Siegen.
 
