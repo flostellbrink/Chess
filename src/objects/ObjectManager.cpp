@@ -141,7 +141,6 @@ void ObjectManager::Update(float elapsedTime)
     obj->Update(elapsedTime);
   }
   game_board->Update(elapsedTime);
-  camera_.Update();
   animation.Update(elapsedTime);
 
   clock->Update(elapsedTime, game_board->IsWhitesTurn());

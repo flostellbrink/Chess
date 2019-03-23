@@ -9,12 +9,11 @@
 #include "src/animation/FadeAnimation.h"
 #include "src/animation/DelayAnimation.h"
 
-const float cam_speed = 0.01f, cam_zoom = 10;
+const float cam_speed = 0.002f, cam_zoom = 10;
 
 Camera::Camera()
   : zoom_factor_(3.0f),
     camera_rotation_(0, -0.75f),
-    smooth_camera_rotation_(0, -0.75f),
     mouse_moving_(false),
     white_side_(true)
 {
@@ -22,15 +21,15 @@ Camera::Camera()
 
 glm::vec3 Camera::Position() const
 {
-  const auto y = smooth_camera_rotation_.y + auto_rotation_.y;
-  const auto x = smooth_camera_rotation_.x + auto_rotation_.x;
+  const auto y = camera_rotation_.y + auto_rotation_.y;
+  const auto x = camera_rotation_.x + auto_rotation_.x;
   return cam_zoom * glm::vec3(sin(y) * cos(x), cos(y), sin(x) * sin(y));
 }
 
 glm::vec3 Camera::Up() const
 {
-  const auto y = smooth_camera_rotation_.y + auto_rotation_.y;
-  const auto x = smooth_camera_rotation_.x + auto_rotation_.x;
+  const auto y = camera_rotation_.y + auto_rotation_.y;
+  const auto x = camera_rotation_.x + auto_rotation_.x;
   return cam_zoom * glm::vec3(sin(y + 0.1f) * cos(x), cos(y + 0.1f), sin(x) * sin(y + 0.1f)) - Position();
 }
 
@@ -58,11 +57,6 @@ glm::mat4 Camera::Projection()
   return glm::perspective(1.0f, Config::viewport_width / static_cast<float>(Config::viewport_height), 0.1f, 100.0f);
 }
 
-void Camera::Update()
-{
-  smooth_camera_rotation_ += (camera_rotation_ - smooth_camera_rotation_) * 0.1f;
-}
-
 void Camera::SetBoardSide(const bool whiteSide)
 {
   ObjectManager::animation.PlayLast(new DelayAnimation<float>(500));
@@ -74,8 +68,8 @@ void Camera::SetBoardSide(const bool whiteSide)
   white_side_ = whiteSide;
 
   const auto resetPos = glm::vec2(0, -0.75f);
-  auto_rotation_ += smooth_camera_rotation_ - resetPos;
-  smooth_camera_rotation_ = camera_rotation_ = resetPos;
+  auto_rotation_ += camera_rotation_ - resetPos;
+  camera_rotation_ = resetPos;
 
   // ensure the camera will always rotate along the smaller angle
   if (whiteSide && auto_rotation_.x > glm::pi<float>())

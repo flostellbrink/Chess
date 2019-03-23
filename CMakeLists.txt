@@ -9,13 +9,7 @@ conan_basic_setup()
 
 find_package(OpenGL REQUIRED)
 
-# Compile non-conan dependencies
-add_subdirectory(lib)
-
-include_directories(
-        lib/lodepng/
-        .
-)
+include_directories(.)
 
 add_executable(${PROJECT_NAME}
         src/Main.cpp
@@ -85,7 +79,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 target_link_libraries(${PROJECT_NAME}
         ${CONAN_LIBS}
         ${OPENGL_LIBRARY}
-        lodepng
         # Emscripten options
         "-O2"
         "-s USE_WEBGL2=1"
