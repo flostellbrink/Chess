@@ -93,21 +93,6 @@ target_link_libraries(${PROJECT_NAME}
         "--bind"
         )
 
-# Copy shaders to build directory
-add_custom_target(copy_resources ALL
-        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/res ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/res
-        COMMENT "Copy Resources")
-
-add_dependencies(${PROJECT_NAME} copy_resources)
-
-# Setup installer
-install(TARGETS ${PROJECT_NAME}
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib/static)
-install(DIRECTORY res
-        DESTINATION ./)
-
 SET(CPACK_PACKAGE_NAME "Chess")
 SET(CPACK_PACKAGE_VERSION_MAJOR 1)
 SET(CPACK_PACKAGE_VERSION_MINOR 0)
