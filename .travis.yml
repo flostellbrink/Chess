@@ -10,3 +10,11 @@ install:
 script:
   - conan install . --build --profile=emscripten_profile
   - conan build .
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  local-dir: bin
+  on:
+    branch: wasm
