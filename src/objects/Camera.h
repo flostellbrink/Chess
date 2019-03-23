@@ -7,7 +7,6 @@ class Camera
 {
 public:
   Camera();
-  void Update();
   void MouseDown();
   void MouseUp();
   void MouseMove(glm::vec2 mousePos);
@@ -25,7 +24,7 @@ public:
 
 private:
   float zoom_factor_;
-  glm::vec2 camera_rotation_, smooth_camera_rotation_, auto_rotation_;
+  glm::vec2 camera_rotation_, auto_rotation_;
   bool mouse_moving_, white_side_;
 };
 
