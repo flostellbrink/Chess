@@ -25,8 +25,10 @@
 #include "src/animation/LinearAnimation.h"
 #include "src/animation/LoopingAnimation.h"
 #include "src/animation/BackLoopingAnimation.h"
+#include "src/animation/GroupAnimation.h"
 #include "src/Config.h"
 #include "src/Logger.h"
+#include "src/animation/GroupAnimation.h"
 
 const int board_size = 8;
 
@@ -140,6 +142,30 @@ Board::Board(Camera* camera)
     new BackLoopingAnimation<float>(new FadeAnimation<float>(500, overlay_scale, 1, 1.2f)));
   ObjectManager::animation.PlayIndependent(
     new LoopingAnimation<float>(new LinearAnimation<float>(5000, overlay_rotation, 0, 2 * glm::pi<float>())));
+
+  std::vector<AnimationBase*> group1 = {
+    new FadeAnimation<glm::vec2>(2000, camera_->camera_rotation, camera_->camera_rotation, glm::vec2(0.0f, -1.5f)),
+    new FadeAnimation<float>(2000, camera_->zoom_factor, camera_->zoom_factor, 2.0f)
+  };
+  ObjectManager::animation.PlayLast(new GroupAnimation(group1));
+
+  std::vector<AnimationBase*> group2 = {
+    new FadeAnimation<glm::vec2>(5000, camera_->camera_rotation, glm::vec2(0.0f, -1.5f), glm::vec2(0.0f, -1.5f)),
+    new FadeAnimation<float>(5000, camera_->zoom_factor, 2.0f, 0.1f)
+  };
+  ObjectManager::animation.PlayLast(new GroupAnimation(group2));
+
+  std::vector<AnimationBase*> group3 = {
+    new FadeAnimation<glm::vec2>(5000, camera_->camera_rotation, glm::vec2(0.0f, -1.5f), glm::vec2(0.5f * glm::pi<float>(), -1.5f)),
+    new FadeAnimation<float>(5000, camera_->zoom_factor, 0.1f, 1.0f)
+  };
+  ObjectManager::animation.PlayLast(new GroupAnimation(group3));
+
+  std::vector<AnimationBase*> group4 = {
+    new FadeAnimation<glm::vec2>(2000, camera_->camera_rotation, glm::vec2(0.5f * glm::pi<float>(), -1.5f), camera_->camera_rotation),
+    new FadeAnimation<float>(2000, camera_->zoom_factor, 1.0f, camera_->zoom_factor)
+  };
+  ObjectManager::animation.PlayLast(new GroupAnimation(group4));
 
   NewTurn();
 }
