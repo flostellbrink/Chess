@@ -74,7 +74,7 @@ add_executable(${PROJECT_NAME}
         )
 
 # Enable emscripten performance optimizations
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -s USE_LIBPNG=1")
 
 target_link_libraries(${PROJECT_NAME}
         ${CONAN_LIBS}
