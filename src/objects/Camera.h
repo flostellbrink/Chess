@@ -21,10 +21,11 @@ public:
   glm::vec3 Up() const;
 
   glm::vec2 old_mouse;
+  glm::vec2 camera_rotation;
+  float zoom_factor;
 
 private:
-  float zoom_factor_;
-  glm::vec2 camera_rotation_, auto_rotation_;
+  glm::vec2 auto_rotation_;
   bool mouse_moving_, white_side_;
 };
 

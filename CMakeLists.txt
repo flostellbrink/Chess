@@ -67,6 +67,7 @@ add_executable(${PROJECT_NAME}
         src/animation/FadeAnimation.h
         src/animation/LinearAnimation.h
         src/animation/DelayAnimation.h
+        src/animation/GroupAnimation.h src/animation/GroupAnimation.cpp
         src/texture/TextureManager.h src/texture/TextureManager.cpp
         src/texture/Image.h src/texture/Image.cpp
         src/texture/Texture.h src/texture/Texture.cpp
