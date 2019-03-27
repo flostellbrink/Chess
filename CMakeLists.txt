@@ -11,6 +11,10 @@ find_package(OpenGL REQUIRED)
 
 include_directories(.)
 
+if (NOT "$ENV{NODEBUG}" STREQUAL "")
+    add_definitions(-DNODEBUG)
+endif()
+
 add_executable(${PROJECT_NAME}
         src/Main.cpp
         src/Objects.h

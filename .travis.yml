@@ -9,7 +9,7 @@ install:
 
 script:
   - conan install . --build --profile=emscripten_profile
-  - conan build .
+  - NODEBUG=1 conan build .
   - rm ./bin/index.html
 
 deploy:
