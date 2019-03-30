@@ -8,7 +8,7 @@ compiler.libcxx=libc++
 [options]
 
 [build_requires]
-emsdk_installer/1.38.22@bincrafters/stable
+emsdk_installer/1.38.29@bincrafters/stable
 
 [env]
 CC=emcc
