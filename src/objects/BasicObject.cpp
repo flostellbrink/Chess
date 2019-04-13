@@ -52,6 +52,17 @@ void BasicObject::Draw(glm::mat4 projectionMatrix)
     program_->Bind(3, "texShadow");
   }
 
+  /* TODO fix this hack
+   * The mirror shader is a combination of mirror and overlay.
+   * There isn't a separate mirror shader without overlay.
+   * This means that we have to bind texOverlay to something.
+   * Otherwise we would get a warning.
+   */
+  if (program_->HasUniform("texOverlay"))
+  {
+    program_->Bind(0, "texOverlay");
+  }
+
   program_->Bind(projectionMatrix, "view_projection_matrix");
   if (program_->HasUniform("view_projection_shadow"))
   {
