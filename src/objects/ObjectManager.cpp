@@ -296,7 +296,7 @@ void ObjectManager::Draw()
   /* Blits shadow map when uncommented
   glBindFramebuffer(GL_READ_FRAMEBUFFER, shadow_frame_buffer_);
   glBindFramebuffer(GL_DRAW_FRAMEBUFFER, default_framebuffer);
-  glBlitFramebuffer(0, 0, shadow_res_, shadow_res_, 0, 0, Config::viewport_width, Config::viewport_height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+  glBlitFramebuffer(0, 0, res_width_ / 2, res_width_ / 2, 0, 0, Config::viewport_width, Config::viewport_height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
   // */
 }
 
