@@ -46,7 +46,7 @@ glm::mat4 Camera::ViewMatAtCamera() const
 glm::mat4 Camera::ViewProjectionShadow() const
 {
   const auto lightPos = Drawable::light_pos;
-  const auto shadowProjection = glm::ortho<float>(-30, 30, -30, 30, 10, 100);
+  const auto shadowProjection = glm::ortho<float>(-10, 10, -10, 20, 20, 100);
   const auto shadowView = lookAt(lightPos, glm::vec3(), glm::vec3(0, 1, 0));
 
   return shadowProjection * shadowView;
