@@ -50,13 +50,19 @@ void ObjectManager::UpdateFramebuffer(GLuint& framebuffer,
 {
   // Get rid of old objects
   if (framebuffer)
+  {
     glDeleteFramebuffers(1, &framebuffer);
+  }
+
   if (texture)
   {
     glDeleteTextures(1, &texture);
   }
+
   if (depth)
+  {
     glDeleteRenderbuffers(1, &depth);
+  }
 
   // Generate Frame Buffer
   glGenFramebuffers(1, &framebuffer);
@@ -156,7 +162,7 @@ struct DepthSort
   {
     const auto projected1 = projection * glm::vec4(obj1->Position3D(), 1);
     const auto projected2 = projection * glm::vec4(obj2->Position3D(), 1);
-    return projected1.z > projected2.z;
+    return projected1.z < projected2.z;
   }
 
   glm::mat4 projection;
@@ -165,21 +171,23 @@ struct DepthSort
 void ObjectManager::Draw()
 {
   // Setup frame buffer
-  if (!mirror_frame_buffer_ || !post_frame_buffer_ || !shadow_frame_buffer_ ||
+  if (!mirror_frame_buffer_ || !post_frame_buffer_ || !post_frame_buffer_2_ || !shadow_frame_buffer_ ||
     Config::viewport_width != res_width_ || Config::viewport_height != res_height_)
   {
     res_width_ = Config::viewport_width;
     res_height_ = Config::viewport_height;
     UpdateFramebuffer(post_frame_buffer_, post_texture_, post_depth_, res_width_, res_height_);
-    UpdateFramebuffer(mirror_frame_buffer_, mirror_texture_, mirror_depth_, res_width_, res_height_);
+    UpdateFramebuffer(post_frame_buffer_2_, post_texture_2_, post_depth_2_, res_width_, res_height_);
+
+    // Render mirror at quarter resolution
+    UpdateFramebuffer(mirror_frame_buffer_, mirror_texture_, mirror_depth_, res_width_ / 2, res_height_ / 2);
     Drawable::reflection_texture = mirror_texture_;
-  }
-  if (!shadow_frame_buffer_ || shadow_res_ != Config::shadow_resolution)
-  {
-    shadow_res_ = Config::shadow_resolution;
-    UpdateFramebuffer(shadow_frame_buffer_, shadow_texture_, shadow_depth_, shadow_res_, shadow_res_);
+
+    // Render shadow map at quarter resolution (square based on width)
+    UpdateFramebuffer(shadow_frame_buffer_, shadow_texture_, shadow_depth_, res_width_ / 2, res_width_ / 2);
     Drawable::shadow_texture = shadow_texture_;
   }
+  
   // Get Projection Matrices
   Drawable::cam_pos = camera_.Position();
   const auto viewProjection = Camera::Projection() * camera_.ViewMat();
@@ -200,12 +208,12 @@ void ObjectManager::Draw()
     }
   }
 
-  // Sort objects by depth
+  // Sort objects by depth for fast rendering
   std::sort(objects_.begin(), objects_.end(), DepthSort(viewProjection));
 
   // Render Shadow depth map
   glBindFramebuffer(GL_FRAMEBUFFER, shadow_frame_buffer_);
-  glViewport(0, 0, shadow_res_, shadow_res_);
+  glViewport(0, 0, res_width_ / 2, res_width_ / 2);
   glEnable(GL_DEPTH_TEST);
   glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
   for (auto obj : objects_)
@@ -213,11 +221,12 @@ void ObjectManager::Draw()
     obj->DrawShadow(viewProjectionShadow);
   }
 
-  // Reset Viewport, assuming all other steps use default resolution
-  glViewport(0, 0, res_width_, res_height_);
+  // Sort objects by depth for fast rendering
+  std::sort(objects_.begin(), objects_.end(), DepthSort(viewProjectionMirrored));
 
   // Render Mirrored
   glBindFramebuffer(GL_FRAMEBUFFER, mirror_frame_buffer_);
+  glViewport(0, 0, res_width_ / 2, res_height_ / 2);
   glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
   skybox_.DrawSkybox(viewProjectionSkyboxMirrored);
   for (auto obj : objects_)
@@ -227,14 +236,21 @@ void ObjectManager::Draw()
 
   // Render Background
   glBindFramebuffer(GL_FRAMEBUFFER, post_frame_buffer_);
+  glViewport(0, 0, res_width_, res_height_);
   glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
   skybox_.DrawSkybox(viewProjectionSkybox);
+
+  // Sort objects by depth for fast rendering
+  std::sort(objects_.begin(), objects_.end(), DepthSort(viewProjection));
 
   // Render Main Scene
   for (auto obj : objects_)
   {
     obj->DrawOpaque(viewProjection);
   }
+
+  // Render Translucent Main Scene (reverse order for correctness)
+  std::reverse(objects_.begin(), objects_.end());
   for (auto obj : objects_)
   {
     // Draw depth
@@ -254,19 +270,20 @@ void ObjectManager::Draw()
   if (post_processors_.empty()) { return; }
   glDisable(GL_DEPTH_TEST);
   auto renderToPost = false;
-  glBindFramebuffer(GL_FRAMEBUFFER, mirror_frame_buffer_);
+  glBindFramebuffer(GL_FRAMEBUFFER, post_frame_buffer_2_);
   Drawable::post_texture = post_texture_;
 
   for (auto i = 0; i < static_cast<int>(post_processors_.size()) - 1; ++i)
   {
     post_processors_[i]->Draw(glm::mat4(1.0f));
     renderToPost = !renderToPost;
-    glBindFramebuffer(GL_FRAMEBUFFER, renderToPost ? post_frame_buffer_ : mirror_frame_buffer_);
-    Drawable::post_texture = renderToPost ? mirror_texture_ : post_texture_;
+    glBindFramebuffer(GL_FRAMEBUFFER, renderToPost ? post_frame_buffer_ : post_frame_buffer_2_);
+    Drawable::post_texture = renderToPost ? post_texture_2_ : post_texture_;
   }
 
   // Render final pass to screen
   glBindFramebuffer(GL_FRAMEBUFFER, default_framebuffer);
+  glViewport(0, 0, Config::viewport_width, Config::viewport_height);
   post_processors_[post_processors_.size() - 1]->Draw(glm::mat4(1.0f));
   glEnable(GL_DEPTH_TEST);
 

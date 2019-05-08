@@ -8,8 +8,6 @@ int Config::geo_resolution_horizontal = 50;
 int Config::geo_resolution_vertical = 50;
 bool Config::geo_changed = false;
 
-int Config::shadow_resolution = 8000;
-
 int Config::viewport_width = 1;
 int Config::viewport_height = 1;
 
