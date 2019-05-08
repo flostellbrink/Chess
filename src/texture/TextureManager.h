@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include <vector>
 #include <map>
+#include <string>
 
 class Texture;
 
