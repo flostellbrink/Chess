@@ -174,6 +174,12 @@ void ObjectManager::Draw()
   if (!mirror_frame_buffer_ || !post_frame_buffer_ || !post_frame_buffer_2_ || !shadow_frame_buffer_ ||
     Config::viewport_width != res_width_ || Config::viewport_height != res_height_)
   {
+    if (Config::viewport_width <= 1 || Config::viewport_height <= 1)
+    {
+      Logger::Warn("Viewport empty");
+      return;
+    }
+
     res_width_ = Config::viewport_width;
     res_height_ = Config::viewport_height;
     UpdateFramebuffer(post_frame_buffer_, post_texture_, post_depth_, res_width_, res_height_);
