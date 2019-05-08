@@ -59,10 +59,13 @@ private:
   GLuint post_frame_buffer_ = 0;
   GLuint post_texture_ = 0;
   GLuint post_depth_ = 0;
+  GLuint post_frame_buffer_2_ = 0;
+  GLuint post_texture_2_ = 0;
+  GLuint post_depth_2_ = 0;
   GLuint shadow_frame_buffer_ = 0;
   GLuint shadow_texture_ = 0;
   GLuint shadow_depth_ = 0;
-  int res_width_ = 0, res_height_ = 0, shadow_res_ = 0;
+  int res_width_ = 0, res_height_ = 0;
 };
 
 
