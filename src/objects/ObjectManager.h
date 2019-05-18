@@ -46,7 +46,8 @@ protected:
   std::vector<Drawable*> post_processors_;
   Camera camera_;
   Skybox skybox_;
-  bool click_happened_{};
+  bool mouse_down_happened_ = false, mouse_up_happened_ = false;
+  Drawable* mouse_down_object_ = nullptr;
   glm::vec2 last_mouse_;
   int theme_{};
 

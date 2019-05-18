@@ -204,14 +204,21 @@ void ObjectManager::Draw()
   const auto viewProjectionShadow = camera_.ViewProjectionShadow();
   Drawable::shadow_view_projection = viewProjectionShadow;
 
-  if (click_happened_)
+  if (mouse_down_happened_)
   {
-    click_happened_ = false;
-    auto clicked = GetClickedObject(last_mouse_, Camera::Projection() * camera_.ViewMat());
-    if(clicked != nullptr)
+    mouse_down_happened_ = false;
+    mouse_down_object_ = GetClickedObject(last_mouse_, Camera::Projection() * camera_.ViewMat());
+  }
+
+  if (mouse_up_happened_)
+  {
+    mouse_up_happened_ = false;
+    auto mouse_up_object = GetClickedObject(last_mouse_, Camera::Projection() * camera_.ViewMat());
+    if (mouse_down_object_ != nullptr && mouse_down_object_ == mouse_up_object)
     {
-      clicked->MouseClick();
+      mouse_up_object->MouseClick();
     }
+    mouse_down_object_ = nullptr;
   }
 
   // Sort objects by depth for fast rendering
@@ -325,22 +332,16 @@ void ObjectManager::MouseButton(const int button, const int action)
   {
     if (button == GLFW_MOUSE_BUTTON_LEFT)
     {
-      click_happened_ = true;
-    }
-    else
-    {
       camera_.MouseDown();
+      mouse_down_happened_ = true;
     }
   }
   else
   {
     if (button == GLFW_MOUSE_BUTTON_LEFT)
     {
-      // Ignored
-    }
-    else
-    {
       camera_.MouseUp();
+      mouse_up_happened_ = true;
     }
   }
 }
