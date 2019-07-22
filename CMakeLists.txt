@@ -94,6 +94,7 @@ target_link_libraries(${PROJECT_NAME}
         "-o ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/index.html"
         "--preload-file res"
         "--bind"
+        "--no-heap-copy"
         )
 
 SET(CPACK_PACKAGE_NAME "Chess")
