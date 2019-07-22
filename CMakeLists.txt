@@ -86,7 +86,6 @@ target_link_libraries(${PROJECT_NAME}
         ${OPENGL_LIBRARY}
         # Emscripten options
         "-O2"
-        "-s USE_WEBGL2=1"
         "-s USE_GLFW=3"
         "-s WASM=1"
         "-s DEMANGLE_SUPPORT=1"
