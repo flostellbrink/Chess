@@ -1,13 +1,13 @@
-#version 300 es
+#version 100
 
 uniform mat4 view_projection_matrix;
 uniform mat4 model_matrix;
 
 // get position from vertex array object
-layout(location = 0) in vec3 pos;
-layout(location = 1) in vec2 TexCoord;
+attribute vec3 pos;
+attribute vec2 TexCoord;
 
-out vec2 texCoord;
+varying vec2 texCoord;
 
 void main(void)
 {

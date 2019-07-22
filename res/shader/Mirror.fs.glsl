@@ -1,17 +1,14 @@
-#version 300 es
+#version 100
 precision mediump float;
 
-in vec3 vcolor;
-in vec2 texCoord;
-in vec3 normal;
-in vec3 lightDir;
-in vec3 camDir;
-in vec4 model_Position;
-in vec4 shadow_Position;
-in vec2 shadow_Samples[5];
-
-// send color to screen
-layout(location = 0) out vec4 fcolor;
+varying vec3 vcolor;
+varying vec2 texCoord;
+varying vec3 normal;
+varying vec3 lightDir;
+varying vec3 camDir;
+varying vec4 model_Position;
+varying vec4 shadow_Position;
+varying vec2 shadow_Samples[5];
 
 uniform sampler2D tex;
 uniform sampler2D texOverlay;
@@ -41,14 +38,14 @@ void main(void)
     // Shadow
     float visibility = 1.0;
     for (int i=0;i<5;i++){
-        if(shadow_Position.z > texture(texShadow, shadow_Samples[i]).z + .01){
+        if(shadow_Position.z > texture2D(texShadow, shadow_Samples[i]).z + .01){
             visibility -= 0.2;
         }
     }
 
     // Texture colors and overlayOpacity
-    vec4 color = texture(tex, (model_Position.xz + vec2(8.5, 8.5)) / 17.0),
-         colorOverlay = texture(texOverlay, texCoord);
+    vec4 color = texture2D(tex, (model_Position.xz + vec2(8.5, 8.5)) / 17.0),
+         colorOverlay = texture2D(texOverlay, texCoord);
     float opacity = overlayOpacity * colorOverlay.a;
 
     // Combine overlay and texture color
@@ -64,6 +61,6 @@ void main(void)
     color += vec4(vec3(visibility * reflectivity * Is), 0);
 
     // Combine color and reflection
-    fcolor = (1.0 - mirrority) * color
-           + mirrority * texture(texReflection, gl_FragCoord.xy / texSize);
+    gl_FragColor = (1.0 - mirrority) * color
+           + mirrority * texture2D(texReflection, gl_FragCoord.xy / texSize);
 }

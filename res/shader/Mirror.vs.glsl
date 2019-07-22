@@ -1,4 +1,4 @@
-#version 300 es
+#version 100
 
 uniform mat4 view_projection_matrix;
 uniform mat4 view_projection_shadow;
@@ -13,18 +13,18 @@ uniform vec3 ka;
 uniform int textureAnimated;
 uniform mat2 texTransform;
 
-layout(location = 0) in vec3 Pos;
-layout(location = 1) in vec2 TexCoord;
-layout(location = 2) in vec3 Normal;
+attribute vec3 Pos;
+attribute vec2 TexCoord;
+attribute vec3 Normal;
 
-out vec2 texCoord;
-out vec3 normal;
-out vec3 vcolor;
-out vec3 lightDir;
-out vec3 camDir;
-out vec4 model_Position;
-out vec4 shadow_Position;
-out vec2 shadow_Samples[5];
+varying vec2 texCoord;
+varying vec3 normal;
+varying vec3 vcolor;
+varying vec3 lightDir;
+varying vec3 camDir;
+varying vec4 model_Position;
+varying vec4 shadow_Position;
+varying vec2 shadow_Samples[5];
 
 void main(void)
 {

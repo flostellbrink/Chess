@@ -1,16 +1,13 @@
-#version 300 es
+#version 100
 precision mediump float;
 
-in vec3 vcolor;
-in vec2 texCoord;
-in vec3 normal;
-in vec3 lightDir;
-in vec3 camDir;
-in vec4 shadow_Position;
-in vec2 shadow_Samples[5];
-
-// send color to screen
-layout(location = 0) out vec4 fcolor;
+varying vec3 vcolor;
+varying vec2 texCoord;
+varying vec3 normal;
+varying vec3 lightDir;
+varying vec3 camDir;
+varying vec4 shadow_Position;
+varying vec2 shadow_Samples[5];
 
 uniform sampler2D tex;
 uniform sampler2D texShadow;
@@ -31,11 +28,11 @@ void main(void)
     // Shadow
     float visibility = 1.0;
     for (int i=0;i<5;i++){
-        if(shadow_Position.z > texture(texShadow, shadow_Samples[i]).z + .01){
+        if(shadow_Position.z > texture2D(texShadow, shadow_Samples[i]).z + .01){
             visibility -= 0.2;
         }
     }
 
-    fcolor = vec4(vcolor + visibility * Id, 1) * texture(tex, texCoord)
+    gl_FragColor = vec4(vcolor + visibility * Id, 1) * texture2D(tex, texCoord)
            + vec4(vec3(visibility * reflectivity * Is),0);
 }

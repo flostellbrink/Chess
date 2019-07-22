@@ -1,11 +1,9 @@
-#version 300 es
+#version 100
 precision mediump float;
 
 uniform int object_id;
 
-layout(location = 0) out vec4 fcolor;
-
 void main(void)
 {
-    fcolor = vec4(float(object_id) / 255.0, 0, 0, 0);
+    gl_FragColor = vec4(float(object_id) / 255.0, 0, 0, 0);
 }

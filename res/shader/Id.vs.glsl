@@ -1,11 +1,11 @@
-#version 300 es
+#version 100
 
 uniform mat4 view_projection_matrix;
 uniform mat4 model_matrix;
 
-layout(location = 0) in vec3 Pos;
-layout(location = 1) in vec2 TexCoord;
-layout(location = 2) in vec3 Normal;
+attribute vec3 Pos;
+attribute vec2 TexCoord;
+attribute vec3 Normal;
 
 void main(void)
 {

@@ -1,10 +1,10 @@
-#version 300 es
+#version 100
 
-layout(location = 0) in vec3 pos;
-layout(location = 1) in vec2 TexCoord;
+attribute vec3 pos;
+attribute vec2 TexCoord;
 
-out vec2 texCoord;
-out vec2 blurCoords[14];
+varying vec2 texCoord;
+varying vec2 blurCoords[14];
 
 void main(void)
 {
