@@ -40,7 +40,7 @@ Features:
 
 ### Build
 
-1. Clone the repository: `git clone --recurse-submodules https://github.com/Owlinated/Chess`
+1. Clone the repository: `git clone --recurse-submodules https://github.com/flostellbrink/Chess`
 2. Navigate into directory: `cd Chess`
 3. Get dependencies: `conan install . --build --profile=emscripten_profile`
 4. Build the project: `conan build .`
