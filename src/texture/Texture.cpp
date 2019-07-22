@@ -19,7 +19,7 @@ Texture::Texture(const std::string& texturePath, const GLenum target, const GLen
       auto image = Image(texturePath + std::to_string(i) + ".png");
       glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
                    0,
-                   GL_RGBA8,
+                   GL_RGBA,
                    image.GetWidth(),
                    image.GetHeight(),
                    0,
@@ -38,7 +38,7 @@ Texture::Texture(const std::string& texturePath, const GLenum target, const GLen
 
     glTexImage2D(GL_TEXTURE_2D,
                  0,
-                 GL_RGBA8,
+                 GL_RGBA,
                  image.GetWidth(),
                  image.GetHeight(),
                  0,
