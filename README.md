@@ -11,6 +11,14 @@ Features:
 - Multiple themes and transparency.
 - Computer controlled opponent.
 
+## BrowserStack
+
+Webassembly and WebGL support is somewhat inconsistent across different browsers.
+
+We use BrowserStack to make sure that this game runs on the widest range of devices possible.
+
+[![BrowserStack](browserstack-logo-600x315.png)](https://www.browserstack.com/)
+
 ## Controls
 
 | Control          | Action                         |
