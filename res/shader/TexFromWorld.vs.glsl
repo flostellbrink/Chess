@@ -11,10 +11,8 @@ uniform vec3 La;
 uniform vec3 ka;
 
 attribute vec3 Pos;
-attribute vec2 TexCoord;
 attribute vec3 Normal;
 
-varying vec2 texCoord;
 varying vec3 normal;
 varying vec3 vcolor;
 varying vec3 lightDir;
@@ -46,8 +44,6 @@ void main(void)
 
     // needs to be normalized because scale model matrix scews the length
     normal = normalize((tra_inv_model_matrix * vec4(Normal, 1)).xyz);
-
-    texCoord = TexCoord;
 
     vcolor = ka * La;
     lightDir = lightPos - model_Position.xyz;

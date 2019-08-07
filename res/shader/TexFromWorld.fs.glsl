@@ -2,7 +2,6 @@
 precision mediump float;
 
 varying vec3 vcolor;
-varying vec2 texCoord;
 varying vec3 normal;
 varying vec3 lightDir;
 varying vec4 model_Position;
