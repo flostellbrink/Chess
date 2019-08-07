@@ -19,3 +19,7 @@ deploy:
   local-dir: bin
   on:
     branch: wasm
+
+cache:
+  directories:
+    - /home/travis/.conan/data/emsdk_installer/
