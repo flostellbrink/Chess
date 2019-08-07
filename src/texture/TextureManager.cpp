@@ -15,8 +15,8 @@ TextureManager::TextureManager(): theme_(0)
 
 bool TextureManager::IsReflected(const int object)
 {
-  return object >= objects::white_king && object <= objects::black_pawn
-    || object >= objects::clock_base && object <= objects::clock_marks;
+  return (object >= objects::white_king && object <= objects::black_pawn)
+    || (object >= objects::clock_base && object <= objects::clock_marks);
 }
 
 bool TextureManager::IsTranslucent(const int object) const
