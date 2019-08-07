@@ -1,6 +1,6 @@
 #version 100
 
-attribute vec3 pos;
+attribute vec3 Pos;
 attribute vec2 TexCoord;
 
 varying vec2 texCoord;
@@ -8,7 +8,7 @@ varying vec2 blurCoords[14];
 
 void main(void)
 {
-    gl_Position = vec4(pos, 1);
+    gl_Position = vec4(Pos, 1);
     texCoord = TexCoord;
     blurCoords[0] = TexCoord + vec2(-0.028, 0.0);
     blurCoords[1] = TexCoord + vec2(-0.024, 0.0);

@@ -208,6 +208,9 @@ Shader::Shader(const std::string& vertexFilePath, const std::string& fragmentFil
   handle = glCreateProgram();
   glAttachShader(handle, vertexHandle);
   glAttachShader(handle, fragmentHandle);
+  glBindAttribLocation(handle, 0, "Pos");
+  glBindAttribLocation(handle, 1, "TexCoord");
+  glBindAttribLocation(handle, 2, "Normal");
   glLinkProgram(handle);
   check_program_error(handle, std::string(vertexFilePath), std::string(fragmentFilePath));
 
