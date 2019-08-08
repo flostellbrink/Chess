@@ -208,9 +208,21 @@ Shader::Shader(const std::string& vertexFilePath, const std::string& fragmentFil
   handle = glCreateProgram();
   glAttachShader(handle, vertexHandle);
   glAttachShader(handle, fragmentHandle);
-  glBindAttribLocation(handle, 0, "Pos");
-  glBindAttribLocation(handle, 1, "TexCoord");
-  glBindAttribLocation(handle, 2, "Normal");
+
+  /*
+   * WebGL 1.0 has not support for location statements on attributes.
+   * Instead we have to bind them explictly.
+   * Mobile Safari misbehaves if that attribute does not exist.
+   * We end up with this hacky way of only binding the attribute if it exists.
+   * Better not comment those declaration out^^
+   */
+  if (vertexString.find("attribute vec3 Pos;") != std::string::npos)
+    glBindAttribLocation(handle, 0, "Pos");
+  if (vertexString.find("attribute vec2 TexCoord;") != std::string::npos)
+    glBindAttribLocation(handle, 1, "TexCoord");
+  if (vertexString.find("attribute vec3 Normal;") != std::string::npos)
+    glBindAttribLocation(handle, 2, "Normal");
+
   glLinkProgram(handle);
   check_program_error(handle, std::string(vertexFilePath), std::string(fragmentFilePath));
 
