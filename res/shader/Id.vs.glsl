@@ -4,8 +4,6 @@ uniform mat4 view_projection_matrix;
 uniform mat4 model_matrix;
 
 attribute vec3 Pos;
-attribute vec2 TexCoord;
-attribute vec3 Normal;
 
 void main(void)
 {
