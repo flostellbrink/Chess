@@ -140,17 +140,18 @@ void Shader::Bind(std::vector<int>& vector, const std::string& uniformName) cons
  */
 void check_shader_error(const GLuint handle, const std::string& filePath)
 {
-  auto result = GL_FALSE;
-  int infoLength;
-
-  glGetShaderiv(handle, GL_COMPILE_STATUS, &result);
-  glGetShaderiv(handle, GL_INFO_LOG_LENGTH, &infoLength);
-  if (infoLength > 1)
+  int isCompiled;
+  glGetShaderiv(handle, GL_COMPILE_STATUS, &isCompiled);
+  if(isCompiled == GL_FALSE)
   {
-    auto errorMessage = std::make_unique<char[]>(infoLength + 1);
-    glGetShaderInfoLog(handle, infoLength, nullptr, errorMessage.get());
+    int infoLength;
+    glGetShaderiv(handle, GL_INFO_LOG_LENGTH, &infoLength);
+
+    std::vector<GLchar> errorMessage(infoLength);
+    glGetShaderInfoLog(handle, infoLength, &infoLength, errorMessage.data());
+
     std::stringstream message;
-    message << "Shader error in " << filePath << ": " << errorMessage.get();
+    message << "Shader error in " << filePath << ": " << errorMessage.data();
     Logger::Error(message.str());
   }
 }
@@ -163,15 +164,18 @@ void check_shader_error(const GLuint handle, const std::string& filePath)
  */
 void check_program_error(const GLuint handle, const std::string& vertexPath, const std::string& fragmentPath)
 {
-  int infoLength;
-
-  glGetProgramiv(handle, GL_INFO_LOG_LENGTH, &infoLength);
-  if (infoLength > 1)
+  int isLinked;
+  glGetProgramiv(handle, GL_LINK_STATUS, &isLinked);
+  if(isLinked == GL_FALSE)
   {
-    auto errorMessage = std::make_unique<char[]>(infoLength + 1);
-    glGetProgramInfoLog(handle, infoLength, nullptr, errorMessage.get());
+    int infoLength;
+    glGetProgramiv(handle, GL_INFO_LOG_LENGTH, &infoLength);
+
+    std::vector<GLchar> errorMessage(infoLength);
+    glGetProgramInfoLog(handle, infoLength, &infoLength, errorMessage.data());
+
     std::stringstream message;
-    message << "Error while linking " << vertexPath << " and " << fragmentPath << ": " << errorMessage.get();
+    message << "Error while linking " << vertexPath << " and " << fragmentPath << ": " << errorMessage.data();
     Logger::Error(message.str());
   }
 }
