@@ -8,7 +8,7 @@ class Pawn : public Piece
 {
 public:
   Pawn(Board* board, int objectId, Field* field);
-  std::vector<MoveBase*> GetMoves() override;
+  std::vector<std::shared_ptr<MoveBase>> GetMoves() override;
   bool UsedDoubleMove();
   bool IsTransformable() override;
   bool IsCopyable() override;

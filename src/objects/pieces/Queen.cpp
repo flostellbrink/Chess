@@ -8,9 +8,9 @@ Queen::Queen(Board* board, const int objectId, Field* field) : Piece(board, obje
 {
 }
 
-std::vector<MoveBase*> Queen::GetMoves()
+std::vector<std::shared_ptr<MoveBase>> Queen::GetMoves()
 {
-  std::vector<MoveBase*> result;
+  std::vector<std::shared_ptr<MoveBase>> result;
   auto currentField = field;
   while ((currentField = currentField->up))
   {

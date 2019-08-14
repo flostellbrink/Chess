@@ -28,7 +28,7 @@ public:
   Field* field = nullptr;
   Field* GetField() const;
   void SetField(Field* field, bool sim = false);
-  virtual std::vector<MoveBase*> GetMoves() = 0;
+  virtual std::vector<std::shared_ptr<MoveBase>> GetMoves() = 0;
   int GetIdWithoutColor();
   bool is_moved = false;
 
@@ -38,7 +38,7 @@ protected:
   virtual void UpdateBb(glm::vec3 position);
   std::string GetVertexShader() override;
   std::string GetFragmentShader() override;
-  void AddHitOrMove(Field* field, std::vector<MoveBase*>& moves);
+  void AddHitOrMove(Field* field, std::vector<std::shared_ptr<MoveBase>>& moves);
 
   glm::vec3 position_, size_;
   Collision bounding_box_;

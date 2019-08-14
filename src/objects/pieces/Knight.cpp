@@ -18,9 +18,9 @@ void Knight::Init()
     y_rotation_ = glm::pi<float>();
 }
 
-std::vector<MoveBase*> Knight::GetMoves()
+std::vector<std::shared_ptr<MoveBase>> Knight::GetMoves()
 {
-  std::vector<MoveBase*> result;
+  std::vector<std::shared_ptr<MoveBase>> result;
 
   if (field->up && field->up->up)
   {

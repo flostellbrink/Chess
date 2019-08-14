@@ -7,9 +7,9 @@ Rook::Rook(Board* board, const int objectId, Field* field) : Piece(board, object
 {
 }
 
-std::vector<MoveBase*> Rook::GetMoves()
+std::vector<std::shared_ptr<MoveBase>> Rook::GetMoves()
 {
-  std::vector<MoveBase*> result;
+  std::vector<std::shared_ptr<MoveBase>> result;
 
   auto currentField = field;
   while ((currentField = currentField->up))

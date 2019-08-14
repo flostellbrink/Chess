@@ -19,9 +19,9 @@ void King::Init()
   y_rotation_ = glm::half_pi<float>();
 }
 
-std::vector<MoveBase*> King::GetMoves()
+std::vector<std::shared_ptr<MoveBase>> King::GetMoves()
 {
-  std::vector<MoveBase*> result;
+  std::vector<std::shared_ptr<MoveBase>> result;
   AddHitOrMove(field->up, result);
   AddHitOrMove(field->down, result);
   AddHitOrMove(field->left, result);
@@ -37,9 +37,9 @@ std::vector<MoveBase*> King::GetMoves()
     AddHitOrMove(field->down->right, result);
   }
   if (board_->IsCastlingPossible(IsWhite(), true))
-    result.push_back(new Castling(this, board_->GetRook(IsWhite(), true), field->left->left, field->left));
+    result.push_back(std::make_shared<Castling>(this, board_->GetRook(IsWhite(), true), field->left->left, field->left));
   if (board_->IsCastlingPossible(IsWhite(), false))
-    result.push_back(new Castling(this, board_->GetRook(IsWhite(), false), field->right->right, field->right));
+    result.push_back(std::make_shared<Castling>(this, board_->GetRook(IsWhite(), false), field->right->right, field->right));
   return result;
 }
 

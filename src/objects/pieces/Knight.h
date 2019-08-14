@@ -9,7 +9,7 @@ class Knight : public Piece
 public:
   Knight(Board* board, int objectId, Field* field);
   void Init() override;
-  std::vector<MoveBase*> GetMoves() override;
+  std::vector<std::shared_ptr<MoveBase>> GetMoves() override;
 };
 
 

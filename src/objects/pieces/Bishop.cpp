@@ -8,9 +8,9 @@ Bishop::Bishop(Board* board, const int objectId, Field* field) : Piece(board, ob
 {
 }
 
-std::vector<MoveBase*> Bishop::GetMoves()
+std::vector<std::shared_ptr<MoveBase>> Bishop::GetMoves()
 {
-  std::vector<MoveBase*> result;
+  std::vector<std::shared_ptr<MoveBase>> result;
 
   {
     auto currentField = field;

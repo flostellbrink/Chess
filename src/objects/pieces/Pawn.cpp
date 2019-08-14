@@ -12,24 +12,24 @@ Pawn::Pawn(Board* board, const int objectId, Field* field) : Piece(board, object
 {
 }
 
-std::vector<MoveBase*> Pawn::GetMoves()
+std::vector<std::shared_ptr<MoveBase>> Pawn::GetMoves()
 {
   auto lastMove = board_->GetLastMove();
-  std::vector<MoveBase*> result;
+  std::vector<std::shared_ptr<MoveBase>> result;
   if (IsWhite())
   {
     if (field->up)
     {
       if (!field->up->current_piece)
       {
-        result.push_back(new Move(this, field->up));
+        result.push_back(std::make_shared<Move>(this, field->up));
       }
       if (!UsedDoubleMove()
         && field->up->up
         && !field->up->up->current_piece
         && !field->up->current_piece)
       {
-        const auto move = new Move(this, field->up->up);
+        const auto move = std::make_shared<Move>(this, field->up->up);
         move->en_passant_field = field->up;
         move->is_en_passant = true;
         result.push_back(move);
@@ -38,12 +38,12 @@ std::vector<MoveBase*> Pawn::GetMoves()
         && field->up->right->current_piece
         && field->up->right->current_piece->IsWhite() != IsWhite())
       {
-        result.push_back(new Hit(this, field->up->right->current_piece));
+        result.push_back(std::make_shared<Hit>(this, field->up->right->current_piece));
       }
       if (field->up->left && field->up->left->current_piece
         && field->up->left->current_piece->IsWhite() != IsWhite())
       {
-        result.push_back(new Hit(this, field->up->left->current_piece));
+        result.push_back(std::make_shared<Hit>(this, field->up->left->current_piece));
       }
       if (lastMove
         && lastMove->is_en_passant
@@ -54,7 +54,7 @@ std::vector<MoveBase*> Pawn::GetMoves()
         && !field->up->right->current_piece
         && lastMove->en_passant_field == field->up->right)
       {
-        result.push_back(new Hit(this, lastMove->main_piece, lastMove->en_passant_field));
+        result.push_back(std::make_shared<Hit>(this, lastMove->main_piece, lastMove->en_passant_field));
       }
       if (lastMove
         && lastMove->is_en_passant
@@ -65,7 +65,7 @@ std::vector<MoveBase*> Pawn::GetMoves()
         && !field->up->left->current_piece
         && lastMove->en_passant_field == field->up->left)
       {
-        result.push_back(new Hit(this, lastMove->main_piece, lastMove->en_passant_field));
+        result.push_back(std::make_shared<Hit>(this, lastMove->main_piece, lastMove->en_passant_field));
       }
     }
   }
@@ -75,14 +75,14 @@ std::vector<MoveBase*> Pawn::GetMoves()
     {
       if (!field->down->current_piece)
       {
-        result.push_back(new Move(this, field->down));
+        result.push_back(std::make_shared<Move>(this, field->down));
       }
       if (!UsedDoubleMove()
         && field->down->down
         && !field->down->down->current_piece
         && !field->down->current_piece)
       {
-        const auto move = new Move(this, field->down->down);
+        const auto move = std::make_shared<Move>(this, field->down->down);
         move->en_passant_field = field->down;
         move->is_en_passant = true;
         result.push_back(move);
@@ -91,13 +91,13 @@ std::vector<MoveBase*> Pawn::GetMoves()
         && field->down->right->current_piece
         && field->down->right->current_piece->IsWhite() != IsWhite())
       {
-        result.push_back(new Hit(this, field->down->right->current_piece));
+        result.push_back(std::make_shared<Hit>(this, field->down->right->current_piece));
       }
       if (field->down->left
         && field->down->left->current_piece
         && field->down->left->current_piece->IsWhite() != IsWhite())
       {
-        result.push_back(new Hit(this, field->down->left->current_piece));
+        result.push_back(std::make_shared<Hit>(this, field->down->left->current_piece));
       }
       if (lastMove
         && lastMove->is_en_passant
@@ -108,7 +108,7 @@ std::vector<MoveBase*> Pawn::GetMoves()
         && !field->down->right->current_piece
         && lastMove->en_passant_field == field->down->right)
       {
-        result.push_back(new Hit(this, lastMove->main_piece, lastMove->en_passant_field));
+        result.push_back(std::make_shared<Hit>(this, lastMove->main_piece, lastMove->en_passant_field));
       }
       if (lastMove
         && lastMove->is_en_passant
@@ -119,7 +119,7 @@ std::vector<MoveBase*> Pawn::GetMoves()
         && !field->down->left->current_piece
         && lastMove->en_passant_field == field->down->left)
       {
-        result.push_back(new Hit(this, lastMove->main_piece, lastMove->en_passant_field));
+        result.push_back(std::make_shared<Hit>(this, lastMove->main_piece, lastMove->en_passant_field));
       }
     }
   }

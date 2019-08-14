@@ -7,7 +7,7 @@ class Rook : public Piece
 {
 public:
   Rook(Board* board, int objectId, Field* field);
-  std::vector<MoveBase*> GetMoves() override;
+  std::vector<std::shared_ptr<MoveBase>> GetMoves() override;
 };
 
 

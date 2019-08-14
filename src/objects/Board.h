@@ -24,7 +24,7 @@ public:
   void PieceClick(Piece* piece);
   Field* GetSideField(bool whiteSide);
   void AddPiece(int objectId, Field* field);
-  MoveBase* GetLastMove();
+  std::shared_ptr<MoveBase> GetLastMove();
   void UndoMove(bool sim = true);
   void EnableAi(bool enabled = true);
   bool GetAi() const;
@@ -50,8 +50,8 @@ protected:
 
   void ClearOverlays();
   void SetOverlays();
-  std::vector<MoveBase*> GetValid(std::vector<MoveBase*> moves);
-  void UpdateCurrentMoves(std::vector<MoveBase*> moves);
+  std::vector<std::shared_ptr<MoveBase>> GetValid(std::vector<std::shared_ptr<MoveBase>> moves);
+  void UpdateCurrentMoves(std::vector<std::shared_ptr<MoveBase>> moves);
   bool ExistsValidMove();
   bool IsKingInMate();
   void DoAi();
@@ -60,9 +60,9 @@ protected:
 private:
   std::vector<std::vector<Field*>> fields_;
   std::vector<std::vector<Field*>> side_fields_;
-  std::vector<MoveBase*> current_moves_, current_invalid_moves_;
+  std::vector<std::shared_ptr<MoveBase>> current_moves_, current_invalid_moves_;
+  std::stack<std::shared_ptr<MoveBase>> all_moves_;
   std::vector<Piece*> pieces_;
-  std::stack<MoveBase*> all_moves_;
   bool white_turn_ = false;
   bool locked_ = false;
   bool use_ai_ = false;
@@ -70,7 +70,7 @@ private:
   float ai_timer_ = 0.0f;
   glm::vec3 position_, size_;
   Collision bounding_box_;
-  void ApplyAndPushMove(MoveBase* move);
+  void ApplyAndPushMove(std::shared_ptr<MoveBase> move);
 
   std::default_random_engine generator_;
 };

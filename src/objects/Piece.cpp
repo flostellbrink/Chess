@@ -186,16 +186,16 @@ void Piece::MouseClick()
   board_->PieceClick(this);
 }
 
-void Piece::AddHitOrMove(Field* field, std::vector<MoveBase *>& moves)
+void Piece::AddHitOrMove(Field* field, std::vector<std::shared_ptr<MoveBase>>& moves)
 {
   if (!field) return;
   if (!field->current_piece)
   {
-    moves.push_back(new Move(this, field));
+    moves.push_back(std::make_shared<Move>(this, field));
   }
   else if (field->current_piece->IsWhite() != IsWhite())
   {
-    moves.push_back(new Hit(this, field->current_piece));
+    moves.push_back(std::make_shared<Hit>(this, field->current_piece));
   }
 }
 

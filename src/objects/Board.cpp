@@ -326,7 +326,7 @@ Field* Board::GetSideField(const bool whiteSide)
   return nullptr;
 }
 
-MoveBase* Board::GetLastMove()
+std::shared_ptr<MoveBase> Board::GetLastMove()
 {
   if (all_moves_.empty())
   {
@@ -423,7 +423,7 @@ void Board::FieldClick(Field* field)
         {
           if (piece->IsCopyable())
           {
-            current_moves_.push_back(new Transform(field->current_piece, piece));
+            current_moves_.push_back(std::make_shared<Transform>(field->current_piece, piece));
           }
         }
         SetOverlays();
@@ -478,9 +478,9 @@ bool Board::ExistsValidMove()
   return false;
 }
 
-std::vector<MoveBase*> Board::GetValid(std::vector<MoveBase*> moves)
+std::vector<std::shared_ptr<MoveBase>> Board::GetValid(std::vector<std::shared_ptr<MoveBase>> moves)
 {
-  std::vector<MoveBase*> result;
+  std::vector<std::shared_ptr<MoveBase>> result;
   for (auto move : moves)
   {
     all_moves_.push(move);
@@ -497,7 +497,7 @@ std::vector<MoveBase*> Board::GetValid(std::vector<MoveBase*> moves)
   return result;
 }
 
-void Board::UpdateCurrentMoves(std::vector<MoveBase*> moves)
+void Board::UpdateCurrentMoves(std::vector<std::shared_ptr<MoveBase>> moves)
 {
   current_moves_.clear();
   current_invalid_moves_.clear();
@@ -622,7 +622,7 @@ Field* Board::GetField(const int column, const int row)
   return fields_[row - 1][column - 1];
 }
 
-void Board::ApplyAndPushMove(MoveBase* move)
+void Board::ApplyAndPushMove(std::shared_ptr<MoveBase> move)
 {
   move->Apply(this, false);
   all_moves_.push(move);
@@ -638,134 +638,134 @@ void Board::RunDemo()
   // http://www.chessgames.com/perl/chessgame?gid=1011478
 
   // 1. e4 d6
-  ApplyAndPushMove(new Move(GetField(e, 2)->current_piece, GetField(e, 4)));
-  ApplyAndPushMove(new Move(GetField(d, 7)->current_piece, GetField(d, 6)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(e, 2)->current_piece, GetField(e, 4)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(d, 7)->current_piece, GetField(d, 6)));
   // 2. d4 Nf6
-  ApplyAndPushMove(new Move(GetField(d, 2)->current_piece, GetField(d, 4)));
-  ApplyAndPushMove(new Move(GetField(g, 8)->current_piece, GetField(f, 6)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(d, 2)->current_piece, GetField(d, 4)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(g, 8)->current_piece, GetField(f, 6)));
   // 3. Nc3 g6
-  ApplyAndPushMove(new Move(GetField(b, 1)->current_piece, GetField(c, 3)));
-  ApplyAndPushMove(new Move(GetField(g, 7)->current_piece, GetField(g, 6)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(b, 1)->current_piece, GetField(c, 3)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(g, 7)->current_piece, GetField(g, 6)));
   // 4. Be3 Bg7
-  ApplyAndPushMove(new Move(GetField(c, 1)->current_piece, GetField(e, 3)));
-  ApplyAndPushMove(new Move(GetField(f, 8)->current_piece, GetField(g, 7)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(c, 1)->current_piece, GetField(e, 3)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(f, 8)->current_piece, GetField(g, 7)));
   // 5. Qd2 c6
-  ApplyAndPushMove(new Move(GetField(d, 1)->current_piece, GetField(d, 2)));
-  ApplyAndPushMove(new Move(GetField(c, 7)->current_piece, GetField(c, 6)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(d, 1)->current_piece, GetField(d, 2)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(c, 7)->current_piece, GetField(c, 6)));
   // 6. f3 b5
-  ApplyAndPushMove(new Move(GetField(f, 2)->current_piece, GetField(f, 3)));
-  ApplyAndPushMove(new Move(GetField(b, 7)->current_piece, GetField(b, 5)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(f, 2)->current_piece, GetField(f, 3)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(b, 7)->current_piece, GetField(b, 5)));
   // 7. Nge2 Nbd7
-  ApplyAndPushMove(new Move(GetField(g, 1)->current_piece, GetField(e, 2)));
-  ApplyAndPushMove(new Move(GetField(b, 8)->current_piece, GetField(d, 7)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(g, 1)->current_piece, GetField(e, 2)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(b, 8)->current_piece, GetField(d, 7)));
   // 8. Bh6 Bxh6
-  ApplyAndPushMove(new Move(GetField(e, 3)->current_piece, GetField(h, 6)));
-  ApplyAndPushMove(new Hit(GetField(g, 7)->current_piece, GetField(h, 6)->current_piece));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(e, 3)->current_piece, GetField(h, 6)));
+  ApplyAndPushMove(std::make_shared<Hit>(GetField(g, 7)->current_piece, GetField(h, 6)->current_piece));
   // 9. Qxh6 Bb7
-  ApplyAndPushMove(new Hit(GetField(d, 2)->current_piece, GetField(h, 6)->current_piece));
-  ApplyAndPushMove(new Move(GetField(c, 8)->current_piece, GetField(b, 7)));
+  ApplyAndPushMove(std::make_shared<Hit>(GetField(d, 2)->current_piece, GetField(h, 6)->current_piece));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(c, 8)->current_piece, GetField(b, 7)));
   // 10. a3 e5
-  ApplyAndPushMove(new Move(GetField(a, 2)->current_piece, GetField(a, 3)));
-  ApplyAndPushMove(new Move(GetField(e, 7)->current_piece, GetField(e, 5)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(a, 2)->current_piece, GetField(a, 3)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(e, 7)->current_piece, GetField(e, 5)));
   // 11. O-O-O Qe7
-  ApplyAndPushMove(new Castling(GetKing(true), GetRook(true, true), GetField(c, 1), GetField(d, 1)));
-  ApplyAndPushMove(new Move(GetField(d, 8)->current_piece, GetField(e, 7)));
+  ApplyAndPushMove(std::make_shared<Castling>(GetKing(true), GetRook(true, true), GetField(c, 1), GetField(d, 1)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(d, 8)->current_piece, GetField(e, 7)));
   // 12. Kb1 a6
-  ApplyAndPushMove(new Move(GetField(c, 1)->current_piece, GetField(b, 1)));
-  ApplyAndPushMove(new Move(GetField(a, 7)->current_piece, GetField(a, 6)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(c, 1)->current_piece, GetField(b, 1)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(a, 7)->current_piece, GetField(a, 6)));
   // 13. Nc1 O-O-O
-  ApplyAndPushMove(new Move(GetField(e, 2)->current_piece, GetField(c, 1)));
-  ApplyAndPushMove(new Castling(GetKing(false), GetRook(false, true), GetField(c, 8), GetField(d, 8)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(e, 2)->current_piece, GetField(c, 1)));
+  ApplyAndPushMove(std::make_shared<Castling>(GetKing(false), GetRook(false, true), GetField(c, 8), GetField(d, 8)));
   // 14. Nb3 exd4
-  ApplyAndPushMove(new Move(GetField(c, 1)->current_piece, GetField(b, 3)));
-  ApplyAndPushMove(new Hit(GetField(e, 5)->current_piece, GetField(d, 4)->current_piece));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(c, 1)->current_piece, GetField(b, 3)));
+  ApplyAndPushMove(std::make_shared<Hit>(GetField(e, 5)->current_piece, GetField(d, 4)->current_piece));
   // 15. Rxd4 c5
-  ApplyAndPushMove(new Hit(GetField(d, 1)->current_piece, GetField(d, 4)->current_piece));
-  ApplyAndPushMove(new Move(GetField(c, 6)->current_piece, GetField(c, 5)));
+  ApplyAndPushMove(std::make_shared<Hit>(GetField(d, 1)->current_piece, GetField(d, 4)->current_piece));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(c, 6)->current_piece, GetField(c, 5)));
   // 16. Rd1 Nb6
-  ApplyAndPushMove(new Move(GetField(d, 4)->current_piece, GetField(d, 1)));
-  ApplyAndPushMove(new Move(GetField(d, 7)->current_piece, GetField(b, 6)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(d, 4)->current_piece, GetField(d, 1)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(d, 7)->current_piece, GetField(b, 6)));
   // 17. g3 Kb8
-  ApplyAndPushMove(new Move(GetField(g, 2)->current_piece, GetField(g, 3)));
-  ApplyAndPushMove(new Move(GetField(c, 8)->current_piece, GetField(b, 8)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(g, 2)->current_piece, GetField(g, 3)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(c, 8)->current_piece, GetField(b, 8)));
   // 18. Na5 Ba8
-  ApplyAndPushMove(new Move(GetField(b, 3)->current_piece, GetField(a, 5)));
-  ApplyAndPushMove(new Move(GetField(b, 7)->current_piece, GetField(a, 8)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(b, 3)->current_piece, GetField(a, 5)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(b, 7)->current_piece, GetField(a, 8)));
   // 19. Bh3 d5
-  ApplyAndPushMove(new Move(GetField(f, 1)->current_piece, GetField(h, 3)));
-  ApplyAndPushMove(new Move(GetField(d, 6)->current_piece, GetField(d, 5)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(f, 1)->current_piece, GetField(h, 3)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(d, 6)->current_piece, GetField(d, 5)));
   // 20. Qf4+ Ka7
-  ApplyAndPushMove(new Move(GetField(h, 6)->current_piece, GetField(f, 4)));
-  ApplyAndPushMove(new Move(GetField(b, 8)->current_piece, GetField(a, 7)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(h, 6)->current_piece, GetField(f, 4)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(b, 8)->current_piece, GetField(a, 7)));
   // 21. Rhe1 d4
-  ApplyAndPushMove(new Move(GetField(h, 1)->current_piece, GetField(e, 1)));
-  ApplyAndPushMove(new Move(GetField(d, 5)->current_piece, GetField(d, 4)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(h, 1)->current_piece, GetField(e, 1)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(d, 5)->current_piece, GetField(d, 4)));
   // 22. Nd5 Nbxd5
-  ApplyAndPushMove(new Move(GetField(c, 3)->current_piece, GetField(d, 5)));
-  ApplyAndPushMove(new Hit(GetField(b, 6)->current_piece, GetField(d, 5)->current_piece));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(c, 3)->current_piece, GetField(d, 5)));
+  ApplyAndPushMove(std::make_shared<Hit>(GetField(b, 6)->current_piece, GetField(d, 5)->current_piece));
   // 23. exd5 Qd6
-  ApplyAndPushMove(new Hit(GetField(e, 4)->current_piece, GetField(d, 5)->current_piece));
-  ApplyAndPushMove(new Move(GetField(e, 7)->current_piece, GetField(d, 6)));
+  ApplyAndPushMove(std::make_shared<Hit>(GetField(e, 4)->current_piece, GetField(d, 5)->current_piece));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(e, 7)->current_piece, GetField(d, 6)));
   // 24. Rxd4 cxd4
-  ApplyAndPushMove(new Hit(GetField(d, 1)->current_piece, GetField(d, 4)->current_piece));
-  ApplyAndPushMove(new Hit(GetField(c, 5)->current_piece, GetField(d, 4)->current_piece));
+  ApplyAndPushMove(std::make_shared<Hit>(GetField(d, 1)->current_piece, GetField(d, 4)->current_piece));
+  ApplyAndPushMove(std::make_shared<Hit>(GetField(c, 5)->current_piece, GetField(d, 4)->current_piece));
   // 25. Re7+ Kb6
-  ApplyAndPushMove(new Move(GetField(e, 1)->current_piece, GetField(e, 7)));
-  ApplyAndPushMove(new Move(GetField(a, 7)->current_piece, GetField(b, 6)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(e, 1)->current_piece, GetField(e, 7)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(a, 7)->current_piece, GetField(b, 6)));
   // 26. Qxd4+ Kxa5
-  ApplyAndPushMove(new Hit(GetField(f, 4)->current_piece, GetField(d, 4)->current_piece));
-  ApplyAndPushMove(new Hit(GetField(b, 6)->current_piece, GetField(a, 5)->current_piece));
+  ApplyAndPushMove(std::make_shared<Hit>(GetField(f, 4)->current_piece, GetField(d, 4)->current_piece));
+  ApplyAndPushMove(std::make_shared<Hit>(GetField(b, 6)->current_piece, GetField(a, 5)->current_piece));
   // 27. b4+ Ka4
-  ApplyAndPushMove(new Move(GetField(b, 2)->current_piece, GetField(b, 4)));
-  ApplyAndPushMove(new Move(GetField(a, 5)->current_piece, GetField(a, 4)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(b, 2)->current_piece, GetField(b, 4)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(a, 5)->current_piece, GetField(a, 4)));
   // 28. Qc3 Qxd5
-  ApplyAndPushMove(new Move(GetField(d, 4)->current_piece, GetField(c, 3)));
-  ApplyAndPushMove(new Hit(GetField(d, 6)->current_piece, GetField(d, 5)->current_piece));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(d, 4)->current_piece, GetField(c, 3)));
+  ApplyAndPushMove(std::make_shared<Hit>(GetField(d, 6)->current_piece, GetField(d, 5)->current_piece));
   // 29. Ra7 Bb7
-  ApplyAndPushMove(new Move(GetField(e, 7)->current_piece, GetField(a, 7)));
-  ApplyAndPushMove(new Move(GetField(a, 8)->current_piece, GetField(b, 7)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(e, 7)->current_piece, GetField(a, 7)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(a, 8)->current_piece, GetField(b, 7)));
   // 30. Rxb7 Qc4
-  ApplyAndPushMove(new Hit(GetField(a, 7)->current_piece, GetField(b, 7)->current_piece));
-  ApplyAndPushMove(new Move(GetField(d, 5)->current_piece, GetField(c, 4)));
+  ApplyAndPushMove(std::make_shared<Hit>(GetField(a, 7)->current_piece, GetField(b, 7)->current_piece));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(d, 5)->current_piece, GetField(c, 4)));
   // 31. Qxf6 Kxa3
-  ApplyAndPushMove(new Hit(GetField(c, 3)->current_piece, GetField(f, 6)->current_piece));
-  ApplyAndPushMove(new Hit(GetField(a, 4)->current_piece, GetField(a, 3)->current_piece));
+  ApplyAndPushMove(std::make_shared<Hit>(GetField(c, 3)->current_piece, GetField(f, 6)->current_piece));
+  ApplyAndPushMove(std::make_shared<Hit>(GetField(a, 4)->current_piece, GetField(a, 3)->current_piece));
   // 32. Qxa6+ Kxb4
-  ApplyAndPushMove(new Hit(GetField(f, 6)->current_piece, GetField(a, 6)->current_piece));
-  ApplyAndPushMove(new Hit(GetField(a, 3)->current_piece, GetField(b, 4)->current_piece));
+  ApplyAndPushMove(std::make_shared<Hit>(GetField(f, 6)->current_piece, GetField(a, 6)->current_piece));
+  ApplyAndPushMove(std::make_shared<Hit>(GetField(a, 3)->current_piece, GetField(b, 4)->current_piece));
   // 33. c3+ Kxc3
-  ApplyAndPushMove(new Move(GetField(c, 2)->current_piece, GetField(c, 3)));
-  ApplyAndPushMove(new Hit(GetField(b, 4)->current_piece, GetField(c, 3)->current_piece));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(c, 2)->current_piece, GetField(c, 3)));
+  ApplyAndPushMove(std::make_shared<Hit>(GetField(b, 4)->current_piece, GetField(c, 3)->current_piece));
   // 34. Qa1+ Kd2
-  ApplyAndPushMove(new Move(GetField(a, 6)->current_piece, GetField(a, 1)));
-  ApplyAndPushMove(new Move(GetField(c, 3)->current_piece, GetField(d, 2)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(a, 6)->current_piece, GetField(a, 1)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(c, 3)->current_piece, GetField(d, 2)));
   // 35. Qb2+ Kd1
-  ApplyAndPushMove(new Move(GetField(a, 1)->current_piece, GetField(b, 2)));
-  ApplyAndPushMove(new Move(GetField(d, 2)->current_piece, GetField(d, 1)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(a, 1)->current_piece, GetField(b, 2)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(d, 2)->current_piece, GetField(d, 1)));
   // 36. Bf1 Rd2
-  ApplyAndPushMove(new Move(GetField(h, 3)->current_piece, GetField(f, 1)));
-  ApplyAndPushMove(new Move(GetField(d, 8)->current_piece, GetField(d, 2)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(h, 3)->current_piece, GetField(f, 1)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(d, 8)->current_piece, GetField(d, 2)));
   // 37. Rd7 Rxd7
-  ApplyAndPushMove(new Move(GetField(b, 7)->current_piece, GetField(d, 7)));
-  ApplyAndPushMove(new Hit(GetField(d, 2)->current_piece, GetField(d, 7)->current_piece));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(b, 7)->current_piece, GetField(d, 7)));
+  ApplyAndPushMove(std::make_shared<Hit>(GetField(d, 2)->current_piece, GetField(d, 7)->current_piece));
   // 38. Bxc4 bxc4
-  ApplyAndPushMove(new Hit(GetField(f, 1)->current_piece, GetField(c, 4)->current_piece));
-  ApplyAndPushMove(new Hit(GetField(b, 5)->current_piece, GetField(c, 4)->current_piece));
+  ApplyAndPushMove(std::make_shared<Hit>(GetField(f, 1)->current_piece, GetField(c, 4)->current_piece));
+  ApplyAndPushMove(std::make_shared<Hit>(GetField(b, 5)->current_piece, GetField(c, 4)->current_piece));
   // 39. Qxh8 Rd3
-  ApplyAndPushMove(new Hit(GetField(b, 2)->current_piece, GetField(h, 8)->current_piece));
-  ApplyAndPushMove(new Move(GetField(d, 7)->current_piece, GetField(d, 3)));
+  ApplyAndPushMove(std::make_shared<Hit>(GetField(b, 2)->current_piece, GetField(h, 8)->current_piece));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(d, 7)->current_piece, GetField(d, 3)));
   // 40. Qa8 c3
-  ApplyAndPushMove(new Move(GetField(h, 8)->current_piece, GetField(a, 8)));
-  ApplyAndPushMove(new Move(GetField(c, 4)->current_piece, GetField(c, 3)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(h, 8)->current_piece, GetField(a, 8)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(c, 4)->current_piece, GetField(c, 3)));
   // 41. Qa4+ Ke1
-  ApplyAndPushMove(new Move(GetField(a, 8)->current_piece, GetField(a, 4)));
-  ApplyAndPushMove(new Move(GetField(d, 1)->current_piece, GetField(e, 1)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(a, 8)->current_piece, GetField(a, 4)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(d, 1)->current_piece, GetField(e, 1)));
   // 42. f4 f5
-  ApplyAndPushMove(new Move(GetField(f, 3)->current_piece, GetField(f, 4)));
-  ApplyAndPushMove(new Move(GetField(f, 7)->current_piece, GetField(f, 5)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(f, 3)->current_piece, GetField(f, 4)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(f, 7)->current_piece, GetField(f, 5)));
   // 43. Kc1 Rd2
-  ApplyAndPushMove(new Move(GetField(b, 1)->current_piece, GetField(c, 1)));
-  ApplyAndPushMove(new Move(GetField(d, 3)->current_piece, GetField(d, 2)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(b, 1)->current_piece, GetField(c, 1)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(d, 3)->current_piece, GetField(d, 2)));
   // 44. Qa7 1-0
-  ApplyAndPushMove(new Move(GetField(a, 4)->current_piece, GetField(a, 7)));
+  ApplyAndPushMove(std::make_shared<Move>(GetField(a, 4)->current_piece, GetField(a, 7)));
 }
