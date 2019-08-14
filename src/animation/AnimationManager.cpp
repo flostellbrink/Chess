@@ -19,6 +19,7 @@ void AnimationManager::Update(const float elapsedTime)
   {
     active_animations_.erase(std::remove(active_animations_.begin(), active_animations_.end(), animation),
                              active_animations_.end());
+    delete animation;
   }
   finished_animations_.clear();
 
@@ -36,6 +37,7 @@ void AnimationManager::Update(const float elapsedTime)
     independent_animations_.erase(
       std::remove(independent_animations_.begin(), independent_animations_.end(), animation),
       independent_animations_.end());
+    delete animation;
   }
   finished_animations_.clear();
 
@@ -73,6 +75,15 @@ bool AnimationManager::IsBusy() const
 
 void AnimationManager::Reset()
 {
+  for (auto animation : active_animations_)
+  {
+    delete animation;
+  }
   active_animations_.clear();
+
+  for (auto animation : queued_animations_)
+  {
+    delete animation;
+  }
   queued_animations_.clear();
 }
