@@ -71,6 +71,10 @@ float Clock::GetHandRotation(const float time, const int secondsPerRotation) con
 
 void Clock::Update(const float elapsedTimeMs)
 {
+  // Do not run clock when animations are running
+  if (ObjectManager::instance.animation.IsBusy())
+    return;
+
   time_counter_ += elapsedTimeMs;
 
   auto whiteTurn =  ObjectManager::instance.game_board->IsWhitesTurn();
