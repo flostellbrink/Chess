@@ -32,9 +32,8 @@
 
 const int board_size = 8;
 
-Board::Board(Camera* camera)
+Board::Board()
 {
-  camera_ = camera;
   auto manager = &ObjectManager::instance;
   const auto center = glm::vec3(0, -1, 0);
   const auto size = glm::vec3(8.5f, 1, 8.5f);
@@ -143,30 +142,6 @@ Board::Board(Camera* camera)
   ObjectManager::animation.PlayIndependent(
     new LoopingAnimation<float>(new LinearAnimation<float>(5000, overlay_rotation, 0, 2 * glm::pi<float>())));
 
-  std::vector<AnimationBase*> group1 = {
-    new FadeAnimation<glm::vec2>(2000, camera_->camera_rotation, camera_->camera_rotation, glm::vec2(0.0f, -1.5f)),
-    new FadeAnimation<float>(2000, camera_->zoom_factor, camera_->zoom_factor, 2.0f)
-  };
-  ObjectManager::animation.PlayLast(new GroupAnimation(group1));
-
-  std::vector<AnimationBase*> group2 = {
-    new FadeAnimation<glm::vec2>(5000, camera_->camera_rotation, glm::vec2(0.0f, -1.5f), glm::vec2(0.0f, -1.5f)),
-    new FadeAnimation<float>(5000, camera_->zoom_factor, 2.0f, 0.1f)
-  };
-  ObjectManager::animation.PlayLast(new GroupAnimation(group2));
-
-  std::vector<AnimationBase*> group3 = {
-    new FadeAnimation<glm::vec2>(5000, camera_->camera_rotation, glm::vec2(0.0f, -1.5f), glm::vec2(0.5f * glm::pi<float>(), -1.5f)),
-    new FadeAnimation<float>(5000, camera_->zoom_factor, 0.1f, 1.0f)
-  };
-  ObjectManager::animation.PlayLast(new GroupAnimation(group3));
-
-  std::vector<AnimationBase*> group4 = {
-    new FadeAnimation<glm::vec2>(2000, camera_->camera_rotation, glm::vec2(0.5f * glm::pi<float>(), -1.5f), camera_->camera_rotation),
-    new FadeAnimation<float>(2000, camera_->zoom_factor, 1.0f, camera_->zoom_factor)
-  };
-  ObjectManager::animation.PlayLast(new GroupAnimation(group4));
-
   NewTurn();
 }
 
@@ -273,7 +248,6 @@ void Board::Update(const float elapsedTime)
 void Board::ChangeTurn()
 {
   white_turn_ = !white_turn_;
-  camera_->SetBoardSide(use_ai_ ? true : white_turn_);
   Logger::Info((white_turn_ ? "Whites turn" : "Blacks turn"));
 }
 

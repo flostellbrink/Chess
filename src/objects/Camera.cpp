@@ -8,6 +8,7 @@
 #include "ObjectManager.h"
 #include "src/animation/FadeAnimation.h"
 #include "src/animation/DelayAnimation.h"
+#include "src/animation/GroupAnimation.h"
 
 const float cam_speed = 0.002f, cam_zoom = 10;
 
@@ -17,6 +18,29 @@ Camera::Camera()
     mouse_moving_(false),
     white_side_(true)
 {
+  std::vector<AnimationBase*> group1 = {
+    new FadeAnimation<glm::vec2>(2000, camera_rotation, camera_rotation, glm::vec2(0.0f, -1.5f)),
+    new FadeAnimation<float>(2000, zoom_factor, zoom_factor, 2.0f)
+  };
+  ObjectManager::animation.PlayLast(new GroupAnimation(group1));
+
+  std::vector<AnimationBase*> group2 = {
+    new FadeAnimation<glm::vec2>(5000, camera_rotation, glm::vec2(0.0f, -1.5f), glm::vec2(0.0f, -1.5f)),
+    new FadeAnimation<float>(5000, zoom_factor, 2.0f, 0.1f)
+  };
+  ObjectManager::animation.PlayLast(new GroupAnimation(group2));
+
+  std::vector<AnimationBase*> group3 = {
+    new FadeAnimation<glm::vec2>(5000, camera_rotation, glm::vec2(0.0f, -1.5f), glm::vec2(0.5f * glm::pi<float>(), -1.5f)),
+    new FadeAnimation<float>(5000, zoom_factor, 0.1f, 1.0f)
+  };
+  ObjectManager::animation.PlayLast(new GroupAnimation(group3));
+
+  std::vector<AnimationBase*> group4 = {
+    new FadeAnimation<glm::vec2>(2000, camera_rotation, glm::vec2(0.5f * glm::pi<float>(), -1.5f), camera_rotation),
+    new FadeAnimation<float>(2000, zoom_factor, 1.0f, zoom_factor)
+  };
+  ObjectManager::animation.PlayLast(new GroupAnimation(group4));
 }
 
 glm::vec3 Camera::Position() const
@@ -59,8 +83,6 @@ glm::mat4 Camera::Projection()
 
 void Camera::SetBoardSide(const bool whiteSide)
 {
-  ObjectManager::animation.PlayLast(new DelayAnimation<float>(500));
-
   if (whiteSide == white_side_)
   {
     return;
@@ -76,6 +98,7 @@ void Camera::SetBoardSide(const bool whiteSide)
     auto_rotation_.x -= 2.f * glm::pi<float>();
   if (!whiteSide && auto_rotation_.x < 0)
     auto_rotation_.x += 2.f * glm::pi<float>();
+  ObjectManager::animation.PlayLast(new DelayAnimation<float>(500));
   ObjectManager::animation.PlayLast(
     new FadeAnimation<glm::vec2>(1500, auto_rotation_, auto_rotation_, glm::vec2(whiteSide ? 0 : glm::pi<float>(), 0)));
 }

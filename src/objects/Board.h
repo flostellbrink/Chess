@@ -15,7 +15,7 @@ class MoveBase;
 class Board
 {
 public:
-  explicit Board(Camera* camera);
+  explicit Board();
   static void ResetGame();
   void NewTurn();
   void Update(float elapsedTime);
@@ -67,7 +67,6 @@ private:
   bool use_ai_ = false;
   bool ai_overdue_ = false;
   float ai_timer_ = 0.0f;
-  Camera* camera_;
   Collision* bounding_box_;
   void ApplyAndPushMove(MoveBase* move);
 
