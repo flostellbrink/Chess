@@ -14,6 +14,7 @@ const float cam_speed = 0.002f, cam_zoom = 10;
 
 Camera::Camera()
   : zoom_factor(3.0f),
+    auto_rotation_(0, 0),
     camera_rotation(0, -0.75f),
     mouse_moving_(false),
     white_side_(true)
@@ -41,6 +42,17 @@ Camera::Camera()
     new FadeAnimation<float>(2000, zoom_factor, 1.0f, zoom_factor)
   };
   ObjectManager::animation.PlayLast(new GroupAnimation(group4));
+}
+
+void Camera::Reset()
+{
+  white_side_ = true;
+  std::vector<AnimationBase*> group = {
+    new FadeAnimation<float>(1000, zoom_factor, zoom_factor, 3.0f),
+    new FadeAnimation<glm::vec2>(1000, camera_rotation, camera_rotation + auto_rotation_, {0, -0.75f})
+  };
+  auto_rotation_ = {0, 0};
+  ObjectManager::animation.PlayLast(new GroupAnimation(group));
 }
 
 glm::vec3 Camera::Position() const

@@ -7,6 +7,7 @@ class Camera
 {
 public:
   Camera();
+  void Reset();
   void MouseDown();
   void MouseUp();
   void MouseMove(glm::vec2 mousePos);

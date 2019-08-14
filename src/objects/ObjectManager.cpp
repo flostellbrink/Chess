@@ -34,6 +34,7 @@ void ObjectManager::NewGame()
   AddObject(new BasicObject(objects::table, glm::vec3(0, -1, 0), 0, "Basic"));
   // Creates all game related objects itself
   game_board = new Board();
+  camera_.Reset();
 
   // Post processing
   AddPost(new FullScreenQuad("res/shader/Blur.vs.glsl", "res/shader/BlurVer.fs.glsl"));
