@@ -27,14 +27,24 @@ ObjectManager::ObjectManager() = default;
 
 void ObjectManager::NewGame()
 {
+  for (auto obj : objects_)
+  {
+    delete obj;
+  }
   objects_.clear();
+
+  for (auto post : post_processors_)
+  {
+    delete post;
+  }
   post_processors_.clear();
+
   delete game_board;
+
   skybox_.Init();
-  AddObject(new BasicObject(objects::table, glm::vec3(0, -1, 0), 0, "Basic"));
-  // Creates all game related objects itself
-  game_board = new Board();
   camera_.Reset();
+  AddObject(new BasicObject(objects::table, glm::vec3(0, -1, 0), 0, "Basic"));
+  game_board = new Board();
 
   // Post processing
   AddPost(new FullScreenQuad("res/shader/Blur.vs.glsl", "res/shader/BlurVer.fs.glsl"));
