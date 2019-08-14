@@ -9,8 +9,8 @@ class CollisionManager
 {
 public:
   CollisionManager();
-  static Collision* GetAabb(glm::vec3 min, glm::vec3 max);
-  static Collision* GetRay(glm::vec3 from, glm::vec3 to);
+  static Collision GetAabb(glm::vec3 min, glm::vec3 max);
+  static Collision GetRay(glm::vec3 from, glm::vec3 to);
 };
 
 

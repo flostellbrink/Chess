@@ -6,7 +6,8 @@
 #include <stack>
 #include <tuple>
 
-class Collision;
+#include "src/collision/Collision.h"
+
 class Piece;
 class Field;
 class Camera;
@@ -31,7 +32,7 @@ public:
   Piece* GetKing(bool isWhite);
   Piece* GetRook(bool isWhite, bool isLeft);
   Field* GetField(int column, int row);
-  bool IntersectsGame(Collision* collision, Piece* except = nullptr);
+  bool IntersectsGame(const Collision& collision, const Piece* except = nullptr);
   void RunDemo();
   bool IsWhitesTurn() const;
   void SetState(int state);
@@ -67,7 +68,8 @@ private:
   bool use_ai_ = false;
   bool ai_overdue_ = false;
   float ai_timer_ = 0.0f;
-  Collision* bounding_box_;
+  glm::vec3 position_, size_;
+  Collision bounding_box_;
   void ApplyAndPushMove(MoveBase* move);
 
   std::default_random_engine generator_;

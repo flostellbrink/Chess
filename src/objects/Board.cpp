@@ -34,11 +34,12 @@
 const int board_size = 8;
 
 Board::Board()
+  : position_(0, -0.5f, 0)
+  , size_(8.5f, 1.0f, 8.5f)
+  , bounding_box_(CollisionManager::GetAabb(position_ - size_ * 0.5f, position_ + size_ * 0.5f))
+
 {
   auto manager = &ObjectManager::instance;
-  const auto center = glm::vec3(0, -1, 0);
-  const auto size = glm::vec3(8.5f, 1, 8.5f);
-  bounding_box_ = CollisionManager::GetAabb(center - size, center + size);
 
   // Create fields
   for (auto i = 0; i < board_size; ++i)
@@ -569,17 +570,17 @@ bool Board::IsKingInMate()
   return false;
 }
 
-bool Board::IntersectsGame(Collision* collision, Piece* except)
+bool Board::IntersectsGame(const Collision& collision, const Piece* except)
 {
   for (auto piece : pieces_)
   {
-    if (piece != except && piece->bounding_box->Intersects(collision))
+    if (piece != except && piece->GetBoundingBox().Intersects(collision))
     {
       return true;
     }
   }
 
-  return collision->Intersects(bounding_box_);
+  return collision.Intersects(bounding_box_);
 }
 
 bool Board::IsCastlingPossible(const bool isWhite, const bool isLeft)

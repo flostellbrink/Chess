@@ -7,12 +7,12 @@
 
 CollisionManager::CollisionManager() = default;
 
-Collision* CollisionManager::GetAabb(const glm::vec3 min, const glm::vec3 max)
+Collision CollisionManager::GetAabb(const glm::vec3 min, const glm::vec3 max)
 {
-  return new Collision(Collision::aabb, min, max);
+  return Collision(Collision::aabb, min, max);
 }
 
-Collision* CollisionManager::GetRay(const glm::vec3 from, const glm::vec3 to)
+Collision CollisionManager::GetRay(const glm::vec3 from, const glm::vec3 to)
 {
-  return new Collision(Collision::ray, from, to);
+  return Collision(Collision::ray, from, to);
 }

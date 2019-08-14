@@ -29,14 +29,14 @@ Collision::Collision(const int type, const glm::vec3 vecA, const glm::vec3 vecB)
   }
 }
 
-bool aabb_coll_aabb(Collision* a, Collision* b)
+bool aabb_coll_aabb(const Collision& a, const Collision& b)
 {
-  return a->max.x >= b->min.x && b->max.x >= a->min.x
-    && a->max.y >= b->min.y && b->max.y >= a->min.y
-    && a->max.z >= b->min.z && b->max.z >= a->min.z;
+  return a.max.x >= b.min.x && b.max.x >= a.min.x
+    && a.max.y >= b.min.y && b.max.y >= a.min.y
+    && a.max.z >= b.min.z && b.max.z >= a.min.z;
 }
 
-bool ray_coll_ray(Collision* a, Collision* b)
+bool ray_coll_ray(const Collision& a, const Collision& b)
 {
   (void)a;
   (void)b;
@@ -44,14 +44,14 @@ bool ray_coll_ray(Collision* a, Collision* b)
   return false;
 }
 
-bool aabb_coll_ray(Collision* a, Collision* b, const float minLength, const float maxLength)
+bool aabb_coll_ray(const Collision& a, const Collision& b, const float minLength, const float maxLength)
 {
-  const auto t1 = (a->min.x - b->origin.x) / b->dir.x;
-  const auto t2 = (a->max.x - b->origin.x) / b->dir.x;
-  const auto t3 = (a->min.y - b->origin.y) / b->dir.y;
-  const auto t4 = (a->max.y - b->origin.y) / b->dir.y;
-  const auto t5 = (a->min.z - b->origin.z) / b->dir.z;
-  const auto t6 = (a->max.z - b->origin.z) / b->dir.z;
+  const auto t1 = (a.min.x - b.origin.x) / b.dir.x;
+  const auto t2 = (a.max.x - b.origin.x) / b.dir.x;
+  const auto t3 = (a.min.y - b.origin.y) / b.dir.y;
+  const auto t4 = (a.max.y - b.origin.y) / b.dir.y;
+  const auto t5 = (a.min.z - b.origin.z) / b.dir.z;
+  const auto t6 = (a.max.z - b.origin.z) / b.dir.z;
 
   const auto tMin = std::max(std::max(std::min(t1, t2), std::min(t3, t4)), std::min(t5, t6));
   const auto tMax = std::min(std::min(std::max(t1, t2), std::max(t3, t4)), std::max(t5, t6));
@@ -59,33 +59,33 @@ bool aabb_coll_ray(Collision* a, Collision* b, const float minLength, const floa
   return tMax >= tMin && tMax >= minLength && tMin <= maxLength;
 }
 
-bool Collision::Intersects(Collision* other)
+bool Collision::Intersects(const Collision& other) const
 {
-  if (type == aabb && other->type == aabb)
+  if (type == aabb && other.type == aabb)
   {
-    return aabb_coll_aabb(this, other);
+    return aabb_coll_aabb(*this, other);
   }
 
-  if (type == ray && other->type == ray)
+  if (type == ray && other.type == ray)
   {
-    return ray_coll_ray(this, other);
+    return ray_coll_ray(*this, other);
   }
 
-  if (type == aabb && other->type == ray)
+  if (type == aabb && other.type == ray)
   {
-    return aabb_coll_ray(this, other, other->min_length, other->max_length);
+    return aabb_coll_ray(*this, other, other.min_length, other.max_length);
   }
 
-  if (type == ray && other->type == aabb)
+  if (type == ray && other.type == aabb)
   {
-    return aabb_coll_ray(other, this, min_length, max_length);
+    return aabb_coll_ray(other, *this, min_length, max_length);
   }
 
   Logger::Error("Unknown intersection");
   return false;
 }
 
-bool Collision::Contains(const glm::vec3 point) const
+bool Collision::Contains(const glm::vec3& point) const
 {
   switch (type)
   {

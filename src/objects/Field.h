@@ -3,10 +3,10 @@
 #define FIELD_H
 
 #include "Drawable.h"
+#include "src/collision/Collision.h"
 
 class Board;
 class Piece;
-class Collision;
 class Geometry;
 
 class Field : public Drawable
@@ -35,16 +35,15 @@ protected:
   std::string GetVertexShader() override;
   std::string GetFragmentShader() override;
 
-  Collision* bounding_box_;
-
 private:
   int board_x_, board_y_;
-  glm::vec3 position_;
+  glm::vec3 position_, size_;
   Board* board_;
   bool inactive_;
   bool overlay_enabled_ = false;
   int overlay_number_ = 1;
   float overlay_opacity_ = 0;
+  Collision bounding_box_;
 };
 
 

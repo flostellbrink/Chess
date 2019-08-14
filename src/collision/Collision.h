@@ -8,8 +8,8 @@ class Collision
 {
 public:
   Collision(int type, glm::vec3 vecA, glm::vec3 vecB);
-  bool Intersects(Collision* other);
-  bool Contains(glm::vec3 point) const;
+  bool Intersects(const Collision& other) const;
+  bool Contains(const glm::vec3& point) const;
 
   int type{};
 

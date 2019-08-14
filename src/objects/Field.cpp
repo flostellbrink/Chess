@@ -17,14 +17,14 @@
 
 Field::Field(Board* board, const int boardX, const int boardY, const bool inactive)
   : Drawable(inactive ? objects::field00 : objects::field00 + boardX * 8 + boardY)
+  , inactive_(inactive)
+  , board_(board)
+  , board_x_(boardX)
+  , board_y_(boardY)
+  , position_(glm::vec3(board_x_ * 2 - 7, 0, board_y_ * 2 - 7))
+  , size_(glm::vec3(2, 10, 2))
+  , bounding_box_(CollisionManager::GetAabb(CenterPosition() - size_ * 0.5f, CenterPosition() + size_ * 0.5f))
 {
-  inactive_ = inactive;
-  board_ = board;
-  board_x_ = boardX;
-  board_y_ = boardY;
-  position_ = glm::vec3(board_x_ * 2 - 7, 0, board_y_ * 2 - 7);
-  const auto size = glm::vec3(2, 10, 2);
-  bounding_box_ = CollisionManager::GetAabb(CenterPosition() - size * 0.5f, CenterPosition() + size * 0.5f);
 }
 
 void Field::Init()

@@ -20,12 +20,15 @@
 
 
 Piece::Piece(Board* board, const int objectId, Field* field)
-  : Drawable(objectId), field(field), position_(field->TopPosition()), y_rotation_(0)
+  : Drawable(objectId)
+  , field(field)
+  , position_(field->TopPosition())
+  , size_(glm::vec3(1.5f, 5, 1.5f))
+  , y_rotation_(0)
+  , board_(board)
+  , bounding_box_(CollisionManager::GetAabb(position_ - size_ * 0.5f, position_ + size_ * 0.5f))
 {
   field->current_piece = this;
-  board_ = board;
-  bounding_box = CollisionManager::GetAabb(glm::vec3(), glm::vec3());
-  Piece::UpdateBb(Position());
 }
 
 void Piece::Init()
@@ -36,9 +39,8 @@ void Piece::Init()
 
 void Piece::UpdateBb(const glm::vec3 position)
 {
-  const auto size = glm::vec3(1.5f, 5, 1.5f);
-  bounding_box->min = position - size * 0.5f;
-  bounding_box->max = position + size * 0.5f;
+  bounding_box_.min = position - size_ * 0.5f;
+  bounding_box_.max = position + size_ * 0.5f;
 }
 
 glm::vec3 Piece::Position() const
