@@ -13,6 +13,7 @@
 class Board;
 class Clock;
 class Drawable;
+class Updatable;
 
 class ObjectManager
 {
@@ -22,6 +23,7 @@ public:
   void Update(float elapsedTime);
   void Draw();
   void AddObject(Drawable* object);
+  void AddObject(Updatable* object);
   void AddPost(Drawable* object);
 
   void MouseButton(int button, int action);
@@ -42,6 +44,7 @@ public:
 
 protected:
   static void UpdateFramebuffer(GLuint& framebuffer, GLuint& texture, GLuint& depth, int width, int height);
+  std::vector<Updatable*> updatables_;
   std::vector<Drawable*> objects_;
   std::vector<Drawable*> post_processors_;
   Camera camera_;

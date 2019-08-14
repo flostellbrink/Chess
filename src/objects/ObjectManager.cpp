@@ -7,6 +7,7 @@
 #include "ObjectManager.h"
 #include "src/Objects.h"
 #include "Drawable.h"
+#include "Updatable.h"
 #include "Board.h"
 #include "Skybox.h"
 #include "BasicObject.h"
@@ -138,6 +139,11 @@ void ObjectManager::Update(float elapsedTime)
 
     //This prevents skipping of animations
     elapsedTime = 20;
+  }
+
+  for (auto obj : updatables_)
+  {
+    obj->Update(elapsedTime);
   }
 
   for (auto obj : objects_)
@@ -311,6 +317,11 @@ void ObjectManager::AddObject(Drawable* object)
 {
   objects_.push_back(object);
   object->Init();
+}
+
+void ObjectManager::AddObject(Updatable* object)
+{
+  updatables_.push_back(object);
 }
 
 void ObjectManager::AddPost(Drawable* object)
