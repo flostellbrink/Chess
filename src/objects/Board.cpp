@@ -29,6 +29,7 @@
 #include "src/Config.h"
 #include "src/Logger.h"
 #include "src/animation/GroupAnimation.h"
+#include "Clock.h"
 
 const int board_size = 8;
 
@@ -132,6 +133,9 @@ Board::Board()
                                        glm::pi<float>() / 2.f * static_cast<float>(i),
                                        "TexFromWorld"));
   }
+
+  // Add clock
+  manager->AddObject(new Clock());
 
   // Start animations
   Drawable::overlay_state = -1;

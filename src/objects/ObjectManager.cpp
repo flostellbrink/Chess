@@ -13,7 +13,6 @@
 #include "BasicObject.h"
 #include "src/Config.h"
 #include "FullScreenQuad.h"
-#include "Clock.h"
 #include "src/Logger.h"
 
 GeometryManager ObjectManager::geometry;
@@ -35,7 +34,6 @@ void ObjectManager::NewGame()
   AddObject(new BasicObject(objects::table, glm::vec3(0, -1, 0), 0, "Basic"));
   // Creates all game related objects itself
   game_board = new Board();
-  clock = new Clock;
 
   // Post processing
   AddPost(new FullScreenQuad("res/shader/Blur.vs.glsl", "res/shader/BlurVer.fs.glsl"));
@@ -126,11 +124,6 @@ void ObjectManager::Update(float elapsedTime)
     game_board->RunDemo();
   }
 
-  if (clock->Timeout())
-  {
-    game_board->SetState(clock->Timeout());
-  }
-
   if (elapsedTime > 200)
   {
     std::stringstream message;
@@ -152,7 +145,6 @@ void ObjectManager::Update(float elapsedTime)
   }
   game_board->Update(elapsedTime);
   animation.Update(elapsedTime);
-  clock->Update(elapsedTime, game_board->IsWhitesTurn());
 
   camera_.SetBoardSide(game_board->GetAi() ? true : game_board->IsWhitesTurn());
 }

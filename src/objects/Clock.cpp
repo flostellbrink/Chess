@@ -6,7 +6,7 @@
 #include "Clock.h"
 #include "src/Objects.h"
 #include "ObjectManager.h"
-#include "BasicObject.h"
+#include "Board.h"
 
 BasicObject* rotate_x(BasicObject* object, const float rotation)
 {
@@ -20,7 +20,13 @@ BasicObject* rotate_z(BasicObject* object, const float rotation)
   return object;
 }
 
-Clock::Clock()
+Clock::Clock() :
+  white_minutes_hand_(objects::white_minutes_hand, glm::vec3(-3.4f, 3, 16.8f), 0, "NoLight"),
+  white_seconds_hand_(objects::white_seconds_hand, glm::vec3(-3.4f, 3, 16.8f), 0, "NoLight"),
+  white_clock_button_(objects::clock_button, glm::vec3(-4, 6, 18)),
+  black_minutes_hand_(objects::black_minutes_hand, glm::vec3(3.4f, 3, 16.8f), 0, "NoLight"),
+  black_seconds_hand_(objects::black_seconds_hand, glm::vec3(3.4f, 3, 16.8f), 0, "NoLight"),
+  black_clock_button_(objects::clock_button, glm::vec3(4, 5.5f, 18))
 {
   white_time_ = black_time_ = start_time_;
   auto manager = &ObjectManager::instance;
@@ -33,12 +39,9 @@ Clock::Clock()
   manager->AddObject(new BasicObject(objects::clock_leg, glm::vec3(-4, -1, 17.5f)));
 
   // Clock parts for black
-  black_clock_button_ = new BasicObject(objects::clock_button, glm::vec3(4, 5.5f, 18));
-  black_minutes_hand_ = new BasicObject(objects::black_minutes_hand, glm::vec3(3.4f, 3, 16.8f), 0, "NoLight");
-  black_seconds_hand_ = new BasicObject(objects::black_seconds_hand, glm::vec3(3.4f, 3, 16.8f), 0, "NoLight");
-  manager->AddObject(black_clock_button_);
-  manager->AddObject(black_minutes_hand_);
-  manager->AddObject(black_seconds_hand_);
+  manager->AddObject(&black_clock_button_);
+  manager->AddObject(&black_minutes_hand_);
+  manager->AddObject(&black_seconds_hand_);
   manager->AddObject(new BasicObject(objects::clock_button_border, glm::vec3(4, 6, 18)));
   manager->AddObject(rotate_x(new BasicObject(objects::clock_glass_border, glm::vec3(3.4f, 3, 17)),
                               glm::pi<float>() / -2.0f));
@@ -48,12 +51,9 @@ Clock::Clock()
                               2 * glm::pi<float>() * (black_time_ / 3600000)));
 
   /* Clock parts for WHITE */
-  white_clock_button_ = new BasicObject(objects::clock_button, glm::vec3(-4, 6, 18));
-  white_minutes_hand_ = new BasicObject(objects::white_minutes_hand, glm::vec3(-3.4f, 3, 16.8f), 0, "NoLight");
-  white_seconds_hand_ = new BasicObject(objects::white_seconds_hand, glm::vec3(-3.4f, 3, 16.8f), 0, "NoLight");
-  manager->AddObject(white_clock_button_);
-  manager->AddObject(white_minutes_hand_);
-  manager->AddObject(white_seconds_hand_);
+  manager->AddObject(&white_clock_button_);
+  manager->AddObject(&white_minutes_hand_);
+  manager->AddObject(&white_seconds_hand_);
   manager->AddObject(new BasicObject(objects::clock_button_border, glm::vec3(-4, 6, 18)));
   manager->AddObject(rotate_x(new BasicObject(objects::clock_glass_border, glm::vec3(-3.4f, 3, 17)),
                               glm::pi<float>() / -2.0f));
@@ -69,14 +69,26 @@ float Clock::GetHandRotation(const float time, const int secondsPerRotation) con
   return -2 * glm::pi<float>() * (time - start_time_) / msPerRotation;
 }
 
-void Clock::Update(const float elapsedTimeMs, const bool whiteTurn)
+void Clock::Update(const float elapsedTimeMs)
 {
   time_counter_ += elapsedTimeMs;
 
+  auto whiteTurn =  ObjectManager::instance.game_board->IsWhitesTurn();
   if (whiteTurn != white_on_clock_)
   {
     white_on_clock_ = whiteTurn;
-    SwitchPlayer(whiteTurn);
+    time_counter_ = 0.f;
+
+    if (whiteTurn)
+    {
+      black_clock_button_.Position(glm::vec3(4, 5.5f, 18));
+      white_clock_button_.Position(glm::vec3(-4, 6, 18));
+    }
+    else
+    {
+      black_clock_button_.Position(glm::vec3(4, 6, 18));
+      white_clock_button_.Position(glm::vec3(-4, 5.5f, 18));
+    }
   }
 
   // Delay cap is hit, start reducing time from the active player's clock
@@ -91,13 +103,13 @@ void Clock::Update(const float elapsedTimeMs, const bool whiteTurn)
     {
       // White still has time remaining, reduce time and move clock hands
       white_time_ -= elapsedTimeMs;
-      white_seconds_hand_->SetRotationZ(GetHandRotation(white_time_, 60));
-      white_minutes_hand_->SetRotationZ(GetHandRotation(white_time_, 3600));
+      white_seconds_hand_.SetRotationZ(GetHandRotation(white_time_, 60));
+      white_minutes_hand_.SetRotationZ(GetHandRotation(white_time_, 3600));
     }
     else
     {
       // White has no more time, set timeout status indicating black wins
-      timeout_status_ = 3;
+      ObjectManager::instance.game_board->SetState(3);
     }
   }
   else
@@ -105,33 +117,12 @@ void Clock::Update(const float elapsedTimeMs, const bool whiteTurn)
     if (black_time_ > 0)
     {
       black_time_ -= elapsedTimeMs;
-      black_seconds_hand_->SetRotationZ(GetHandRotation(black_time_, 60));
-      black_minutes_hand_->SetRotationZ(GetHandRotation(black_time_, 3600));
+      black_seconds_hand_.SetRotationZ(GetHandRotation(black_time_, 60));
+      black_minutes_hand_.SetRotationZ(GetHandRotation(black_time_, 3600));
     }
     else
     {
-      timeout_status_ = 2;
+      ObjectManager::instance.game_board->SetState(2);
     }
-  }
-}
-
-int Clock::Timeout() const
-{
-  return timeout_status_;
-}
-
-void Clock::SwitchPlayer(const bool whiteTurn)
-{
-  time_counter_ = 0.f;
-
-  if (whiteTurn)
-  {
-    black_clock_button_->Position(glm::vec3(4, 5.5f, 18));
-    white_clock_button_->Position(glm::vec3(-4, 6, 18));
-  }
-  else
-  {
-    black_clock_button_->Position(glm::vec3(4, 6, 18));
-    white_clock_button_->Position(glm::vec3(-4, 5.5f, 18));
   }
 }
