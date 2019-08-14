@@ -8,7 +8,6 @@ varying vec3 lightDir;
 varying vec3 camDir;
 varying vec4 model_Position;
 varying vec4 shadow_Position;
-varying vec2 shadow_Samples[5];
 
 uniform sampler2D tex;
 uniform sampler2D texOverlay;
@@ -36,6 +35,12 @@ void main(void)
     float Is        = pow(specAngle, shininess);
 
     // Shadow
+    vec2 shadow_Samples[5];
+    shadow_Samples[0] = shadow_Position.xy;
+    shadow_Samples[1] = shadow_Position.xy + vec2(-.001,-.001);
+    shadow_Samples[2] = shadow_Position.xy + vec2(-.001,+.001);
+    shadow_Samples[3] = shadow_Position.xy + vec2(+.001,-.001);
+    shadow_Samples[4] = shadow_Position.xy + vec2(+.001,+.001);
     float visibility = 1.0;
     for (int i=0;i<5;i++){
         if(shadow_Position.z > texture2D(texShadow, shadow_Samples[i]).z + .01){

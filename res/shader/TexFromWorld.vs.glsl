@@ -19,7 +19,6 @@ varying vec3 lightDir;
 varying vec3 camDir;
 varying vec4 model_Position;
 varying vec4 shadow_Position;
-varying vec2 shadow_Samples[5];
 
 void main(void)
 {
@@ -30,17 +29,6 @@ void main(void)
     shadow_Position = view_projection_shadow * vec4(Pos, 1);
     shadow_Position /= 2.0;
     shadow_Position += vec4(.5);
-    shadow_Samples[0] = shadow_Position.xy;
-    shadow_Samples[1] = shadow_Position.xy + vec2(-.0001, -.0001);
-    shadow_Samples[2] = shadow_Position.xy + vec2(-.0001, +.0001);
-    shadow_Samples[3] = shadow_Position.xy + vec2(+.0001, -.0001);
-    shadow_Samples[4] = shadow_Position.xy + vec2(+.0001, +.0001);
-    /*
-    shadow_Samples[5] = shadow_Position.xy + vec2(0, -.0001);
-    shadow_Samples[6] = shadow_Position.xy + vec2(0, +.0001);
-    shadow_Samples[7] = shadow_Position.xy + vec2(-.0001, 0);
-    shadow_Samples[8] = shadow_Position.xy + vec2(+.0001, 0);
-    */
 
     // needs to be normalized because scale model matrix scews the length
     normal = normalize((tra_inv_model_matrix * vec4(Normal, 1)).xyz);

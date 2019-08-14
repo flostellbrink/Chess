@@ -37,8 +37,8 @@ void ObjectManager::NewGame()
   clock = new Clock;
 
   // Post processing
-  AddPost(new FullScreenQuad("res/shader/BlurVer.vs.glsl", "res/shader/Blur.fs.glsl"));
-  AddPost(new FullScreenQuad("res/shader/BlurHor.vs.glsl", "res/shader/Blur.fs.glsl"));
+  AddPost(new FullScreenQuad("res/shader/Blur.vs.glsl", "res/shader/BlurVer.fs.glsl"));
+  AddPost(new FullScreenQuad("res/shader/Blur.vs.glsl", "res/shader/BlurHor.fs.glsl"));
   AddPost(new FullScreenQuad("res/shader/Overlay.vs.glsl", "res/shader/Overlay.fs.glsl"));
 }
 
