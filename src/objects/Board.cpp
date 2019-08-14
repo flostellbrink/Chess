@@ -302,8 +302,7 @@ void Board::DoAi()
   // Make a move until no moves are left (promotions)
   while (!current_moves_.empty())
   {
-    const auto moveIndex = std::uniform_int_distribution<int
-    >(0, static_cast<int>(current_moves_.size()) - 1)(generator_);
+    const auto moveIndex = std::uniform_int_distribution<int>(0, static_cast<int>(current_moves_.size()) - 1)(generator_);
     FieldClick(current_moves_[moveIndex]->click_field);
   }
 
@@ -376,9 +375,7 @@ void Board::PieceClick(Piece* piece)
   if (!locked_ && piece->IsWhite() == white_turn_)
   {
     ClearOverlays();
-    auto moves = GetValidAndInvalid(piece->GetMoves());
-    current_moves_ = std::get<0>(moves);
-    current_invalid_moves_ = std::get<1>(moves);
+    UpdateCurrentMoves(piece->GetMoves());
     SetOverlays();
   }
   else
@@ -500,24 +497,26 @@ std::vector<MoveBase*> Board::GetValid(std::vector<MoveBase*> moves)
   return result;
 }
 
-std::tuple<std::vector<MoveBase*>, std::vector<MoveBase*>> Board::GetValidAndInvalid(std::vector<MoveBase *> moves)
+void Board::UpdateCurrentMoves(std::vector<MoveBase*> moves)
 {
-  std::vector<MoveBase*> result1, result2;
+  current_moves_.clear();
+  current_invalid_moves_.clear();
   for (auto move : moves)
   {
     all_moves_.push(move);
     move->Apply(this, true);
     if (!IsKingInMate())
-      result1.push_back(move);
+    {
+      current_moves_.push_back(move);
+    }
     else
     {
-      result2.push_back(move);
+      current_invalid_moves_.push_back(move);
     }
 
     move->Undo(this, true);
     all_moves_.pop();
   }
-  return std::tuple<std::vector<MoveBase*>, std::vector<MoveBase*>>(result1, result2);
 }
 
 Piece* Board::GetKing(const bool isWhite)

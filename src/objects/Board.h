@@ -51,7 +51,7 @@ protected:
   void ClearOverlays();
   void SetOverlays();
   std::vector<MoveBase*> GetValid(std::vector<MoveBase*> moves);
-  std::tuple<std::vector<MoveBase*>, std::vector<MoveBase*>> GetValidAndInvalid(std::vector<MoveBase*> moves);
+  void UpdateCurrentMoves(std::vector<MoveBase*> moves);
   bool ExistsValidMove();
   bool IsKingInMate();
   void DoAi();
