@@ -18,7 +18,7 @@ protected:
 
 private:
   float time_counter_ = 0.f, delay_ = 2000.f; // after DELAY ms, reduce time from the clock
-  float white_time_, black_time_, start_time_ = 300000.f; // time for the players
+  float white_time_, black_time_, start_time_ = 2400000.f; // time for the players
   bool white_on_clock_ = true;
 };
 
