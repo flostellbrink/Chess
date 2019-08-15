@@ -11,7 +11,7 @@
 #include "src/animation/CatmullRomAnimation.h"
 #include "src/objects/moves/Hit.h"
 #include "src/objects/moves/Move.h"
-#include "field.h"
+#include "Field.h"
 #include "src/geometry/Geometry.h"
 #include "src/collision/Collision.h"
 #include "Board.h"
