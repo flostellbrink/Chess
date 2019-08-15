@@ -49,9 +49,9 @@ void Camera::Reset()
   white_side_ = true;
   std::vector<AnimationBase*> group = {
     new FadeAnimation<float>(1000, zoom_factor, zoom_factor, 3.0f),
-    new FadeAnimation<glm::vec2>(1000, camera_rotation, camera_rotation + auto_rotation_, {0, -0.75f})
+    new FadeAnimation<glm::vec2>(1000, camera_rotation, camera_rotation, {0, -0.75f}),
+    new FadeAnimation<glm::vec2>(1000, auto_rotation_, auto_rotation_, {0, 0}),
   };
-  auto_rotation_ = {0, 0};
   ObjectManager::animation.PlayLast(new GroupAnimation(group));
 }
 
