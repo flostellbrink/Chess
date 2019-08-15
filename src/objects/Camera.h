@@ -7,6 +7,7 @@ class Camera
 {
 public:
   Camera();
+  void Init();
   void Reset();
   void MouseDown();
   void MouseUp();

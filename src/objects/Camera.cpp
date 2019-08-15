@@ -19,6 +19,10 @@ Camera::Camera()
     mouse_moving_(false),
     white_side_(true)
 {
+}
+
+void Camera::Init()
+{
   std::vector<AnimationBase*> group1 = {
     new FadeAnimation<glm::vec2>(2000, camera_rotation, camera_rotation, glm::vec2(0.0f, -1.5f)),
     new FadeAnimation<float>(2000, zoom_factor, zoom_factor, 2.0f)

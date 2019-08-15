@@ -23,7 +23,16 @@ CollisionManager ObjectManager::collision;
 
 const GLuint default_framebuffer = 0;
 
-ObjectManager::ObjectManager() = default;
+ObjectManager::ObjectManager()
+{
+}
+
+void ObjectManager::Init()
+{
+  NewGame();
+  skybox_.Init();
+  camera_.Init();
+}
 
 void ObjectManager::NewGame()
 {
@@ -32,7 +41,7 @@ void ObjectManager::NewGame()
   post_processors_.clear();
   delete game_board;
 
-  skybox_.Init();
+  
   animation.Reset();
   camera_.Reset();
   Drawable::overlay_state = -1;

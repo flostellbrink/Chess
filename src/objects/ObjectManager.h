@@ -19,6 +19,7 @@ class ObjectManager
 {
 public:
   ObjectManager();
+  void Init();
   void NewGame();
   void Update(float elapsedTime);
   void Draw();

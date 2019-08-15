@@ -186,7 +186,7 @@ int main(int argc, char* argv[])
     glfwSetScrollCallback(window.handle, scroll_callback);
 
     // Create game and renderer
-    ObjectManager::instance.NewGame();
+    ObjectManager::instance.Init();
 
     lastFrameTime = glfwGetTime();
     emscripten_set_main_loop(game_loop, 0, 1);
