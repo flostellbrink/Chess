@@ -29,7 +29,9 @@ void ObjectManager::NewGame()
 {
   for (auto obj : objects_)
   {
-    delete obj;
+    // Cannot delete these, because they may be owned by others.
+    // TODO implement proper memory management
+    // delete obj;
   }
   objects_.clear();
 
