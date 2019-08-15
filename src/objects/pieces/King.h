@@ -7,10 +7,10 @@
 class King : public Piece
 {
 public:
-  King(Board* board, int objectId, Field* field);
+  King(Board& board, int objectId, Field& field);
   void Init() override;
   std::vector<std::shared_ptr<MoveBase>> GetMoves() override;
-  bool IsCopyable() override;
+  bool IsCopyable() const override;
 };
 
 

@@ -14,7 +14,7 @@ class Geometry;
 class Piece : public Drawable
 {
 public:
-  Piece(Board* board, int objectId, Field* field);
+  Piece(Board& board, int objectId, Field& field);
   void Init() override;
   void Draw(glm::mat4 projectionMatrix) override;
   void DrawShadow(glm::mat4 projectionMatrix) override;
@@ -24,15 +24,14 @@ public:
 
   glm::vec3 Position3D() override;
   glm::vec3 Position() const;
-  virtual bool IsWhite(), IsTransformable(), IsCopyable();
-  Field* field = nullptr;
-  Field* GetField() const;
-  void SetField(Field* field, bool sim = false);
+  virtual bool IsWhite() const, IsTransformable() const, IsCopyable() const;
+  Field& GetField() const;
+  void SetField(Field& field, bool sim = false);
   virtual std::vector<std::shared_ptr<MoveBase>> GetMoves() = 0;
-  int GetIdWithoutColor();
+  int GetIdWithoutColor() const;
   bool is_moved = false;
 
-  const Collision& GetBoundingBox() { return bounding_box_; }
+  const Collision& GetBoundingBox() const { return bounding_box_; }
 
 protected:
   virtual void UpdateBb(glm::vec3 position);
@@ -43,7 +42,8 @@ protected:
   glm::vec3 position_, size_;
   Collision bounding_box_;
   float y_rotation_;
-  Board* board_;
+  Board& board_;
+  Field* field;
 };
 
 

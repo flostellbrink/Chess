@@ -8,13 +8,13 @@
 #include "src/objects/Board.h"
 
 
-Pawn::Pawn(Board* board, const int objectId, Field* field) : Piece(board, objectId, field)
+Pawn::Pawn(Board& board, int objectId, Field& field) : Piece(board, objectId, field)
 {
 }
 
 std::vector<std::shared_ptr<MoveBase>> Pawn::GetMoves()
 {
-  auto lastMove = board_->GetLastMove();
+  auto lastMove = board_.GetLastMove();
   std::vector<std::shared_ptr<MoveBase>> result;
   if (IsWhite())
   {
@@ -132,12 +132,12 @@ bool Pawn::UsedDoubleMove()
   return field->Row() != startRow;
 }
 
-bool Pawn::IsTransformable()
+bool Pawn::IsTransformable() const
 {
   return true;
 }
 
-bool Pawn::IsCopyable()
+bool Pawn::IsCopyable() const
 {
   return false;
 }

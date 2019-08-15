@@ -3,7 +3,7 @@
 #include "src/objects/moves/Move.h"
 #include "src/objects/Field.h"
 
-Rook::Rook(Board* board, const int objectId, Field* field) : Piece(board, objectId, field)
+Rook::Rook(Board& board, int objectId, Field& field) : Piece(board, objectId, field)
 {
 }
 

@@ -9,7 +9,7 @@
 #include "src/objects/Board.h"
 
 
-King::King(Board* board, const int objectId, Field* field) : Piece(board, objectId, field)
+King::King(Board& board, const int objectId, Field& field) : Piece(board, objectId, field)
 {
 }
 
@@ -36,14 +36,14 @@ std::vector<std::shared_ptr<MoveBase>> King::GetMoves()
     AddHitOrMove(field->down->left, result);
     AddHitOrMove(field->down->right, result);
   }
-  if (board_->IsCastlingPossible(IsWhite(), true))
-    result.push_back(std::make_shared<Castling>(this, board_->GetRook(IsWhite(), true), field->left->left, field->left));
-  if (board_->IsCastlingPossible(IsWhite(), false))
-    result.push_back(std::make_shared<Castling>(this, board_->GetRook(IsWhite(), false), field->right->right, field->right));
+  if (board_.IsCastlingPossible(IsWhite(), true))
+    result.push_back(std::make_shared<Castling>(this, board_.GetRook(IsWhite(), true).get(), field->left->left, field->left));
+  if (board_.IsCastlingPossible(IsWhite(), false))
+    result.push_back(std::make_shared<Castling>(this, board_.GetRook(IsWhite(), false).get(), field->right->right, field->right));
   return result;
 }
 
-bool King::IsCopyable()
+bool King::IsCopyable() const
 {
   return false;
 }

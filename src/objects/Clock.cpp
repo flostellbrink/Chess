@@ -8,58 +8,58 @@
 #include "ObjectManager.h"
 #include "Board.h"
 
-BasicObject* rotate_x(BasicObject* object, const float rotation)
+std::shared_ptr<BasicObject> rotate_x(std::shared_ptr<BasicObject> object, const float rotation)
 {
   object->SetRotationX(rotation);
   return object;
 }
 
-BasicObject* rotate_z(BasicObject* object, const float rotation)
+std::shared_ptr<BasicObject> rotate_z(std::shared_ptr<BasicObject> object, const float rotation)
 {
   object->SetRotationZ(rotation);
   return object;
 }
 
 Clock::Clock() :
-  white_minutes_hand_(objects::white_minutes_hand, glm::vec3(-3.4f, 3, 16.8f), 0, "NoLight"),
-  white_seconds_hand_(objects::white_seconds_hand, glm::vec3(-3.4f, 3, 16.8f), 0, "NoLight"),
-  white_clock_button_(objects::clock_button, glm::vec3(-4, 6, 18)),
-  black_minutes_hand_(objects::black_minutes_hand, glm::vec3(3.4f, 3, 16.8f), 0, "NoLight"),
-  black_seconds_hand_(objects::black_seconds_hand, glm::vec3(3.4f, 3, 16.8f), 0, "NoLight"),
-  black_clock_button_(objects::clock_button, glm::vec3(4, 5.5f, 18))
+  white_minutes_hand_(std::make_shared<BasicObject>(objects::white_minutes_hand, glm::vec3(-3.4f, 3, 16.8f), 0, "NoLight")),
+  white_seconds_hand_(std::make_shared<BasicObject>(objects::white_seconds_hand, glm::vec3(-3.4f, 3, 16.8f), 0, "NoLight")),
+  white_clock_button_(std::make_shared<BasicObject>(objects::clock_button, glm::vec3(-4, 6, 18))),
+  black_minutes_hand_(std::make_shared<BasicObject>(objects::black_minutes_hand, glm::vec3(3.4f, 3, 16.8f), 0, "NoLight")),
+  black_seconds_hand_(std::make_shared<BasicObject>(objects::black_seconds_hand, glm::vec3(3.4f, 3, 16.8f), 0, "NoLight")),
+  black_clock_button_(std::make_shared<BasicObject>(objects::clock_button, glm::vec3(4, 5.5f, 18)))
 {
   white_time_ = black_time_ = start_time_;
   auto manager = &ObjectManager::instance;
 
   // Clock case
-  manager->AddObject(new BasicObject(objects::clock_base, glm::vec3(0, -1, 18)));
-  manager->AddObject(new BasicObject(objects::clock_leg, glm::vec3(4, -1, 18.5f)));
-  manager->AddObject(new BasicObject(objects::clock_leg, glm::vec3(-4, -1, 18.5f)));
-  manager->AddObject(new BasicObject(objects::clock_leg, glm::vec3(4, -1, 17.5f)));
-  manager->AddObject(new BasicObject(objects::clock_leg, glm::vec3(-4, -1, 17.5f)));
+  manager->AddObject(std::make_shared<BasicObject>(objects::clock_base, glm::vec3(0, -1, 18)));
+  manager->AddObject(std::make_shared<BasicObject>(objects::clock_leg, glm::vec3(4, -1, 18.5f)));
+  manager->AddObject(std::make_shared<BasicObject>(objects::clock_leg, glm::vec3(-4, -1, 18.5f)));
+  manager->AddObject(std::make_shared<BasicObject>(objects::clock_leg, glm::vec3(4, -1, 17.5f)));
+  manager->AddObject(std::make_shared<BasicObject>(objects::clock_leg, glm::vec3(-4, -1, 17.5f)));
 
   // Clock parts for black
-  manager->AddObject(&black_clock_button_);
-  manager->AddObject(&black_minutes_hand_);
-  manager->AddObject(&black_seconds_hand_);
-  manager->AddObject(new BasicObject(objects::clock_button_border, glm::vec3(4, 6, 18)));
-  manager->AddObject(rotate_x(new BasicObject(objects::clock_glass_border, glm::vec3(3.4f, 3, 17)),
+  manager->AddObject(black_clock_button_);
+  manager->AddObject(black_minutes_hand_);
+  manager->AddObject(black_seconds_hand_);
+  manager->AddObject(std::make_shared<BasicObject>(objects::clock_button_border, glm::vec3(4, 6, 18)));
+  manager->AddObject(rotate_x(std::make_shared<BasicObject>(objects::clock_glass_border, glm::vec3(3.4f, 3, 17)),
                               glm::pi<float>() / -2.0f));
-  manager->AddObject(rotate_x(new BasicObject(objects::clock_face, glm::vec3(3.4f, 3, 16.9f), 0, "NoLight"),
+  manager->AddObject(rotate_x(std::make_shared<BasicObject>(objects::clock_face, glm::vec3(3.4f, 3, 16.9f), 0, "NoLight"),
                               glm::pi<float>() / -2.0f));
-  manager->AddObject(rotate_z(new BasicObject(objects::clock_time_cap, glm::vec3(3.4f, 3, 16.8f), 0, "NoLight"),
+  manager->AddObject(rotate_z(std::make_shared<BasicObject>(objects::clock_time_cap, glm::vec3(3.4f, 3, 16.8f), 0, "NoLight"),
                               2 * glm::pi<float>() * (black_time_ / 3600000)));
 
   /* Clock parts for WHITE */
-  manager->AddObject(&white_clock_button_);
-  manager->AddObject(&white_minutes_hand_);
-  manager->AddObject(&white_seconds_hand_);
-  manager->AddObject(new BasicObject(objects::clock_button_border, glm::vec3(-4, 6, 18)));
-  manager->AddObject(rotate_x(new BasicObject(objects::clock_glass_border, glm::vec3(-3.4f, 3, 17)),
+  manager->AddObject(white_clock_button_);
+  manager->AddObject(white_minutes_hand_);
+  manager->AddObject(white_seconds_hand_);
+  manager->AddObject(std::make_shared<BasicObject>(objects::clock_button_border, glm::vec3(-4, 6, 18)));
+  manager->AddObject(rotate_x(std::make_shared<BasicObject>(objects::clock_glass_border, glm::vec3(-3.4f, 3, 17)),
                               glm::pi<float>() / -2.0f));
-  manager->AddObject(rotate_x(new BasicObject(objects::clock_face, glm::vec3(-3.4f, 3, 16.9f), 0, "NoLight"),
+  manager->AddObject(rotate_x(std::make_shared<BasicObject>(objects::clock_face, glm::vec3(-3.4f, 3, 16.9f), 0, "NoLight"),
                               glm::pi<float>() / -2.0f));
-  manager->AddObject(rotate_z(new BasicObject(objects::clock_time_cap, glm::vec3(-3.4f, 3, 16.8f), 0, "NoLight"),
+  manager->AddObject(rotate_z(std::make_shared<BasicObject>(objects::clock_time_cap, glm::vec3(-3.4f, 3, 16.8f), 0, "NoLight"),
                               2 * glm::pi<float>() * (white_time_ / 3600000)));
 }
 
@@ -85,13 +85,13 @@ void Clock::Update(const float elapsedTimeMs)
 
     if (whiteTurn)
     {
-      black_clock_button_.Position(glm::vec3(4, 5.5f, 18));
-      white_clock_button_.Position(glm::vec3(-4, 6, 18));
+      black_clock_button_->Position(glm::vec3(4, 5.5f, 18));
+      white_clock_button_->Position(glm::vec3(-4, 6, 18));
     }
     else
     {
-      black_clock_button_.Position(glm::vec3(4, 6, 18));
-      white_clock_button_.Position(glm::vec3(-4, 5.5f, 18));
+      black_clock_button_->Position(glm::vec3(4, 6, 18));
+      white_clock_button_->Position(glm::vec3(-4, 5.5f, 18));
     }
   }
 
@@ -107,8 +107,8 @@ void Clock::Update(const float elapsedTimeMs)
     {
       // White still has time remaining, reduce time and move clock hands
       white_time_ -= elapsedTimeMs;
-      white_seconds_hand_.SetRotationZ(GetHandRotation(white_time_, 60));
-      white_minutes_hand_.SetRotationZ(GetHandRotation(white_time_, 3600));
+      white_seconds_hand_->SetRotationZ(GetHandRotation(white_time_, 60));
+      white_minutes_hand_->SetRotationZ(GetHandRotation(white_time_, 3600));
     }
     else
     {
@@ -121,8 +121,8 @@ void Clock::Update(const float elapsedTimeMs)
     if (black_time_ > 0)
     {
       black_time_ -= elapsedTimeMs;
-      black_seconds_hand_.SetRotationZ(GetHandRotation(black_time_, 60));
-      black_minutes_hand_.SetRotationZ(GetHandRotation(black_time_, 3600));
+      black_seconds_hand_->SetRotationZ(GetHandRotation(black_time_, 60));
+      black_minutes_hand_->SetRotationZ(GetHandRotation(black_time_, 3600));
     }
     else
     {

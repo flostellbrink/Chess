@@ -4,7 +4,7 @@
 #include "src/objects/Field.h"
 
 
-Bishop::Bishop(Board* board, const int objectId, Field* field) : Piece(board, objectId, field)
+Bishop::Bishop(Board& board, const int objectId, Field& field) : Piece(board, objectId, field)
 {
 }
 

@@ -11,7 +11,7 @@
 #include "src/animation/CatmullRomAnimation.h"
 #include "src/objects/moves/Hit.h"
 #include "src/objects/moves/Move.h"
-#include "Field.h"
+#include "field.h"
 #include "src/geometry/Geometry.h"
 #include "src/collision/Collision.h"
 #include "Board.h"
@@ -19,16 +19,16 @@
 #include "src/texture/Texture.h"
 
 
-Piece::Piece(Board* board, const int objectId, Field* field)
+Piece::Piece(Board& board, const int objectId, Field& field)
   : Drawable(objectId)
-  , field(field)
-  , position_(field->TopPosition())
+  , field(&field)
+  , position_(field.TopPosition())
   , size_(glm::vec3(1.5f, 5, 1.5f))
   , y_rotation_(0)
   , board_(board)
   , bounding_box_(CollisionManager::GetAabb(position_ - size_ * 0.5f, position_ + size_ * 0.5f))
 {
-  field->current_piece = this;
+  field.current_piece = this;
 }
 
 void Piece::Init()
@@ -48,16 +48,16 @@ glm::vec3 Piece::Position() const
   return position_;
 }
 
-Field* Piece::GetField() const
+Field& Piece::GetField() const
 {
-  return field;
+  return *field;
 }
 
-void Piece::SetField(Field* field, const bool sim)
+void Piece::SetField(Field& field, const bool sim)
 {
-  if (field == Piece::field)
+  if ((&field) == Piece::field)
   {
-    field->current_piece = this;
+    field.current_piece = this;
     return;
   }
 
@@ -69,14 +69,14 @@ void Piece::SetField(Field* field, const bool sim)
   if (!sim)
   {
     const auto from = Piece::field->TopPosition();
-    const auto to = field->TopPosition();
+    const auto to = field.TopPosition();
     const auto direction = to - from;
     const auto up = glm::vec3(0, 1, 0);
     const float duration = 1000;
     UpdateBb(to);
 
     const auto directLine = CollisionManager::GetRay(from + up * 0.1f, to + up * 0.1f);
-    if (!board_->IntersectsGame(directLine, this))
+    if (!board_.IntersectsGame(directLine, this))
     {
       const auto animation = new FadeAnimation<glm::vec3>(static_cast<int>(duration), position_, from, to);
       ObjectManager::animation.PlayLast(animation);
@@ -94,26 +94,26 @@ void Piece::SetField(Field* field, const bool sim)
     }
   }
 
-  Piece::field = field;
+  Piece::field = &field;
   Piece::field->current_piece = this;
 }
 
-bool Piece::IsWhite()
+bool Piece::IsWhite() const
 {
   return !(object_id_ % 2);
 }
 
-bool Piece::IsTransformable()
+bool Piece::IsTransformable() const
 {
   return false;
 }
 
-bool Piece::IsCopyable()
+bool Piece::IsCopyable() const
 {
   return true;
 }
 
-int Piece::GetIdWithoutColor()
+int Piece::GetIdWithoutColor() const
 {
   return object_id_ - 1 + IsWhite();
 }
@@ -183,7 +183,7 @@ void Piece::Update(float elapsedTimeMs)
 
 void Piece::MouseClick()
 {
-  board_->PieceClick(this);
+  board_.PieceClick(*this);
 }
 
 void Piece::AddHitOrMove(Field* field, std::vector<std::shared_ptr<MoveBase>>& moves)

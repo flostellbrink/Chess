@@ -124,11 +124,11 @@ void Field::MouseClick()
 {
   if (current_piece)
   {
-    board_->PieceClick(current_piece);
+    board_->PieceClick(*current_piece);
   }
   else
   {
-    board_->FieldClick(this);
+    board_->FieldClick(*this);
   }
 }
 

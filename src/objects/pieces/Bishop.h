@@ -6,7 +6,7 @@
 class Bishop : public Piece
 {
 public:
-  Bishop(Board* board, int objectId, Field* field);
+  Bishop(Board& board, int objectId, Field& field);
   std::vector<std::shared_ptr<MoveBase>> GetMoves() override;
 };
 

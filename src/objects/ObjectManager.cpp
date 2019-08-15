@@ -27,31 +27,23 @@ ObjectManager::ObjectManager() = default;
 
 void ObjectManager::NewGame()
 {
-  for (auto obj : objects_)
-  {
-    // Cannot delete these, because they may be owned by others.
-    // TODO implement proper memory management
-    // delete obj;
-  }
   objects_.clear();
-
-  for (auto post : post_processors_)
-  {
-    delete post;
-  }
+  updatables_.clear();
   post_processors_.clear();
-
   delete game_board;
 
   skybox_.Init();
+  animation.Reset();
   camera_.Reset();
-  AddObject(new BasicObject(objects::table, glm::vec3(0, -1, 0), 0, "Basic"));
+  Drawable::overlay_state = -1;
+
+  AddObject(std::make_shared<BasicObject>(objects::table, glm::vec3(0, -1, 0), 0, "Basic"));
   game_board = new Board();
 
   // Post processing
-  AddPost(new FullScreenQuad("res/shader/Blur.vs.glsl", "res/shader/BlurVer.fs.glsl"));
-  AddPost(new FullScreenQuad("res/shader/Blur.vs.glsl", "res/shader/BlurHor.fs.glsl"));
-  AddPost(new FullScreenQuad("res/shader/Overlay.vs.glsl", "res/shader/Overlay.fs.glsl"));
+  AddPost(std::make_shared<FullScreenQuad>("res/shader/Blur.vs.glsl", "res/shader/BlurVer.fs.glsl"));
+  AddPost(std::make_shared<FullScreenQuad>("res/shader/Blur.vs.glsl", "res/shader/BlurHor.fs.glsl"));
+  AddPost(std::make_shared<FullScreenQuad>("res/shader/Overlay.vs.glsl", "res/shader/Overlay.fs.glsl"));
 }
 
 void ObjectManager::UpdateFramebuffer(GLuint& framebuffer,
@@ -127,13 +119,13 @@ void ObjectManager::Update(float elapsedTime)
   {
     Logger::Info("Resetting game");
     Config::new_game = false;
-    Board::ResetGame();
+    NewGame();
   }
   if (Config::demo)
   {
     Logger::Info("Resetting game and running demo");
     Config::demo = false;
-    Board::ResetGame();
+    NewGame();
     game_board->RunDemo();
   }
 
@@ -169,7 +161,7 @@ struct DepthSort
 {
   explicit DepthSort(const glm::mat4 projection) { this->projection = projection; }
 
-  bool operator()(Drawable* obj1, Drawable* obj2) const
+  bool operator()(std::shared_ptr<Drawable> obj1, std::shared_ptr<Drawable> obj2) const
   {
     const auto projected1 = projection * glm::vec4(obj1->Position3D(), 1);
     const auto projected2 = projection * glm::vec4(obj2->Position3D(), 1);
@@ -318,18 +310,18 @@ void ObjectManager::Draw()
   // */
 }
 
-void ObjectManager::AddObject(Drawable* object)
+void ObjectManager::AddObject(std::shared_ptr<Drawable> object)
 {
   objects_.push_back(object);
   object->Init();
 }
 
-void ObjectManager::AddObject(Updatable* object)
+void ObjectManager::AddObject(std::shared_ptr<Updatable> object)
 {
   updatables_.push_back(object);
 }
 
-void ObjectManager::AddPost(Drawable* object)
+void ObjectManager::AddPost(std::shared_ptr<Drawable> object)
 {
   post_processors_.push_back(object);
   object->Init();
@@ -378,7 +370,7 @@ void ObjectManager::MouseWheel(double xOffset, const double yOffset)
 /**
  * Finds an object id by rendering all object ids into a texture and reading the pixel at mousePos.
  */
-Drawable* ObjectManager::GetClickedObject(glm::vec2 mousePos, const glm::mat4 viewProjection) const
+std::shared_ptr<Drawable> ObjectManager::GetClickedObject(glm::vec2 mousePos, const glm::mat4 viewProjection) const
 {
   const auto width = Config::viewport_width;
   const auto height = Config::viewport_height;

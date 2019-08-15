@@ -17,7 +17,7 @@ public:
   virtual void Apply(Board* board, bool sim) = 0;
   virtual void Undo(Board* board, bool sim) = 0;
   virtual bool ChangeTurn();
-  Field *click_field{}, *en_passant_field = nullptr;
+  Field* click_field = nullptr, *en_passant_field = nullptr;
   Piece* main_piece = nullptr;
   int field_overlay = 1;
   bool is_en_passant = false;

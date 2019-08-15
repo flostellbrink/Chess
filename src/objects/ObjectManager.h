@@ -22,9 +22,9 @@ public:
   void NewGame();
   void Update(float elapsedTime);
   void Draw();
-  void AddObject(Drawable* object);
-  void AddObject(Updatable* object);
-  void AddPost(Drawable* object);
+  void AddObject(std::shared_ptr<Drawable> object);
+  void AddObject(std::shared_ptr<Updatable> object);
+  void AddPost(std::shared_ptr<Drawable> object);
 
   void MouseButton(int button, int action);
   void MouseMove(double xPos, double yPos);
@@ -44,18 +44,17 @@ public:
 
 protected:
   static void UpdateFramebuffer(GLuint& framebuffer, GLuint& texture, GLuint& depth, int width, int height);
-  std::vector<Updatable*> updatables_;
-  std::vector<Drawable*> objects_;
-  std::vector<Drawable*> post_processors_;
+  std::vector<std::shared_ptr<Updatable>> updatables_;
+  std::vector<std::shared_ptr<Drawable>> objects_, post_processors_;
   Camera camera_;
   Skybox skybox_;
   bool mouse_down_happened_ = false, mouse_up_happened_ = false;
-  Drawable* mouse_down_object_ = nullptr;
+  std::shared_ptr<Drawable> mouse_down_object_ = nullptr;
   glm::vec2 last_mouse_;
   int theme_{};
 
 private:
-  Drawable* GetClickedObject(glm::vec2 mousePos, glm::mat4 viewProjection) const;
+  std::shared_ptr<Drawable> GetClickedObject(glm::vec2 mousePos, glm::mat4 viewProjection) const;
   static glm::mat4 MirrorMat(glm::vec3 normal, float distance);
   GLuint mirror_frame_buffer_ = 0;
   GLuint mirror_texture_ = 0;

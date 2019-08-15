@@ -7,7 +7,7 @@
 #include "src/objects/Field.h"
 
 
-Knight::Knight(Board* board, const int objectId, Field* field) : Piece(board, objectId, field)
+Knight::Knight(Board& board, int objectId, Field& field) : Piece(board, objectId, field)
 {
 }
 

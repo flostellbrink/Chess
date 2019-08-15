@@ -12,7 +12,7 @@ public:
 
 private:
   Piece* piece_;
-  Field *from_field_{}, *to_field_;
+  Field *from_field_, *to_field_;
 };
 
 

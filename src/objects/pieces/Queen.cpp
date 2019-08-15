@@ -4,7 +4,7 @@
 #include "src/objects/Field.h"
 
 
-Queen::Queen(Board* board, const int objectId, Field* field) : Piece(board, objectId, field)
+Queen::Queen(Board& board, int objectId, Field& field) : Piece(board, objectId, field)
 {
 }
 

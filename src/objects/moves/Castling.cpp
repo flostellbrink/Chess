@@ -16,10 +16,10 @@ void Castling::Apply(Board* board, const bool simulate)
 {
   (void)board;
 
-  from_king_ = king_->GetField();
-  from_rook_ = rook_->GetField();
-  king_->SetField(to_king_, simulate);
-  rook_->SetField(to_rook_, simulate);
+  from_king_ = &king_->GetField();
+  from_rook_ = &rook_->GetField();
+  king_->SetField(*to_king_, simulate);
+  rook_->SetField(*to_rook_, simulate);
   king_->is_moved = true;
   rook_->is_moved = true;
 }
@@ -28,8 +28,8 @@ void Castling::Undo(Board* board, const bool simulate)
 {
   (void)board;
 
-  king_->SetField(from_king_, simulate);
-  rook_->SetField(from_rook_, simulate);
+  king_->SetField(*from_king_, simulate);
+  rook_->SetField(*from_rook_, simulate);
   king_->is_moved = false;
   rook_->is_moved = false;
 }
