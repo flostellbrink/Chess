@@ -1,0 +1,30 @@
+name: CI/CD
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Setup python
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: Setup conan
+      run: |
+        pip install conan
+    - uses: actions/checkout@v1
+    - name: Install dependencies
+      run: conan install . --build --profile=emscripten_profile
+    - name: Build
+      run: NODEBUG=1 conan build .
+    - name: Remove default html page
+      run: rm ./bin/index.html
+    - name: Deploy to pages
+      uses: JamesIves/github-pages-deploy-action@master
+      env:
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        BRANCH: gh-pages2
+        FOLDER: bin
