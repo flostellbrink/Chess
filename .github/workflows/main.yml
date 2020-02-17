@@ -4,27 +4,32 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-    
+
     steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
     - name: Setup python
       uses: actions/setup-python@v1
       with:
-        python-version: 3.7
+        python-version: 3.x
+
     - name: Setup conan
-      run: |
-        pip install conan
-    - uses: actions/checkout@v1
+      run: pip install conan
+
     - name: Install dependencies
       run: conan install . --build --profile=emscripten_profile
+
     - name: Build
       run: NODEBUG=1 conan build .
+
     - name: Remove default html page
       run: rm ./bin/index.html
+
     - name: Deploy to pages
-      uses: JamesIves/github-pages-deploy-action@master
-      env:
+      uses: JamesIves/github-pages-deploy-action@releases/v3
+      with:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        BRANCH: gh-pages2
+        BRANCH: gh-pages
         FOLDER: bin

@@ -1,15 +1,20 @@
-# Chess [![Build Status](https://travis-ci.com/flostellbrink/Chess.svg?branch=wasm)](https://travis-ci.com/flostellbrink/Chess)
+# Chess [![CI/CD](https://github.com/flostellbrink/Chess/workflows/CI/CD/badge.svg?branch=wasm)](https://github.com/flostellbrink/Chess/actions)
 
 Project for the Practical Computer Graphics Course at University of Siegen.
 
 Features:
-- Runtime generation of geometry from curves.
-- Fully functional chess gameplay, including [En Passant](https://en.wikipedia.org/wiki/En_passant) and [Castling](https://en.wikipedia.org/wiki/Castling).
-- Ability to undo all moves.
-- Dynamic shadows and reflections of the entire environment.
-- Overlays with dynamically blurred background.
-- Multiple themes and transparency.
-- Computer controlled opponent.
+
+-   Runtime generation of geometry from curves.
+-   Fully functional chess gameplay, including [En Passant](https://en.wikipedia.org/wiki/En_passant) and [Castling](https://en.wikipedia.org/wiki/Castling).
+-   Ability to undo all moves.
+-   Dynamic shadows and reflections of the entire environment.
+-   Overlays with dynamically blurred background.
+-   Multiple themes and transparency.
+-   Computer controlled opponent.
+
+## Play Online
+
+[![Preview](https://flo.stellbr.ink/images/chess.jpg)](https://flo.stellbr.ink/portfolio/chess/)
 
 ## BrowserStack
 
@@ -22,7 +27,7 @@ We use BrowserStack to make sure that this game runs on the widest range of devi
 ## Controls
 
 | Control          | Action                         |
-|------------------|--------------------------------|
+| ---------------- | ------------------------------ |
 | Left Click       | Select and move pieces         |
 | Drag Right Click | Rotate camera                  |
 | Mouse Wheel      | Zoom                           |
